@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Picr\Cerberus;
+namespace Cerberus;
 
 class CerberusService
 {
