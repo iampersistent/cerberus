@@ -4,6 +4,7 @@
     "keywords": ["permissions"],
     "license": "MIT",
     "require": {
+        "marc-mabe/php-enum": "2.2.*",
         "php": ">=7.0.0"
     },
     "autoload": {
