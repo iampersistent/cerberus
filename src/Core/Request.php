@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
+use Ds\Collection;
+use Ds\Sequence;
+
 /**
  * Provides the API for objects that represent XACML Request elements. Requests are used to specify the
  * contents of a XACML decision request.
@@ -16,7 +19,7 @@ class Request
      * @return the <code>RequestDefaults</code> representing the XACML RequestDefaults for this
      *         <code>Request</code>.
      */
-    public function  getRequestDefaults(): RequestDefaults
+    public function getRequestDefaults(): RequestDefaults
     {
 
     }
@@ -35,7 +38,7 @@ class Request
      *
      * @return true if multiple results should be combined, otherwise false.
      */
-    public function  getCombinedDecision(): boolean
+    public function getCombinedDecision(): boolean
     {
 
     }
@@ -43,12 +46,15 @@ class Request
     /**
      * Gets the <code>Collection</code> of {@link org.apache.openaz.xacml.api.RequestAttributes} representing
      * XACML Attributes elements for this <code>Request</code>. The <code>Collection</code> should not be
-     * modified. Implementations are free to use unmodifiable lists to enforce this.
+     * modified. Implementations are free to use unmodifiable lists to enforce $this->
      *
      * @return the <code>Collection</code> of <code>RequestAttributes</code> representing XACML Attributes
      *         elements for this <code>Request</code>.
      */
-Collection<RequestAttributes> getRequestAttributes();
+    public function getRequestAttributes(): Sequence
+    {
+
+    }
 
     /**
      * Gets the <code>Collection</code> of {@link org.apache.openaz.xacml.api.RequestAttributes} representing
@@ -58,7 +64,10 @@ Collection<RequestAttributes> getRequestAttributes();
      * @return a <code>Collection</code> of <code>RequestAttributes</code> containing one or more
      *         <code>Attribute</code>s to include in results.
      */
-Collection<AttributeCategory> getRequestAttributesIncludedInResult();
+    public function getRequestAttributesIncludedInResult()
+    {
+
+    }
 
     /**
      * Gets an <code>Iterator</code> over all of the {@link org.apache.openaz.xacml.api.RequestAttributes}
@@ -70,7 +79,10 @@ Collection<AttributeCategory> getRequestAttributesIncludedInResult();
      * @return an <code>Iterator</code> over all of the <code>RequestAttributes</code> whose Category matches
      *         the given <code>Identifier</code>
      */
-Iterator<RequestAttributes> getRequestAttributes(Identifier category);
+    public function getRequestAttributes(Identifier $category)
+    {
+
+    }
 
     /**
      * Gets a single matching <code>RequestAttributes</code> representing the XACML Attributes element with
@@ -80,7 +92,7 @@ Iterator<RequestAttributes> getRequestAttributes(Identifier category);
      *            retrieve
      * @return the single matching <code>RequestAttributes</code> object or null if not found
      */
-    public function  getRequestAttributesByXmlId(string xmlId): RequestAttributes
+    public function  getRequestAttributesByXmlId(string $xmlId): RequestAttributes
     {
 
     }
@@ -92,7 +104,11 @@ Iterator<RequestAttributes> getRequestAttributes(Identifier category);
      * @return the <code>Collection</code> of <code>RequestAttributes</code> representing XACML MultiRequest
      *         elements in this <code>Request</code>.
      */
-Collection<RequestReference> getMultiRequests();
+    public function getMultiRequests(): Sequence
+    {
+
+    }
+
 
     /**
      * Gets the {@link Status} representing the XACML Status element for the Request represented by this
@@ -106,7 +122,6 @@ Collection<RequestReference> getMultiRequests();
 
     }
 
-
     /**
      * {@inheritDoc} Implementations of the <code>Request</code> interface must override the
      * <code>equals</code> method with the following semantics: Two <code>Requests</code> (<code>r1</code> and
@@ -118,7 +133,7 @@ Collection<RequestReference> getMultiRequests();
      * pairwise equal to {@code r2.getRequestAttributes()} AND {@code r1.getMultiRequests()} is pairwise equal
      * to {@code r2.getMultiRequests()}
      */
-    public function equals(Object obj): boolean
+    public function equals($object): boolean
     {
 
     }

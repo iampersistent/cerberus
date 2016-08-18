@@ -11,14 +11,17 @@ class Response
      *
      * @return the <code>Collection</code> of {@link Result}s objects in this <code>Response</code>.
      */
-Collection<Result> getResults();
+    public function getResults(): array
+    {
+
+    }
 
     /**
      * {@inheritDoc} Implementations of this interface must override the <code>equals</code> method with the
      * following semantics: Two <code>Response</code>s (<code>r1</code> and <code>r2</code>) are equal if:
      * {@code r1.getResults()} is pairwise equal to {@code r2.getResults()}
      */
-    public function equals(Object obj): boolean
+    public function equals($obj): boolean
     {
 
     }

@@ -3,8 +3,17 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Evaluation;
 
-class EvaluationContext extends PIPFinder, TraceEngine
+use Cerberus\Core\Request;
+use Cerberus\PDP\Policy\Policy;
+use Cerberus\PDP\Policy\PolicyDef;
+
+class EvaluationContext extends PipFinder
 {
+    public function __construct(TraceEngine $traceEngine)
+    {
+
+    }
+
     /**
      * Gets the original <code>Request</code> provided to the <code>ATTPDPEngine</code>'s <code>decide</code>
      * method.
@@ -12,7 +21,10 @@ class EvaluationContext extends PIPFinder, TraceEngine
      * @return the <code>Request</code> provided to the <code>ATTPDPEngine</code>'s <code>decide</code>
      *         method.
      */
-Request getRequest();
+    public function getRequest(): Request
+{
+
+}
 
     /**
      * Gets the root {@link org.apache.openaz.xacml.pdp.policy.PolicyDef} from the policy store configured
@@ -20,7 +32,10 @@ Request getRequest();
      *
      * @return a <code>PolicyFinderResult</code> with the root <code>PolicyDef</code>
      */
-PolicyFinderResult<PolicyDef> getRootPolicyDef();
+    public function getRootPolicyDef(): PolicyDef
+    {
+
+    }
 
     /**
      * Gets the {@link org.apache.openaz.xacml.pdp.policy.Policy} that matches the given
@@ -30,7 +45,10 @@ PolicyFinderResult<PolicyDef> getRootPolicyDef();
      * @return a <code>PolicyFinderResult</code> with the <code>Policy</code> matching the given
      *         <code>IdReferenceMatch</code>
      */
-PolicyFinderResult<Policy> getPolicy(IdReferenceMatch idReferenceMatch);
+    public function getPolicy(IdReferenceMatch idReferenceMatch): Policy
+    {
+
+    }
 
     /**
      * Gets the {@link org.apache.openaz.xacml.pdp.policy.PolicySet} that matches the given
@@ -40,7 +58,10 @@ PolicyFinderResult<Policy> getPolicy(IdReferenceMatch idReferenceMatch);
      * @return a <code>PolicyFinderResult</code> with the <code>PolicySet</code> matching the given
      *         <code>IdReferenceMatch</code>.
      */
-PolicyFinderResult<PolicySet> getPolicySet(IdReferenceMatch idReferenceMatch);
+    public function getPolicySet(IdReferenceMatch idReferenceMatch): PolicySet
+    {
+
+    }
 
     /**
      * Gets the {@link org.apache.openaz.xacml.api.pip.PIPResponse} containing
@@ -52,6 +73,9 @@ PolicyFinderResult<PolicySet> getPolicySet(IdReferenceMatch idReferenceMatch);
      *         <code>Attribute</code>s
      * @throws EvaluationException if there is an error retrieving the <code>Attribute</code>s
      */
-PIPResponse getAttributes(PIPRequest pipRequest) throws PIPException;
+    public function getAttributes(PIPRequest pipRequest): PIPResponse
+{
+
+}
 
 }

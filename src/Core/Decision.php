@@ -38,10 +38,10 @@ class Decision extends Enum
      * Indicates no decision could be reached due to a processing error, but either a deny or permit would
      * have been returned had the error not occurred.
      */
-    const INDETERMINATE_DENYPERMIT = "Indeterminate Deny Permit";
+    const INDETERMINATE_DENY_PERMIT = "Indeterminate Deny Permit";
 
     /**
      * Indicates the policy in question is not applicable to the request
      */
-    const NOTAPPLICABLE = "NotApplicable";
+    const NOT_APPLICABLE = "Not Applicable";
 }

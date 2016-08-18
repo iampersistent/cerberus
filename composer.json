@@ -5,7 +5,12 @@
     "license": "MIT",
     "require": {
         "marc-mabe/php-enum": "2.2.*",
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "php-ds/php-ds": "^1.1"
+    },
+    "require-dev": {
+        "codeception/codeception": "2.2.*",
+        "codeception/aspect-mock": "*"
     },
     "autoload": {
         "psr-4": {
