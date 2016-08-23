@@ -6,10 +6,17 @@ namespace Cerberus\PDP\Evaluation;
 use Cerberus\Core\Request;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\PolicyDef;
+use Cerberus\Pip\PipFinder;
+use Cerberus\Pip\PipRequest;
+use Cerberus\Pip\PipResponse;
 
 class EvaluationContext extends PipFinder
 {
-    public function __construct(TraceEngine $traceEngine)
+    protected $pipFinder;
+    protected $policyFinderIn;
+    protected $requestIn;
+
+    public function __construct(Request $requestIn, PolicyFinder $policyFinderIn, PipFinder $pipFinder)
     {
 
     }
@@ -22,9 +29,9 @@ class EvaluationContext extends PipFinder
      *         method.
      */
     public function getRequest(): Request
-{
+    {
 
-}
+    }
 
     /**
      * Gets the root {@link org.apache.openaz.xacml.pdp.policy.PolicyDef} from the policy store configured
@@ -45,7 +52,7 @@ class EvaluationContext extends PipFinder
      * @return a <code>PolicyFinderResult</code> with the <code>Policy</code> matching the given
      *         <code>IdReferenceMatch</code>
      */
-    public function getPolicy(IdReferenceMatch idReferenceMatch): Policy
+    public function getPolicy(IdReferenceMatch $idReferenceMatch): Policy
     {
 
     }
@@ -58,7 +65,7 @@ class EvaluationContext extends PipFinder
      * @return a <code>PolicyFinderResult</code> with the <code>PolicySet</code> matching the given
      *         <code>IdReferenceMatch</code>.
      */
-    public function getPolicySet(IdReferenceMatch idReferenceMatch): PolicySet
+    public function getPolicySet(IdReferenceMatch $idReferenceMatch): PolicySet
     {
 
     }
@@ -73,9 +80,8 @@ class EvaluationContext extends PipFinder
      *         <code>Attribute</code>s
      * @throws EvaluationException if there is an error retrieving the <code>Attribute</code>s
      */
-    public function getAttributes(PIPRequest pipRequest): PIPResponse
-{
+    public function getAttributes(PipRequest $pipRequest): PipResponse
+    {
 
-}
-
+    }
 }

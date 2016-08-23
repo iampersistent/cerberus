@@ -36,7 +36,7 @@ $policy = [
                                 ],
                                 'attributeDesignator' => [
                                     'category'      => 'attribute-category:resource',
-                                    'attributeId'   => 'source:resource-id',
+                                    'attributeId'   => 'resource:resource-id',
                                     'dataType'      => 'string',
                                     'mustBePresent' => false,
                                 ],

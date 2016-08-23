@@ -9,9 +9,12 @@ use Cerberus\PEP\Exception\PepException;
 
 class PepAgent
 {
+    /** @var PdpEngine */
+    protected $pdpEngine;
+
     public function __construct(PdpEngine $pdpEngine)
     {
-
+        $this->pdpEngine = $pdpEngine;
     }
 
     /**
@@ -28,8 +31,8 @@ class PepAgent
      */
     public function simpleDecide(string $subjectId, string $actionId, string $resourceId): PepResponse
     {
-        return decide(Subject.newInstance(subjectId), Action.newInstance(actionId),
-            Resource.newInstance(resourceId));
+//        return decide(Subject.newInstance(subjectId), Action.newInstance(actionId),
+//            Resource.newInstance(resourceId));
     }
 
     /**
@@ -45,7 +48,7 @@ class PepAgent
      *             instance/PDP throws an exception - if the PepAgent is configured to throw PepException for
      *             "Indeterminate" or "Not Applicable" decisions.
      */
-    public function decide(array $objects): PepResponse
+    public function decide($subject, $action, $resources): PepResponse
     {
         $pepResponses = [];
 //        Request $request = pepRequest.getWrappedRequest();
@@ -73,6 +76,35 @@ class PepAgent
 
         return $pepResponses;
     }
+
+//    public function decide(array $objects): PepResponse
+//    {
+//        $pepResponses = [];
+////        Request $request = pepRequest.getWrappedRequest();
+//
+//        // Log request
+////        if (logger.isDebugEnabled()) {
+////            logRequest(request);
+////        }
+//
+//        try {
+//            $response = $this->pdpEngine->decide($request);
+//        } catch (PDPException $e) {
+//        logger.error(e);
+//        throw new PepException($e);
+//    }
+//
+//        // Log the response
+//        if (logger.isDebugEnabled()) {
+//            logResponse(response);
+//        }
+//
+//        for (Result result : response.getResults()) {
+//            pepResponses.add(pepResponseFactory.newPepResponse(result));
+//        }
+//
+//        return $pepResponses;
+//    }
 
     /**
      * Returns a PepResponse instance representing a collection of decisions, each of which corresponds to an

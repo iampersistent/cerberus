@@ -134,14 +134,14 @@ class CerberusEngine implements PdpEngine
             if ($policyDefRoot == null) {
                 switch ($this->defaultDecision) {
                     case Decision::DENY:
-                    case Decision::NOTAPPLICABLE:
+                    case Decision::NOT_APPLICABLE:
                     case Decision::PERMIT:
                         return new StdMutableResult($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_OK,
                                 "No applicable policy"));
                     case Decision::INDETERMINATE:
                     case Decision::INDETERMINATE_DENY:
-                    case Decision::INDETERMINATE_DENYPERMIT:
+                    case Decision::INDETERMINATE_DENY_PERMIT:
                     case Decision::INDETERMINATE_PERMIT:
                         return new StdMutableResult($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR,

@@ -11,7 +11,7 @@ class Status
     /** @var string */
     protected $statusMessage;
 
-    public function __construct(StatusCode $statusCode, string $statusMessage)
+    public function __construct(StatusCode $statusCode, string $statusMessage = null)
     {
         $this->statusCode = $statusCode;
         $this->statusMessage = $statusMessage;

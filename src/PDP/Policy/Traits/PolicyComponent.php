@@ -16,6 +16,11 @@ trait PolicyComponent
         return $this->status;
     }
 
+    public function setStatus(StatusCode $statusCode, string $message = null)
+    {
+        $this->status = new Status($statusCode, $message);
+    }
+
     public function getStatusCode()
     {
         return $this->status ? $this->status->getStatusCode() : null;
