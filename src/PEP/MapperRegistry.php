@@ -23,14 +23,7 @@ class MapperRegistry
 
     public function getMapper($className): ObjectMapper
     {
-        $mapper = $this->getClassMapper($className);
-
-// Handle Arrays.
-//if (mapper == null && clazz . isArray()) {
-//    mapper = getMapper(Object[] .class);
-//        }
-
-        if ($mapper) {
+        if ($mapper = $this->getClassMapper($className)) {
             return $mapper;
         } else {
             throw new PepException("No ObjectMapper found for Object of Class: " + $className);
@@ -39,7 +32,6 @@ class MapperRegistry
 
     public function registerMapper(ObjectMapper $mapper)
     {
-        //$mapper->setPepConfig($this->pepConfig);
         $mapper->setMapperRegistry($this);
         $this->map->put($mapper->getMappedClass(), $mapper);
     }
@@ -51,7 +43,7 @@ class MapperRegistry
         }
     }
 
-    protected function getClassMapper($className): ObjectMapper
+    protected function getClassMapper($className)
     {
         /** @var ObjectMapper */
         $mapper = $this->map->hasKey($className) ? $this->map->get($className) : null;
