@@ -5,14 +5,16 @@ namespace Cerberus\PEP;
 
 abstract class ObjectMapper
 {
+    protected $className = '';
+    /** @var MapperRegistry */
+    protected $mapperRegistry;
+
     /**
      * Returns a Class that represents the mapped domain type.
-     *
-     * @return a Class name
      */
     public function getMappedClass()
     {
-
+        return $this->className;
     }
 
     /**
@@ -31,7 +33,7 @@ abstract class ObjectMapper
      */
     public function setMapperRegistry(MapperRegistry $mapperRegistry)
     {
-
+        $this->mapperRegistry = $mapperRegistry;
     }
 
     /**

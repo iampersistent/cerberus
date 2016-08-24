@@ -9,7 +9,7 @@ class Response
      * Gets the <code>Collection</code> of {@link Result}s objects in this <code>Response</code>. If there are
      * no <code>Result</code>s, this method must return an empty <code>Collection</code>.
      *
-     * @return the <code>Collection</code> of {@link Result}s objects in this <code>Response</code>.
+     * @return Collection // <code>Collection</code> of {@link Result}s objects in this <code>Response</code>.
      */
     public function getResults(): array
     {

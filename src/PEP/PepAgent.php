@@ -9,11 +9,15 @@ use Cerberus\PEP\Exception\PepException;
 
 class PepAgent
 {
+    /** @var PepResponseFactory */
+    protected $pepResponseFactory;
+
     /** @var PdpEngine */
     protected $pdpEngine;
 
-    public function __construct(PdpEngine $pdpEngine)
+    public function __construct(PdpEngine $pdpEngine, PepResponseFactory $pepResponseFactory)
     {
+        $this->pepResponseFactory = $pepResponseFactory;
         $this->pdpEngine = $pdpEngine;
     }
 
@@ -51,7 +55,8 @@ class PepAgent
     public function decide($subject, $action, $resources): PepResponse
     {
         $pepResponses = [];
-//        Request $request = pepRequest.getWrappedRequest();
+        $pepRequest = $this->pepResponseFactory->newPepRequest([$subject, $action, $resources]);
+        $request = $pepRequest->getWrappedRequest();
 
         // Log request
 //        if (logger.isDebugEnabled()) {
@@ -61,17 +66,17 @@ class PepAgent
         try {
             $response = $this->pdpEngine->decide($request);
         } catch (PDPException $e) {
-        logger.error(e);
+        //logger.error(e);
         throw new PepException($e);
     }
 
         // Log the response
-        if (logger.isDebugEnabled()) {
-            logResponse(response);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logResponse(response);
+//        }
 
-        for (Result result : response.getResults()) {
-            pepResponses.add(pepResponseFactory.newPepResponse(result));
+        foreach ($response->getResults() as $result) {
+            $pepResponses[] = $this->pepResponseFactory->newPepResponse($result);
         }
 
         return $pepResponses;

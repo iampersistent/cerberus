@@ -1,9 +1,11 @@
 <?php
 declare(strict_types = 1);
 
+use AspectMock\Test as Mock;
 use Cerberus\PEP\{
-    Action, ObjectMapper, PepAgent, PepRequest, Subject
+    Action, MapperRegistry, ObjectMapper, PepAgent, PepRequest, PepResponseFactory, Subject
 };
+use Cerberus\PDP\CerberusEngine;
 use Ds\Set;
 
 class MapperCest
@@ -13,13 +15,18 @@ class MapperCest
 
     public function _before(UnitTester $I)
     {
-        $this->pepAgent = new PepAgent();
+        Mock::double(CerberusEngine::class, ['describe' => true]);
+        $pdpEngine = new CerberusEngine();
+        $mappingRegistry = new MapperRegistry();
+        $mappingRegistry->registerMapper(new DocumentMapper());
+        $pepResponseFactory = new PepResponseFactory($mappingRegistry);
+        $this->pepAgent = new PepAgent($pdpEngine, $pepResponseFactory);
     }
 
     public function testPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("urn:oasis:names:tc:xacml:1.0:$subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
 
@@ -104,7 +111,7 @@ class Document
     protected $documentName;
     protected $documentOwner;
 
-    public function __construct(integer $documentId, string $documentName, string $clientName, string $documentOwner)
+    public function __construct(int $documentId, string $documentName, string $clientName, string $documentOwner)
     {
         $this->documentId = $documentId;
         $this->documentName = $documentName;
@@ -135,9 +142,13 @@ class Document
 
 class DocumentMapper extends ObjectMapper
 {
+    /**
+     * @param Document   $document
+     * @param PepRequest $pepRequest
+     */
     public function map($document, PepRequest $pepRequest)
     {
-        $resourceAttributes = $pepRequest->getPepRequestAttributes(XACML3 . ID_ATTRIBUTE_CATEGORY_RESOURCE);
+        $resourceAttributes = $pepRequest->getPepRequestAttributes('XACML3.ID_ATTRIBUTE_CATEGORY_RESOURCE');
         $resourceAttributes->addAttribute("resource:resource-id", $document->getDocumentId());
         $resourceAttributes->addAttribute("resource:resource-type", Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());

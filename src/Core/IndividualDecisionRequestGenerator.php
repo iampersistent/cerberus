@@ -38,7 +38,7 @@ class IndividualDecisionRequestGenerator
         if ($requestReferences != null && $requestReferences->next()) {
             while ($requestReferences->hasNext()) {
                 $requestFromReferences = $this->processMultiRequest($request, $requestReferences->next());
-                if ($requestFromReferences->etStatus() == null || $requestFromReferences->getStatus()->isOk()) {
+                if ($requestFromReferences->getStatus() == null || $requestFromReferences->getStatus()->isOk()) {
                     $this->processRepeatedCategories($requestFromReferences);
                 } else {
                     /*

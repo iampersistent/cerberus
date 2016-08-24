@@ -62,11 +62,11 @@ class CerberusEngine implements PdpEngine
             if ($requestIndividualDecision->getStatus() != null
                 && ! $requestIndividualDecision->getStatus()->isOk()
             ) {
-                $resultIndividualDecision = new StdMutableResult($requestIndividualDecision->getStatus()); // was StdMutableResponse
+                $resultIndividualDecision = new MutableResult($requestIndividualDecision->getStatus()); // was StdMutableResponse
             } else {
-                EvaluationContext $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($requestIndividualDecision);
+                $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($requestIndividualDecision); // EvaluationContext
                 if ($evaluationContext == null) {
-                    $resultIndividualDecision = new StdMutableResult(
+                    $resultIndividualDecision = new MutableResult(
                         new Status(
                             StatusCode::STATUS_CODE_PROCESSING_ERROR,
                             "Null EvaluationContext"));
@@ -81,24 +81,28 @@ class CerberusEngine implements PdpEngine
 //                                                                $resultIndividualDecision));
 //            }
             if ($combineResults) {
-                Decision $decision = $resultIndividualDecision->getDecision();
-                Status $status = $resultIndividualDecision->getStatus();
+                $decision = $resultIndividualDecision->getDecision(); // Decision
+                $status = $resultIndividualDecision->getStatus(); // Status
                 if ($resultIndividualDecision->getAssociatedAdvice()->size() > 0) {
                     $decision = Decision::INDETERMINATE;
-                    status = STATUS_ADVICE_NA;
+                    $status = new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Advice not allowed in combined decision");
                 } else {
                     if ($resultIndividualDecision->getObligations()->size() > 0) {
                         $decision = Decision::INDETERMINATE;
-                        status = STATUS_OBLIGATIONS_NA;
+                        $status = new Status(
+                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+                            "Obligations not allowed in combined decision");
                     }
                 }
 
                 if ($resultCombined == null) {
-                    $resultCombined = new StdMutableResult(decision, status);
+                    $resultCombined = new MutableResult($decision, $status);
                 } else {
                     if ($resultCombined->getDecision() != $resultIndividualDecision->getDecision()) {
                         $resultCombined->setDecision(Decision::INDETERMINATE);
-                        $resultCombined->setStatus(STATUS_COMBINE_FAILED);
+                        $resultCombined->setStatus(new Status(
+                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+                            "Individual decisions do not match"));
                     }
                 }
                 $resultCombined->addPolicyIdentifiers($resultIndividualDecision->getPolicyIdentifiers());
@@ -151,20 +155,19 @@ class CerberusEngine implements PdpEngine
             /** @var Result $result */
             $result = $policyDefRoot->evaluate($evaluationContext);
             if ($result->getStatus()->isOk()) {
-                Collection < AttributeCategory> listRequestAttributesIncludeInResult = $evaluationContext
-                    . getRequest() . getRequestAttributesIncludedInResult();
-                    if (listRequestAttributesIncludeInResult != null
-                        && listRequestAttributesIncludeInResult . size() > 0
+                $listRequestAttributesIncludeInResult = $evaluationContext->getRequest()->getRequestAttributesIncludedInResult(); //Collection < AttributeCategory>
+                    if ($listRequestAttributesIncludeInResult != null
+                        && count($listRequestAttributesIncludeInResult) > 0
                     ) {
-                        StdMutableResult stdMutableResult = new StdMutableResult(result);
-                        stdMutableResult . addAttributeCategories(listRequestAttributesIncludeInResult);
-                        $result = new StdResult(stdMutableResult);
+                        $mutableResult = new MutableResult(result); // StdMut...
+                        $mutableResult->addAttributeCategories($listRequestAttributesIncludeInResult);
+                        $result = new Result($mutableResult); // stdResult
                     }
                 }
 
             return $result;
         } catch (EvaluationException $e) {
-            return new StdMutableResult(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR, $e->getMessage()));
+            return new MutableResult(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
         }
     }
 }
