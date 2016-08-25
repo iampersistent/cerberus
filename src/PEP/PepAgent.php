@@ -66,9 +66,9 @@ class PepAgent
         try {
             $response = $this->pdpEngine->decide($request);
         } catch (PDPException $e) {
-        //logger.error(e);
-        throw new PepException($e);
-    }
+            //logger.error(e);
+            throw new PepException($e);
+        }
 
         // Log the response
 //        if (logger.isDebugEnabled()) {

@@ -7,7 +7,7 @@ class CategoryContainerMapper extends ObjectMapper
 {
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes($object->getCategoryIdentifier()); // PepRequestAttributes
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes($this->getCategoryIdentifier()); // PepRequestAttributes
         $attributesMap = $object->getAttributeMap();
         if ($attributesMap) {
             foreach ($attributesMap->entrySet() as $entry) {

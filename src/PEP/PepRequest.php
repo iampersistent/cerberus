@@ -29,8 +29,9 @@ class PepRequest
 
     public function getPepRequestAttributes($categoryIdentifier): PepRequestAttributes
     {
-        $pepRequestAttributes = $this->pepRequestAttributesMapByCategory->get($categoryIdentifier);
-        if ($pepRequestAttributes == null) {
+        if ($this->pepRequestAttributesMapByCategory->hasKey($categoryIdentifier)) {
+            return $this->pepRequestAttributesMapByCategory->get($categoryIdentifier);
+        } else {
             $xmlId = uniqid('cerberus');
             $pepRequestAttributes = new PepRequestAttributes($xmlId, $categoryIdentifier);
             //$pepRequestAttributes->setIssuer($this->pepConfig->getIssuer());

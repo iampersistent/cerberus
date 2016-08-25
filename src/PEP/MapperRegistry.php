@@ -10,15 +10,18 @@ class MapperRegistry
 {
     protected $map;
 
-    public function __construct()
+    public function __construct($config = [])
     {
         $this->map = new Map();
         $this->registerMappers([
-           new ActionMapper(),
-           new CategoryContainerMapper(),
-           new ResourceMapper(),
-           new SubjectMapper(),
+            new ActionMapper(),
+            new CategoryContainerMapper(),
+            new ResourceMapper(),
+            new SubjectMapper(),
         ]);
+        if (!empty($config)) {
+
+        }
     }
 
     public function getMapper($className): ObjectMapper

@@ -23,10 +23,7 @@ abstract class ObjectMapper
      * @param o - an instance of the domain object to be mapped
      * @param pepRequest - the current Request Context
      */
-    public function map($object, PepRequest $pepRequest)
-    {
-
-    }
+    abstract public function map($object, PepRequest $pepRequest);
 
     /**
      * @param mapperRegistry
