@@ -4,18 +4,19 @@ declare(strict_types = 1);
 namespace Cerberus\PEP;
 
 use Cerberus\Core\{
-    AttributeValue, Exception\IllegalArgumentException, FindDataType, MutableAttribute, MutableRequestAttributes
+    AttributeValue, Exception\IllegalArgumentException, FindDataType, MutableAttribute, MutableRequestAttributes, RequestAttributes
 };
 use Ds\Map;
 
-class PepRequestAttributes
+class PepRequestAttributes extends RequestAttributes
 {
+    protected $wrappedRequestAttributes;
+
     public function __construct($id, $categoryIdentifier)
     {
         $this->id = $id;
-        $this->categoryIdentifier = $categoryIdentifier;
-        $this->attributeMapById = new Map();
         $this->wrappedRequestAttributes = new MutableRequestAttributes($id, $categoryIdentifier);
+        parent::__construct($categoryIdentifier);
     }
 
     public function addAttribute(string $name, ...$values)
@@ -23,12 +24,12 @@ class PepRequestAttributes
         if (empty($values)) {
             throw new IllegalArgumentException("Null attribute value provided for attribute: " + name);
         }
-         $mutableAttribute = $this->attributeMapById->get($name); // MutableAttribute
+        $mutableAttribute = $this->attributes->get($name); // MutableAttribute
         if ($mutableAttribute == null) {
             $mutableAttribute = new MutableAttribute($name, $this->categoryIdentifier);
             $mutableAttribute->setIncludeInResults(false);
             //$mutableAttribute->setIssuer(issuer == null ? "" : issuer);
-            $this->attributeMapById->put($name, $mutableAttribute);
+            $this->attributes->put($name, $mutableAttribute);
             $this->wrappedRequestAttributes->add($mutableAttribute);
         }
         foreach ($values as $value) {

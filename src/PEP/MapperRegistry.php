@@ -19,8 +19,8 @@ class MapperRegistry
             new ResourceMapper(),
             new SubjectMapper(),
         ]);
-        if (!empty($config)) {
-
+        foreach ($config as $classConfig) {
+            $this->registerMapper(new ConfiguredMapper($classConfig));
         }
     }
 

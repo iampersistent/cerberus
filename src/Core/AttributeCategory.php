@@ -7,6 +7,7 @@ use Ds\Map;
 
 class AttributeCategory
 {
+    protected $attributes;
     protected $categoryIdentifier;
 
     public function __construct($categoryIdentifier)
@@ -17,8 +18,6 @@ class AttributeCategory
 
     /**
      * Gets the {@link Identifier} for the XACML Category of this <code>AttributeCategory</code>.
-     *
-     * @return the <code>Identifier</code> for the category of this <code>AttributeCategory</code>.
      */
     public function getCategory(): string
     {
@@ -40,7 +39,7 @@ class AttributeCategory
      * Gets an <code>Iterator</code> over all of the {@link Attribute}s in this <code>AttributeCategory</code>
      * with the given {@link Identifier} matching their XACML AttributeId.
      */
-    public function getAttribute($attributeId)
+    public function getAttribute(string $attributeId)
     {
         try {
             return $this->attributes->get($attributeId);

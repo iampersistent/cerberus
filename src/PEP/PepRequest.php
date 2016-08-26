@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\Exception\IllegalArgumentException;
 use Cerberus\Core\MutableRequest;
 use Cerberus\Core\Request;
 use Ds\Map;
@@ -17,6 +18,9 @@ class PepRequest
 
     public function __construct(MapperRegistry $mapperRegistry, $objects)
     {
+        if (!is_array($objects)) {
+            $objects = [$objects];
+        }
         $this->mapperRegistry = $mapperRegistry;
         $this->requestObjects = $objects;
         //$this->pepConfig = $pepConfig;
@@ -47,7 +51,7 @@ class PepRequest
         return $this->wrappedRequest;
     }
 
-    private function map()
+    protected function map()
     {
         if ($this->requestObjects == null) {
             throw new IllegalArgumentException("One or more arguments are null");

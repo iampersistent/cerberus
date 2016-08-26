@@ -13,5 +13,8 @@ class MutableRequestAttributes extends MutableAttributeCategory
         parent::__construct($categoryIdentifier);
     }
 
-
+    public function getId()
+    {
+        return $this->id;
+    }
 }
