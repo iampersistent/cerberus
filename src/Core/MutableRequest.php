@@ -25,7 +25,7 @@ class MutableRequest
         $this->requestAttributes->add($newRequestAttributes);
         if ($this->requestAttributesByCategoryId->hasKey($newRequestAttributes->getCategory())) {
             $listRequestAttributesForCategoryId = $this->requestAttributesByCategoryId->get($newRequestAttributes->getCategory());
-        }else {
+        } else {
             $listRequestAttributesForCategoryId = new Set();
             $this->requestAttributesByCategoryId->put($newRequestAttributes->getCategory(),
                 $listRequestAttributesForCategoryId);

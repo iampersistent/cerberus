@@ -14,12 +14,21 @@ class MutableAttribute
     {
         $this->attributeId = $attributeId;
         $this->categoryIdentifier = $categoryIdentifier;
-
     }
 
     public function addValue(AttributeValue $value)
     {
         $this->values[] = $value;
+    }
+
+    public function getAttributeId()
+    {
+        return $this->attributeId;
+    }
+
+    public function getCategoryIdentifier()
+    {
+        return $this->categoryIdentifier;
     }
 
     public function setIncludeInResults(bool $include): self

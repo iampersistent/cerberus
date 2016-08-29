@@ -20,7 +20,12 @@ class ConfiguredMapper extends ObjectMapper
     {
         $requestAttributes = $pepRequest->getPepRequestAttributes(CategoryType::ID_ATTRIBUTE_CATEGORY_RESOURCE);
         foreach ($this->config as $name => $lookup) {
-            $requestAttributes->addAttribute($name, $object->$lookup);
+            if ('resource:resource-type' === $name) {
+                $requestAttributes->addAttribute($name, $lookup);
+
+                continue;
+            }
+            $requestAttributes->addAttribute($name, $object->$lookup());
         }
     }
 }

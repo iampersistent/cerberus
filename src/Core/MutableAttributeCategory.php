@@ -7,6 +7,6 @@ class MutableAttributeCategory extends RequestAttributes
 {
     public function add(MutableAttribute $attribute)
     {
-        $this->attributes->add($attribute);
+        $this->attributes->put($attribute->getAttributeId(), $attribute);
     }
 }

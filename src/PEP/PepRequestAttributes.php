@@ -24,8 +24,9 @@ class PepRequestAttributes extends RequestAttributes
         if (empty($values)) {
             throw new IllegalArgumentException("Null attribute value provided for attribute: " + name);
         }
-        $mutableAttribute = $this->attributes->get($name); // MutableAttribute
-        if ($mutableAttribute == null) {
+        if ($this->attributes->hasKey($name)) {
+            $mutableAttribute = $this->attributes->get($name);
+        } else {
             $mutableAttribute = new MutableAttribute($name, $this->categoryIdentifier);
             $mutableAttribute->setIncludeInResults(false);
             //$mutableAttribute->setIssuer(issuer == null ? "" : issuer);

@@ -33,7 +33,6 @@ class ConfiguredMapperCest
         $pepRequest = new PepRequest($registry, $document);
         $attributes = $pepRequest->getPepRequestAttributes(CategoryType::ID_ATTRIBUTE_CATEGORY_RESOURCE);
 
-        // assert some shit with the attributes
-        $a= 0;
+        $I->assertSame(5, count($attributes->getAttributes()));
     }
 }
