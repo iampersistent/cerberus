@@ -26,7 +26,7 @@ class CategoryContainer
      */
     public function getAttributeMap()
     {
-        return $this->attributeMap->toArray();
+        return $this->attributeMap;
     }
 
     /**

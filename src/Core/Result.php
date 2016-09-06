@@ -7,6 +7,12 @@ use Ds\Collection;
 
 class Result
 {
+    protected $decision;
+    protected $obligations;
+    protected $policyIdentifiers;
+    protected $policySetIdentifiers;
+    protected $status;
+
     /**
      * Gets the {@link org.apache.openaz.xacml.api.Decision} associated with this <code>Result</code>.
      *
@@ -14,7 +20,7 @@ class Result
      */
     public function getDecision(): Decision
     {
-
+        return $this->decision;
     }
 
     /**
@@ -24,7 +30,7 @@ class Result
      */
     public function getStatus(): Status
     {
-
+        return $this->status;
     }
 
     /**
@@ -37,7 +43,7 @@ class Result
      */
     public function getObligations(): Collection
     {
-
+        return $this->obligations;
     }
 
     /**
@@ -71,7 +77,7 @@ class Result
      */
     public function getPolicyIdentifiers(): Collection
     {
-
+        return $this->policyIdentifiers;
     }
 
     /**
@@ -82,19 +88,6 @@ class Result
      */
     public function getPolicySetIdentifiers(): Collection
     {
-
+        return $this->policySetIdentifiers;
     }
-
-    /**
-     * {@inheritDoc} Implementations of this interface must override the <code>equals</code> method with the
-     * following semantics: Two <code>Result</code>s (<code>r1</code> and <code>r2</code>) are equal if:
-     * {@code r1.getDecision() == r2.getDecision()} AND {@code r1.getStatus().equals(r2.getStatus()} AND
-     * {@code r1.getObligations()} is pair-wise equal to {@code r2.getObligations()}
-     * {@code r1.getAssociatedAdvice()} is pair-wise equal to {@code r2.getAssociatedAdvice()}
-     * {@code r1.getAttributes()} is pair-wise equal to {@code r2.getAttributes()}
-     * {@code r1.getPolicyIdentifiers()} is pair-wise equal to {@code r2.getPolicyIdentifiers()}
-     * {@code r1.getPolicySetIdentifiers()} is pair-wise equal to {@code r2.getPolicySetIdentifiers()}
-     */
-//@Override
-//boolean equals(Object obj);
 }

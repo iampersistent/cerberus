@@ -9,16 +9,20 @@ use Cerberus\PEP\Exception\PepException;
 
 class PepAgent
 {
+    /** @var PepRequestFactory */
+    protected $pepRequestFactory;
+
     /** @var PepResponseFactory */
     protected $pepResponseFactory;
 
     /** @var PdpEngine */
     protected $pdpEngine;
 
-    public function __construct(PdpEngine $pdpEngine, PepResponseFactory $pepResponseFactory)
+    public function __construct(PdpEngine $pdpEngine, PepRequestFactory $pepRequestFactory, PepResponseFactory $pepResponseFactory)
     {
-        $this->pepResponseFactory = $pepResponseFactory;
         $this->pdpEngine = $pdpEngine;
+        $this->pepRequestFactory = $pepRequestFactory;
+        $this->pepResponseFactory = $pepResponseFactory;
     }
 
     /**
@@ -55,8 +59,7 @@ class PepAgent
     public function decide($subject, $action, $resources): PepResponse
     {
         $pepResponses = [];
-        $pepRequest = $this->pepResponseFactory->newPepRequest([$subject, $action, $resources]);
-        $request = $pepRequest->getWrappedRequest();
+        $request = $this->pepRequestFactory->newPepRequest($subject, $action, $resources);
 
         // Log request
 //        if (logger.isDebugEnabled()) {

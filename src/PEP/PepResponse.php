@@ -3,9 +3,21 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\ObligationRouter;
+use Cerberus\Core\Result;
+use Cerberus\PEP\Exception\PepException;
+
 class PepResponse
 {
+    protected $obligationRouter;
+    protected $result;
 
+    public function __construct(ObligationRouter $obligationRouter, Result $result)
+    {
+        $this->obligationRouter = $obligationRouter;
+        $this->result = $result;
+    }
     /**
      * Returns the decision associated with the current result.
      *
@@ -15,7 +27,26 @@ class PepResponse
      */
     public function allowed(): boolean
     {
-
+//        if (obligationRouter != null) {
+//            obligationRouter . routeObligations(getObligations());
+//        }
+        switch ($this->result->getDecision()) {
+            case Decision::PERMIT:
+                return true;
+            case Decision::DENY:
+                return false;
+            case Decision::NOT_APPLICABLE:
+            case Decision::INDETERMINATE:
+            case Decision::INDETERMINATE_DENY:
+            case Decision::INDETERMINATE_DENY_PERMIT:
+            case Decision::INDETERMINATE_PERMIT:
+                $status = $this->result->getStatus();
+                $message = sprintf("Decision: Indeterminate, Status Code: %s, Status Message: %s",
+                    $status->getStatusCode(), $status->getStatusMessage());
+                throw new PepException($message);
+            default:
+                throw new PepException("Invalid response from PDP");
+        }
     }
 
     /**
@@ -37,7 +68,7 @@ class PepResponse
      * @throws PepException
      * @see org.apache.openaz.pepapi.Advice#getId()
      */
-    public function  getAdvices() : array
+    public function getAdvices() : array
     {
 
     }
@@ -50,7 +81,7 @@ class PepResponse
      * @return an object that was used as the action-resource in the PepRequest
      * @throws PepException
      */
-    public function  getAssociation()
+    public function getAssociation()
     {
 
     }
@@ -58,7 +89,7 @@ class PepResponse
     /**
      * @return
      */
-    public function  getAttributes(): array
+    public function getAttributes(): array
     {
 
     }

@@ -29,7 +29,7 @@ class MapperRegistry
         if ($mapper = $this->getClassMapper($className)) {
             return $mapper;
         } else {
-            throw new PepException("No ObjectMapper found for Object of Class: " + $className);
+            throw new PepException("No ObjectMapper found for Object of Class: $className");
         }
     }
 

@@ -3,8 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
-use Ds\Collection;
+use Ds\Map;
 use Ds\Sequence;
+use Ds\Set;
 
 /**
  * Provides the API for objects that represent XACML Request elements. Requests are used to specify the
@@ -12,6 +13,54 @@ use Ds\Sequence;
  */
 class Request
 {
+    /** @var boolean */
+    protected $combinedDecision = false;
+    /** @var Set */
+    protected $multiRequests;
+    protected $requestAttributes;
+    protected $requestAttributesByCategoryId;
+    protected $requestAttributesById;
+    protected $status;
+
+    public function __construct()
+    {
+        $this->requestAttributes = new Set();
+        $this->requestAttributesByCategoryId = new Map();
+        $this->requestAttributesById = new Map();
+    }
+
+    public function add(RequestAttributes $newRequestAttributes)
+    {
+        $this->requestAttributes->add($newRequestAttributes);
+        if ($this->requestAttributesByCategoryId->hasKey($newRequestAttributes->getCategory())) {
+            $listRequestAttributesForCategoryId = $this->requestAttributesByCategoryId->get($newRequestAttributes->getCategory());
+        } else {
+            $listRequestAttributesForCategoryId = new Set();
+            $this->requestAttributesByCategoryId->put($newRequestAttributes->getCategory(),
+                $listRequestAttributesForCategoryId);
+        }
+        $listRequestAttributesForCategoryId->add($newRequestAttributes);
+        if ($newRequestAttributes->getId()) {
+            $this->requestAttributesById->put($newRequestAttributes->getId(), $newRequestAttributes);
+        }
+        $attributeCategoryIncludeInResult = null; // MutableAttributeCategory
+        foreach ($newRequestAttributes->getAttributes() as $attribute) { // Attribute
+            if ($attribute->getIncludeInResults()) {
+                if ($attributeCategoryIncludeInResult == null) {
+                    $attributeCategoryIncludeInResult = new MutableAttributeCategory();
+                    $attributeCategoryIncludeInResult->setCategory($newRequestAttributes->getCategory());
+                }
+                $attributeCategoryIncludeInResult->add($attribute);
+            }
+        }
+        if ($attributeCategoryIncludeInResult != null) {
+            if ($this->requestAttributesIncludeInResult == EMPTY_ATTRIBUTE_CATEGORY_LIST) {
+                $this->requestAttributesIncludeInResult = new Map();
+            }
+            $this->requestAttributesIncludeInResult->add($attributeCategoryIncludeInResult);
+        }
+    }
+
     /**
      * Gets the {@link org.apache.openaz.xacml.api.RequestDefaults} representing the XACML RequestDefaults for
      * this <code>Request</code>.
@@ -27,7 +76,7 @@ class Request
     /**
      * Returns true if the list of XACML PolicyIds should be returned for this Request.
      */
-    public function getReturnPolicyIdList(): boolean
+    public function getReturnPolicyIdList(): bool
     {
 
     }
@@ -38,22 +87,35 @@ class Request
      *
      * @return true if multiple results should be combined, otherwise false.
      */
-    public function getCombinedDecision(): boolean
+    public function getCombinedDecision(): bool
     {
-
+        return $this->combinedDecision;
     }
 
     /**
-     * Gets the <code>Collection</code> of {@link org.apache.openaz.xacml.api.RequestAttributes} representing
-     * XACML Attributes elements for this <code>Request</code>. The <code>Collection</code> should not be
-     * modified. Implementations are free to use unmodifiable lists to enforce $this->
+     * Gets an <code>Iterator</code> over all of the {@link org.apache.openaz.xacml.api.RequestAttributes}
+     * objects found in this <code>Request</code> with the given {@link org.apache.openaz.xacml.api.Identifier}
+     * representing a XACML Category.
      *
-     * @return the <code>Collection</code> of <code>RequestAttributes</code> representing XACML Attributes
-     *         elements for this <code>Request</code>.
+     * @param category the <code>Identifier</code> representing the XACML Category of the
+     *            <code>ReqestAttributes</code> to retrieve.
+     * @return Sequence|null
      */
-    public function getRequestAttributes(): Sequence
+    public function getRequestAttributeById(string $category)
     {
+        return $this->requestAttributesById->get($category);
+    }
 
+    /**
+     * Gets an <code>Iterator</code> over all of the {@link org.apache.openaz.xacml.api.RequestAttributes}
+     * objects found in this <code>Request</code> with the given {@link org.apache.openaz.xacml.api.Identifier}
+     * representing a XACML Category.
+     *
+     * @return Sequence|null
+     */
+    public function getRequestAttributes()
+    {
+        return $this->requestAttributes;
     }
 
     /**
@@ -70,21 +132,6 @@ class Request
     }
 
     /**
-     * Gets an <code>Iterator</code> over all of the {@link org.apache.openaz.xacml.api.RequestAttributes}
-     * objects found in this <code>Request</code> with the given {@link org.apache.openaz.xacml.api.Identifier}
-     * representing a XACML Category.
-     *
-     * @param category the <code>Identifier</code> representing the XACML Category of the
-     *            <code>ReqestAttributes</code> to retrieve.
-     * @return an <code>Iterator</code> over all of the <code>RequestAttributes</code> whose Category matches
-     *         the given <code>Identifier</code>
-     */
-    public function getRequestAttributes(Identifier $category)
-    {
-
-    }
-
-    /**
      * Gets a single matching <code>RequestAttributes</code> representing the XACML Attributes element with
      * whose xml:Id matches the given <code>String</code>>
      *
@@ -92,7 +139,7 @@ class Request
      *            retrieve
      * @return the single matching <code>RequestAttributes</code> object or null if not found
      */
-    public function  getRequestAttributesByXmlId(string $xmlId): RequestAttributes
+    public function  getRequestAttributesById(string $Id): RequestAttributes
     {
 
     }
@@ -101,12 +148,11 @@ class Request
      * Gets the <code>Collection</code> of {@link org.apache.openaz.xacml.api.RequestReference}s representing
      * XACML MultiRequest elements in this <code>Request</code>.
      *
-     * @return the <code>Collection</code> of <code>RequestAttributes</code> representing XACML MultiRequest
-     *         elements in this <code>Request</code>.
+     * @return Sequence|null
      */
-    public function getMultiRequests(): Sequence
+    public function getMultiRequests()
     {
-
+        return $this->multiRequests;
     }
 
 
@@ -114,12 +160,11 @@ class Request
      * Gets the {@link Status} representing the XACML Status element for the Request represented by this
      * <code>Request</code>.
      *
-     * @return the <code>Status</code> representing the XACML Status element for the Request represented by
-     *         this <code>Request</code>.
+     * @return Status|null
      */
-    public function  getStatus(): Status
+    public function getStatus()
     {
-
+        return $this->status;
     }
 
     /**

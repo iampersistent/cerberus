@@ -3,24 +3,20 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\ObligationRouter;
+use Cerberus\Core\Result;
+
 class PepResponseFactory
 {
-    protected $mapperRegistry;
-    protected $pepConfig;
+    protected $obligationRouter;
 
-    public function __construct(MapperRegistry $mapperRegistry)
+    public function __construct( $obligationRouter) // ObligationRouter
     {
-        //$this->pepConfig = $pepConfig;
-        $this->mapperRegistry = $mapperRegistry;
+        $this->obligationRouter = $obligationRouter;
     }
 
-    public function newPepRequest($objects): PepRequest
+    public function newPepResponse(Result $result): PepResponse
     {
-        return new PepRequest($this->mapperRegistry, $objects);
-    }
-
-    public function newBulkPepRequest(array $associations, $objects): PepRequest
-    {
-        return new MultiRequest($this->pepConfig, $this->mapperRegistry, $associations, $objects);
+        return new PepResponse($this->obligationRouter, $result);
     }
 }

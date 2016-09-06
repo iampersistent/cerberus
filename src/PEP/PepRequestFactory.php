@@ -9,15 +9,15 @@ class PepRequestFactory
 
     protected $mapperRegistry;
 
-    public function __construct(PepConfig $pepConfig, MapperRegistry $mapperRegistry)
+    public function __construct(MapperRegistry $mapperRegistry) // PepConfig $pepConfig,
     {
-        $this->pepConfig = $pepConfig;
+        //$this->pepConfig = $pepConfig;
         $this->mapperRegistry = $mapperRegistry;
     }
 
     public function newPepRequest(...$objects): PepRequest
     {
-        return new PepRequest($this->pepConfig, $this->mapperRegistry, $objects);
+        return new PepRequest($this->mapperRegistry, $objects);
     }
 
 //    public function newBulkPepRequest(List $associations, Object[] objects): PepRequest {

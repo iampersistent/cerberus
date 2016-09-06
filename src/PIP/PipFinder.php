@@ -1,12 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\Pip;
+namespace Cerberus\PIP;
 
 use Ds\Collection;
 
 class PipFinder
 {
+
     /**
      * Retrieves <code>Attribute</code>s that based on the given
      * {@link org.apache.openaz.xacml.api.pip.PipRequest}. The
@@ -24,6 +25,36 @@ class PipFinder
      */
     public function getAttributes(PipRequest $pipRequest, PipEngine $exclude, PipFinder $pipFinderParent = null): PipResponse
     {
+         $pipResponse = new MutablePipResponse();
+        $firstErrorStatus = null;
+        Iterator<List<PIPEngine>> iterPIPEngineLists = this.pipEngines.values().iterator();
+        while (iterPIPEngineLists.hasNext()) {
+            List<PIPEngine> listPIPEngines = iterPIPEngineLists.next();
+            for (PIPEngine pipEngine : listPIPEngines) {
+                if (pipEngine != exclude) {
+                    PIPResponse $pipResponseEngine = null;
+                    try {
+                        $pipResponseEngine = pipEngine.getAttributes(pipRequest, pipFinderParent);
+                    } catch (Exception e) {
+                        $pipResponseEngine = new PipResponse(
+                            new StdStatus(
+                                StdStatusCode.STATUS_CODE_PROCESSING_ERROR));
+                    }
+                    if ($pipResponseEngine != null) {
+                        if ($pipResponseEngine.getStatus() == null || $pipResponseEngine.getStatus().isOk()) {
+                            $pipResponse->addAttributes($pipResponseEngine.getAttributes());
+                        } else if (firstErrorStatus == null) {
+                            firstErrorStatus = $pipResponseEngine.getStatus();
+                        }
+                    }
+                }
+            }
+        }
+        if ($pipResponse->getAttributes()->isEmpty() && firstErrorStatus != null) {
+            $pipResponse->setStatus(firstErrorStatus);
+        }
+
+        return new PipResponse($pipResponse);
 
     }
 
@@ -44,7 +75,7 @@ class PipFinder
      */
     public function getMatchingAttributes(PipRequest $pipRequest, PipEngine $exclude, PipFinder $pipFinderParent = null): PipResponse
     {
-
+        return PipResponse.getMatchingResponse(pipRequest, this.getAttributes(pipRequest, exclude));
     }
 
     public function getPipEngines(): Collection

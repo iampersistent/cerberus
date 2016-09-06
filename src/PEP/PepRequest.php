@@ -8,7 +8,7 @@ use Cerberus\Core\MutableRequest;
 use Cerberus\Core\Request;
 use Ds\Map;
 
-class PepRequest
+class PepRequest extends Request
 {
     protected $mapperRegistry;
     protected $requestObjects;
@@ -18,6 +18,7 @@ class PepRequest
 
     public function __construct(MapperRegistry $mapperRegistry, $objects)
     {
+        parent::__construct();
         if (!is_array($objects)) {
             $objects = [$objects];
         }
@@ -28,7 +29,6 @@ class PepRequest
         //$this->idCounter = new AtomicInteger(1);
         $this->wrappedRequest = new MutableRequest();
         $this->map();
-
     }
 
     public function getPepRequestAttributes($categoryIdentifier): PepRequestAttributes
@@ -60,7 +60,7 @@ class PepRequest
 
             $mapper = $this->mapperRegistry->getMapper(get_class($object));
             if ($mapper == null) {
-                throw new IllegalArgumentException("No mappers found for class: " + get_class($object));
+                throw new IllegalArgumentException("No mappers found for class: " . get_class($object));
             }
             $mapper->map($object, $this);
         }

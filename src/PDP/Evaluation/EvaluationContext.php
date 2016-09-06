@@ -6,19 +6,22 @@ namespace Cerberus\PDP\Evaluation;
 use Cerberus\Core\Request;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\PolicyDef;
-use Cerberus\Pip\PipFinder;
-use Cerberus\Pip\PipRequest;
-use Cerberus\Pip\PipResponse;
+use Cerberus\PDP\Policy\PolicyFinder;
+use Cerberus\PIP\PipFinder;
+use Cerberus\PIP\PipRequest;
+use Cerberus\PIP\PipResponse;
 
 class EvaluationContext extends PipFinder
 {
     protected $pipFinder;
-    protected $policyFinderIn;
-    protected $requestIn;
+    protected $policyFinder;
+    protected $request;
 
-    public function __construct(Request $requestIn, PolicyFinder $policyFinderIn, PipFinder $pipFinder)
+    public function __construct(Request $request, PolicyFinder $policyFinder, PipFinder $pipFinder)
     {
-
+        $this->pipFinder = $pipFinder;
+        $this->policyFinder = $policyFinder;
+        $this->request = $request;
     }
 
     /**
@@ -30,7 +33,7 @@ class EvaluationContext extends PipFinder
      */
     public function getRequest(): Request
     {
-
+        return $this->request;
     }
 
     /**

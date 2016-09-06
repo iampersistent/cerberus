@@ -3,10 +3,12 @@ declare(strict_types = 1);
 
 use AspectMock\Test as Mock;
 use Cerberus\PEP\{
-    Action, MapperRegistry, ObjectMapper, PepAgent, PepRequest, PepResponseFactory, Subject
+    Action, MapperRegistry, ObjectMapper, PepAgent, PepRequest, PepRequestFactory, PepResponseFactory, Subject
 };
 use Cerberus\PDP\CerberusEngine;
+use Cerberus\PIP\PipFinder;
 use Ds\Set;
+use Test\Document;
 
 class MapperCest
 {
@@ -15,12 +17,17 @@ class MapperCest
 
     public function _before(UnitTester $I)
     {
+        require __DIR__ . '/../../_data/fixtures/testMap.php';
+        $policyFinder = new PolicyFinder();
+        $pipFinder = new PipFinder();
         Mock::double(CerberusEngine::class, ['describe' => true]);
-        $pdpEngine = new CerberusEngine();
-        $mappingRegistry = new MapperRegistry();
+        $pdpEngine = new CerberusEngine($policyFinder, );
+        $mappingRegistry = new MapperRegistry($testMap);
         $mappingRegistry->registerMapper(new DocumentMapper());
+        $pepRequestFactory = new PepRequestFactory($mappingRegistry);
+
         $pepResponseFactory = new PepResponseFactory($mappingRegistry);
-        $this->pepAgent = new PepAgent($pdpEngine, $pepResponseFactory);
+        $this->pepAgent = new PepAgent($pdpEngine, $pepRequestFactory, $pepResponseFactory);
     }
 
     public function testPermit(UnitTester $I)
