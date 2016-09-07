@@ -25,12 +25,20 @@ class CerberusEngine implements PdpEngine
     /** @var EvaluationContextFactory */
     protected $evaluationContextFactory;
 
+    /** @var PipFinder */
+    protected $pipFinder;
+
+    /** @var PolicyFinder */
+    protected $policyFinder;
+
     /** @var ScopeResolver */
     protected $scopeResolver;
 
     public function __construct(PolicyFinder $policyFinder, PipFinder $pipFinder)
     {
         $this->evaluationContextFactory = new EvaluationContextFactory($policyFinder, $pipFinder);
+        $this->pipFinder = $pipFinder;
+        $this->policyFinder = $policyFinder;
         $this->scopeResolver = new ScopeResolver();
     }
 

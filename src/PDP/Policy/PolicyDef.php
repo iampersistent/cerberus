@@ -13,7 +13,7 @@ use Cerberus\PDP\Exception\EvaluationException;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 use Ds\Collection;
 
-abstract class PolicyDef
+class PolicyDef
 {
     use PolicyComponent;
 

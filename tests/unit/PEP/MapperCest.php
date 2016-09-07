@@ -6,6 +6,7 @@ use Cerberus\PEP\{
     Action, MapperRegistry, ObjectMapper, PepAgent, PepRequest, PepRequestFactory, PepResponseFactory, Subject
 };
 use Cerberus\PDP\CerberusEngine;
+use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PIP\PipFinder;
 use Ds\Set;
 use Test\Document;
@@ -21,7 +22,7 @@ class MapperCest
         $policyFinder = new PolicyFinder();
         $pipFinder = new PipFinder();
         Mock::double(CerberusEngine::class, ['describe' => true]);
-        $pdpEngine = new CerberusEngine($policyFinder, );
+        $pdpEngine = new CerberusEngine($policyFinder, $pipFinder);
         $mappingRegistry = new MapperRegistry($testMap);
         $mappingRegistry->registerMapper(new DocumentMapper());
         $pepRequestFactory = new PepRequestFactory($mappingRegistry);

@@ -7,6 +7,7 @@ use Cerberus\Core\Request;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
+use Cerberus\PDP\Policy\PolicySet;
 use Cerberus\PIP\PipFinder;
 use Cerberus\PIP\PipRequest;
 use Cerberus\PIP\PipResponse;
@@ -44,7 +45,7 @@ class EvaluationContext extends PipFinder
      */
     public function getRootPolicyDef(): PolicyDef
     {
-
+        return $this->policyFinder->getRootPolicyDef($this);
     }
 
     /**
@@ -57,6 +58,7 @@ class EvaluationContext extends PipFinder
      */
     public function getPolicy(IdReferenceMatch $idReferenceMatch): Policy
     {
+        return $this->policyFinder->getPolicy($this);
 
     }
 
@@ -70,7 +72,7 @@ class EvaluationContext extends PipFinder
      */
     public function getPolicySet(IdReferenceMatch $idReferenceMatch): PolicySet
     {
-
+        return $this->policyFinder->getPolicySet($this);
     }
 
     /**
@@ -83,8 +85,8 @@ class EvaluationContext extends PipFinder
      *         <code>Attribute</code>s
      * @throws EvaluationException if there is an error retrieving the <code>Attribute</code>s
      */
-    public function getAttributes(PipRequest $pipRequest): PipResponse
-    {
-
-    }
+//    public function getAttributes(PipRequest $pipRequest): PipResponse
+//    {
+//
+//    }
 }
