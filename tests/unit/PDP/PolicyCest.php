@@ -1,7 +1,6 @@
 <?php
 declare(strict_types = 1);
 
-use AspectMock\Test as Mock;
 use Codeception\Util\Stub;
 use Cerberus\Core\{
     Decision, Request, Status, StatusCode
@@ -12,7 +11,7 @@ use Cerberus\PDP\Evaluation\{
 };
 
 use Cerberus\PDP\Policy\{
-    Policy, PolicyDef, Target
+    Policy, Target
 };
 
 class PolicyCest
@@ -34,13 +33,16 @@ class PolicyCest
         );
         $evaluationResult = $policy->evaluate($evaluationContext);
 
-        $I->assertEquals(Decision::INDETERMINATE, $evaluationResult->getDecision());
+        $I->assertEquals(Decision::INDETERMINATE(), $evaluationResult->getDecision());
+
+        $policyIdentifiers = $evaluationResult->getPolicyIdentifiers();
+
+        $I->assertEquals(1, $policyIdentifiers->count());
     }
 
-    protected function createPolicy(): PolicyDef
+    protected function createPolicy(): Policy
     {
         $policy = new Policy(new Status(StatusCode::STATUS_CODE_OK()));
-// CombiningAlgorithmBase<Rule> ruleCombiningAlgorithm = new CombiningAlgorithmBase<Rule>(XACML1.ID_RULE_COMBINING_ALGORITHM) {
         $combiningAlgorithm = Stub::make(
             DenyOverrides::class, [
             'combine' => new EvaluationResult(Decision::INDETERMINATE()),

@@ -17,18 +17,20 @@ class EvaluationResult extends MutableResult
 
     public function __construct(Decision $decision, Status $status = null)
     {
+        parent::__construct();
         $this->decision = $decision;
         $this->status = $status;
     }
 
     public function merge(EvaluationResult $evaluationResult)
     {
-        // todo: if StatusDetail gets implemented, it needs to be merged here
-        $this->setStatus($evaluationResult->getStatus());
-        $this->addObligations($evaluationResult->getObligations());
-        $this->addAdvice($evaluationResult->getAssociatedAdvice());
-        $this->addAttributeCategories($evaluationResult->getAttributes());
-        $this->addPolicyIdentifiers($evaluationResult->getPolicyIdentifiers());
-        $this->addPolicySetIdentifiers($evaluationResult->getPolicySetIdentifiers());
+        // todo: if StatusDetail gets implemented, Status needs to be merged here instead of set
+        $this
+            ->setStatus($evaluationResult->getStatus())
+            ->addObligations($evaluationResult->getObligations())
+            ->addAdvice($evaluationResult->getAssociatedAdvice())
+            ->addAttributeCategories($evaluationResult->getAttributes())
+            ->addPolicyIdentifiers($evaluationResult->getPolicyIdentifiers())
+            ->addPolicySetIdentifiers($evaluationResult->getPolicySetIdentifiers());
     }
 }

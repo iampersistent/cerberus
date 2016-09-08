@@ -7,30 +7,62 @@ use Ds\Set;
 
 class Result
 {
+    /** @var Advice[]|Set */
+    protected $associatedAdvice;
+
+    /** @var AttributeCategory[]|Set */
+    protected $attributes;
     protected $decision;
     protected $obligations;
+
+    /** @var mixed[]|Set */
     protected $policyIdentifiers;
+    /** @var mixed[]|Set */
     protected $policySetIdentifiers;
     protected $status;
 
     public function __construct()
     {
+        $this->associatedAdvice = new Set();
+        $this->attributes = new Set();
         $this->obligations = new Set();
+        $this->policyIdentifiers = new Set();
+        $this->policySetIdentifiers = new Set();
     }
 
-    public function addPolicyIdentifiers($policyIdentifiers)
+    public function addAdvice(...$advice): self
     {
+        $this->associatedAdvice->add($advice);
 
+        return $this;
     }
 
-    public function addPolicySetIdentifiers($policySetIdentifiers)
+    public function addAttributeCategories(...$attributeCategories): self
     {
+        $this->attributes->add($attributeCategories);
 
+        return $this;
     }
 
-    public function addAttributeCategories($attributeCategories)
+    public function addPolicyIdentifier($policyIdentifier): self
     {
+        $this->policyIdentifiers->add($policyIdentifier);
 
+        return $this;
+    }
+
+    public function addPolicyIdentifiers(...$policyIdentifiers): self
+    {
+        $this->policyIdentifiers->add($policyIdentifiers);
+
+        return $this;
+    }
+
+    public function addPolicySetIdentifiers(...$policySetIdentifiers): self
+    {
+        $this->policySetIdentifiers->add($policySetIdentifiers);
+
+        return $this;
     }
 
     public function getDecision(): Decision
@@ -38,9 +70,11 @@ class Result
         return $this->decision;
     }
 
-    public function setDecision(Decision $decision)
+    public function setDecision(Decision $decision): self
     {
         $this->decision = $decision;
+
+        return $this;
     }
 
 
@@ -122,8 +156,10 @@ class Result
         return $this->status;
     }
 
-    public function setStatus(Status $status)
+    public function setStatus(Status $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 }

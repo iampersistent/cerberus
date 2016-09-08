@@ -17,6 +17,9 @@ class PolicyDef extends PolicySetChild
 {
     use PolicyComponent;
 
+    /** @var CombinerParameter[]|Set */
+    protected $combinerParameters;
+
     /** @var CombiningAlgorithm */
     protected $combiningAlgorithm;
 
@@ -29,6 +32,15 @@ class PolicyDef extends PolicySetChild
     /** @var Target */
     protected $target;
 
+    public function __construct()
+    {
+        $this->combinerParameters = new Set();
+    }
+
+    public function getCombinerParameterList()
+    {
+        return $this->combinerParameters;
+    }
 
     /**
      * @throws EvaluationException

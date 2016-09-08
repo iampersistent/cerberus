@@ -18,6 +18,7 @@ class Policy extends PolicyDef
 
     public function __construct()
     {
+        parent::__construct();
         $this->rules = new Set();
     }
 
@@ -75,11 +76,11 @@ class Policy extends PolicyDef
          * Add my id to the policy identifiers
          */
         if ($evaluationContext->getRequest()->getReturnPolicyIdList()) {
-            $evaluationResultCombined->addPolicyIdentifier($this->getIdReference());
+            $evaluationResultCombined->addPolicyIdentifier($this->getIdentifier());
         }
 
-        if ($evaluationResultCombined->getDecision() == Decision::DENY()
-            || $evaluationResultCombined->getDecision() == Decision::PERMIT()
+        if ($evaluationResultCombined->getDecision() === Decision::DENY()
+            || $evaluationResultCombined->getDecision() === Decision::PERMIT()
         ) {
             $this->updateResult($evaluationResultCombined, $evaluationContext);
         }
