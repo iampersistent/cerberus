@@ -31,12 +31,12 @@ class AttributeRetrievalBase
         return $this->dataTypeId;
     }
 
-    public function getMustBePresent(): boolean
+    public function getMustBePresent(): bool
     {
         return $this->mustBePresent;
     }
 
-    protected function validateComponent(): boolean
+    protected function validateComponent(): bool
     {
         if (null === $this->getCategory()) {
             $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing Category");

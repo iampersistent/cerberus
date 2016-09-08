@@ -25,7 +25,7 @@ class PepResponse
      * @throws PepException if the {@link PepResponseBehavior} configured in the {@link PepResponseFactory}
      *             indicates that for the response should be thrown
      */
-    public function allowed(): boolean
+    public function allowed(): bool
     {
 //        if (obligationRouter != null) {
 //            obligationRouter . routeObligations(getObligations());

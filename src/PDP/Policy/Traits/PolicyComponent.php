@@ -26,17 +26,17 @@ trait PolicyComponent
         return $this->status ? $this->status->getStatusCode() : null;
     }
 
-    public function getStatusMessage()
+    public function getStatusMessage(): string
     {
-        return $this->status ? $this->status->getStatusMessage() : null;
+        return $this->status ? $this->status->getStatusMessage() : '';
     }
 
-    public function isOk(): boolean
+    public function isOk(): bool
     {
-        return $this->getStatusCode() === StatusCode::STATUS_CODE_OK;
+        return $this->getStatusCode() === StatusCode::STATUS_CODE_OK();
     }
 
-    public function validate(): boolean
+    public function validate(): bool
     {
         if (null === $this->getStatusCode()) {
             return $this->validateComponent();

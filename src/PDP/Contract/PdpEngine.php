@@ -22,5 +22,5 @@ interface PdpEngine
     /**
      * Determines if this PdpEngine supports the given profile id.
      */
-    //public function  hasProfile(string $profileId): boolean;
+    //public function  hasProfile(string $profileId): bool;
 }

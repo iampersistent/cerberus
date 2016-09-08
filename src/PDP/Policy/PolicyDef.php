@@ -3,17 +3,17 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\Decision;
-use Cerberus\Core\Status;
-use Cerberus\PDP\Evaluation\EvaluationContext;
-use Cerberus\PDP\Evaluation\EvaluationResult;
-use Cerberus\PDP\Evaluation\MatchCode;
-use Cerberus\PDP\Evaluation\MatchResult;
+use Cerberus\Core\{
+    Decision, Status, StatusCode
+};
+use Cerberus\PDP\Evaluation\{
+    EvaluationContext, MatchCode, MatchResult
+};
 use Cerberus\PDP\Exception\EvaluationException;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
-use Ds\Collection;
+use Ds\Set;
 
-class PolicyDef
+class PolicyDef extends PolicySetChild
 {
     use PolicyComponent;
 
@@ -30,96 +30,47 @@ class PolicyDef
     protected $target;
 
 
-    public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
-    {
-        /*
-         * First check to see if we are valid. If not, return an error status immediately
-         */
-        if (! $this->validate()) {
-            return new EvaluationResult(new Status($this->getStatusCode(), $this->getStatusMessage())); /// todo: decision?
-        }
-
-        /*
-         * See if we match
-         */
-        /** @var MatchResult $matchResult */
-        $matchResult = $this->match($evaluationContext);
-        //    assert $matchResult != null;
-
-//        if ($evaluationContext->isTracing()) {
-//            $evaluationContext->trace(new StdTraceEvent < MatchResult>("Match", this, thisMatchResult));
-//        }
-        switch ($matchResult->getMatchCode()) {
-            case MatchCode::INDETERMINATE:
-                return new EvaluationResult(Decision::INDETERMINATE, $matchResult->getStatus()); // todo: decision?
-            case MatchCode::MATCH:
-                break;
-            case MatchCode::NO_MATCH:
-                return new EvaluationResult(Decision::NOT_APPLICABLE); // todo: decision?
-        }
-
-        /*
-         * Get the combining elements
-         */
-        // List<CombiningElement < Rule >>
-        $ruleCombiningElements = $this->getCombiningRules();
-        // assert $ruleCombiningElements != null;
-
-        /*
-         * Run the combining algorithm
-         */
-        // assert $this->getRuleCombiningAlgorithm() != null;
-        /** @var EvaluationResult $evaluationResultCombined */
-        if (! $evaluationResultCombined = $this->getRuleCombiningAlgorithm()->combine($evaluationContext,
-            $ruleCombiningElements, $this->getCombinerParameterList())
-        ) {
-            throw new EvaluationException();
-        }
-
-        /*
-         * Add my id to the policy identifiers
-         */
-        if ($evaluationContext->getRequest()->getReturnPolicyIdList()) {
-            $evaluationResultCombined->addPolicyIdentifier($this->getIdReference());
-        }
-
-        if ($evaluationResultCombined->getDecision() == Decision::DENY
-            || $evaluationResultCombined->getDecision() == Decision::PERMIT
-        ) {
-            $this->updateResult($evaluationResultCombined, $evaluationContext);
-        }
-//        if ($evaluationContext->isTracing()) {
-//            $evaluationContext->trace(new StdTraceEvent<Result>("Result", $this, $evaluationResultCombined));
-//        }
-
-        return $evaluationResultCombined;
-    }
-
     /**
      * @throws EvaluationException
      */
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), new Status($this->getStatusCode(), $this->getStatusMessage()));
+            return new MatchResult(MatchCode::INDETERMINATE(),
+                new Status($this->getStatusCode(), $this->getStatusMessage()));
         }
 
         return $this->target->match($evaluationContext);
     }
 
-    /**
-     * @returns CombiningElement<Rule>[]
-     */
-    protected function getCombiningRules():Collection
+    public function getTarget(): Target
     {
-        if (null === $this->combiningRules) {
-            $this->combiningRules = new Collection();
-            $rules = $this->getRules();
-            while ($rule = $rules->next()) {
-                $this->combiningRules->add(new CombiningElement($rule, $this->ruleCombinerParameters->getCombinerParameters($rule)));
-}
+        return $this->target;
+    }
+
+    public function setTarget(Target $target): self
+    {
+        $this->target = $target;
+
+        return $this;
+    }
+
+
+    protected function validateComponent(): bool
+    {
+        // todo: OpenAZ did a check for a version being present here, not sure why, example files don't necessarily have it
+        if (false === parent::validateComponent()) {
+            return false;
+        }
+        if ($this->getTarget() == null) {
+            $this->setStatus(
+                StatusCode::STATUS_CODE_SYNTAX_ERROR(),
+                "Missing Target in policy " . $this->getIdReference()
+            );
+
+            return false;
         }
 
-        return $this->combiningRules;
+        return true;
     }
 }

@@ -178,7 +178,7 @@ class Request
      * pairwise equal to {@code r2.getRequestAttributes()} AND {@code r1.getMultiRequests()} is pairwise equal
      * to {@code r2.getMultiRequests()}
      */
-    public function equals($object): boolean
+    public function equals($object): bool
     {
 
     }

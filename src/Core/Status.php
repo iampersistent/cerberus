@@ -24,10 +24,10 @@ class Status
 
     public function getStatusMessage(): string
     {
-        return $this->statusMessage;
+        return $this->statusMessage ?? '';
     }
 
-    public function isOk(): boolean
+    public function isOk(): bool
     {
         return StatusCode::STATUS_CODE_OK === $this->statusCode;
     }

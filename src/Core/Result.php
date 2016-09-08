@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
-use Ds\Collection;
+use Ds\Set;
 
 class Result
 {
@@ -13,24 +13,50 @@ class Result
     protected $policySetIdentifiers;
     protected $status;
 
-    /**
-     * Gets the {@link org.apache.openaz.xacml.api.Decision} associated with this <code>Result</code>.
-     *
-     * @return the <code>Decision</code> associated with this <code>Result</code>.
-     */
+    public function __construct()
+    {
+        $this->obligations = new Set();
+    }
+
+    public function addPolicyIdentifiers($policyIdentifiers)
+    {
+
+    }
+
+    public function addPolicySetIdentifiers($policySetIdentifiers)
+    {
+
+    }
+
+    public function addAttributeCategories($attributeCategories)
+    {
+
+    }
+
     public function getDecision(): Decision
     {
         return $this->decision;
     }
 
-    /**
-     * Gets the {@link org.apache.openaz.xacml.api.Status} associated with this <code>Result</code>.
-     *
-     * @return the <code>Status</code> associated with this <code>Result</code>
-     */
-    public function getStatus(): Status
+    public function setDecision(Decision $decision)
     {
-        return $this->status;
+        $this->decision = $decision;
+    }
+
+
+    public function addObligation(Obligation $obligation): self
+    {
+        $this->obligations->add($obligation);
+
+        return $this;
+    }
+
+
+    public function addObligations($obligations): self
+    {
+        $this->obligations->add($obligations);
+
+        return $this;
     }
 
     /**
@@ -41,7 +67,7 @@ class Result
      * @return the <code>Collection</code> of {@link org.apache.openaz.xacml.api.Obligation}s Obligation
      *         <code>Result</code>.
      */
-    public function getObligations(): Collection
+    public function getObligations(): Set
     {
         return $this->obligations;
     }
@@ -52,7 +78,7 @@ class Result
      *
      * @return the <code>Collection</code> of <code>Advice</code> objects in this <code>Result</code>.
      */
-    public function getAssociatedAdvice(): Collection
+    public function getAssociatedAdvice(): Set
     {
 
     }
@@ -64,7 +90,7 @@ class Result
      * @return the <code>Collection</code> of <code>AttributeCategory</code> objects in this
      *         <code>Result</code>.
      */
-    public function getAttributes(): Collection
+    public function getAttributes(): Set
     {
 
     }
@@ -75,7 +101,7 @@ class Result
      *
      * @return the <code>Collection</code> of Policy <code>IdReference</code>s in this <code>Result</code>.
      */
-    public function getPolicyIdentifiers(): Collection
+    public function getPolicyIdentifiers(): Set
     {
         return $this->policyIdentifiers;
     }
@@ -86,8 +112,18 @@ class Result
      *
      * @return the <code>Collection</code> of PolicySet <code>IdReference</code>s in this <code>Result</code>.
      */
-    public function getPolicySetIdentifiers(): Collection
+    public function getPolicySetIdentifiers(): Set
     {
         return $this->policySetIdentifiers;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status)
+    {
+        $this->status = $status;
     }
 }

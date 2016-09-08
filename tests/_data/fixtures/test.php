@@ -2,6 +2,7 @@
 
 $policy = [
     'policy' => [
+        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
         'policyId' => 'urn:oasis:names:tc:xacml:2.0:test001:policy',
         'rule'     => [
             'ruleId'      => 'urn:oasis:names:tc:xacml:1.0:test001:rule-1',

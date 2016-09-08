@@ -41,7 +41,7 @@ class AllOf implements Matchable
         return MatchResult.MM_MATCH;
     }
 
-    protected function validateComponent(): boolean
+    protected function validateComponent(): bool
     {
         if (empty($this->matches)) {
 $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing matches");
