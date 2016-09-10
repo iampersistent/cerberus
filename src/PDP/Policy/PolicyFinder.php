@@ -17,14 +17,22 @@ class PolicyFinder
     protected $rootsList;
     protected $policiesMap;
 
-    public function __construct(PolicyDef $rootPolicyDef, $referencedPolicyDefs)
+    public function __construct($rootPolicyDefs, $referencedPolicyDefs = null)
     {
         $this->rootsList = new Set();
         $this->policiesMap = new Map();
 
-        if ($rootPolicyDef) {
+        $addPolicy = function($rootPolicyDef) {
             $this->rootsList->add($rootPolicyDef);
             $this->updatePolicyMap($rootPolicyDef);
+        };
+
+        if ($rootPolicyDefs instanceof PolicyDef) {
+            $addPolicy($rootPolicyDefs);
+        } else {
+            foreach ($rootPolicyDefs as $rootPolicyDef) {
+                $addPolicy($rootPolicyDef);
+            }
         }
 
         if ($referencedPolicyDefs) {
@@ -36,12 +44,20 @@ class PolicyFinder
 
     public function getPolicy($idReferenceMatch): Policy
     {
-        return $this->lookupPolicyByIdentifier($idReferenceMatch);
+        $result = $this->lookupPolicyByIdentifier($idReferenceMatch);
+
+        if ($result->getStatus()->isOk()) {
+            return $result->getPolicyDef();
+        }
+
+        throw new PolicyFinderException($result->getStatus()->getStatusMessage());
     }
 
     public function getPolicySet($idReferenceMatch): PolicySet
     {
-        return $this->lookupPolicySetByIdentifier($idReferenceMatch);
+        $result = $this->lookupPolicySetByIdentifier($idReferenceMatch);
+
+        return $result->getPolicyDef();
     }
 
     public function addReferencedPolicy(PolicyDef $policyDef)
@@ -103,10 +119,10 @@ class PolicyFinder
 
     protected function storeInPolicyMap(PolicyDef $policyDef)
     {
-        $listPolicyDefs = $this->policiesMap->get($policyDef->getIdentifier());
-        if ($listPolicyDefs == null) {
+        $policyId = $policyDef->getIdentifier();
+        if (null === $listPolicyDefs = $this->policiesMap->get($policyId, null)) {
             $listPolicyDefs = new Set();
-            $this->policiesMap->put($policyDef->getIdentifier(), $listPolicyDefs);
+            $this->policiesMap->put($policyId, $listPolicyDefs);
         }
         $listPolicyDefs->add($policyDef);
     }
@@ -116,26 +132,12 @@ class PolicyFinder
         /*
          * Get all of the PolicyDefs for the Identifier in the reference $match
          */
-        $listPolicyDefForId = $this->policiesMap->get($idReferenceMatch->getId());
-        if ($listPolicyDefForId == null) {
-            return null;
-        }
+        return $this->policiesMap->get($idReferenceMatch, null);
 
         /*
-         * Iterate over all of the PolicyDefs that were found and select only the ones that $match the version
+         * todo: if versioning gets implemented, Iterate over all of the PolicyDefs that were found and select only the ones that $match the version
          * request and the isPolicySet
          */
-        $listPolicyDefMatches = null;
-        foreach ($listPolicyDefForId as $policyDef) {
-            if ($classPolicyDef->isInstance($policyDef) && $policyDef->matches($idReferenceMatch)) {
-                if ($listPolicyDefMatches == null) {
-                    $listPolicyDefMatches = new Set();
-                }
-                $listPolicyDefMatches->add($classPolicyDef->cast($policyDef));
-            }
-        }
-
-        return $listPolicyDefMatches;
     }
 
     /**
@@ -144,54 +146,19 @@ class PolicyFinder
      * caches it.
      *
      * @param $idReferenceMatch the <code>IdReferenceMatch</code> to look up
-     *
-     * @return a <code>PolicyFinderResult</code> with the requested <code>Policy</code> or an error status
      */
-    protected function lookupPolicyByIdentifier($idReferenceMatch): PolicyFinderResult
+    protected function lookupPolicyByIdentifier($id): PolicyFinderResult
     {
-        $listCachedPolicies = $this->getFromPolicyMap($idReferenceMatch, Policy::class);
-        if ($listCachedPolicies == null) {
-            $id = $idReferenceMatch->getId();
-            if ($id != null) {
-                $uri = $id->getUri();
-                if ($uri != null && $uri->isAbsolute()) {
-                    $policyDef = null;
-                    try {
-                        $policyDef = $this->loadPolicyDefFromURI($uri);
-                    } catch (PolicyFinderException $e) {
-                        return new PolicyFinderResult(
-                            new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage())
-                        );
-                    }
-                    if ($policyDef != null) {
-                        if ($policyDef instanceof Policy) {
-                            $listPolicyDefs = new Set();
-                            $listPolicyDefs->add($policyDef);
-                            $this->policiesMap->put($id, $listPolicyDefs);
-                            $this->policiesMap->put($policyDef->getIdentifier(), $listPolicyDefs);
+        $listCachedPolicies = $this->getFromPolicyMap($id, Policy::class);
 
-                            return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_OK(), "No matching policy found"),
-                                $policyDef
-                            );
-                        } else {
-                            return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Not a policy")
-                            );
-                        }
-                    } else {
-                        return new PolicyFinderResult(
-                            new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "No matching policy found")
-                        );
-                    }
-                }
-            }
-        }
-        if ($listCachedPolicies != null) {
-            return new PolicyFinderResult($this->getBestMatch($listCachedPolicies));
+        if ($listCachedPolicies) {
+            return new PolicyFinderResult(
+                Status::createOk(),
+                $this->getBestMatch($listCachedPolicies)
+            );
         } else {
             return new PolicyFinderResult(
-                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "No matching policy found")
+                Status::createProcessingError("No matching policy found")
             );
         }
     }
@@ -275,9 +242,9 @@ class PolicyFinder
         return $bestMatch;
     }
 
-    protected function getBestMatch($matches): PolicyDef
+    protected function getBestMatch(Set $matches): PolicyDef
     {
-        switch ($matches->size()) {
+        switch ($matches->count()) {
             case 0:
                 return null;
             case 1:

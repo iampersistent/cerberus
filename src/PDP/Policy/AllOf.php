@@ -20,36 +20,41 @@ class AllOf implements Matchable
 
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
-        if (!$this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), new Status($this->getStatusCode(), $this->getStatusMessage()));
+        if (! $this->validate()) {
+            return new MatchResult(MatchCode::INDETERMINATE(),
+                new Status($this->getStatusCode(), $this->getStatusMessage()));
         }
+
+        $matchResultFallThrough = MatchResult::createMatch();
         foreach ($this->matches as $match) {
             $matchResultMatch = $match->match($evaluationContext);
-            switch ($matchResultMatch->getMatchCode()) {
-                case INDETERMINATE:
-                    if (matchResultFallThrough.getMatchCode() != MatchResult.MatchCode.INDETERMINATE) {
-                        matchResultFallThrough = matchResultMatch;
+            switch ((string)$matchResultMatch->getMatchCode()) {
+                case MatchCode::INDETERMINATE:
+                    if ($matchResultFallThrough->getMatchCode() != MatchCode::INDETERMINATE()) {
+                        $matchResultFallThrough = $matchResultMatch;
                     }
                     break;
-                case MATCH:
+                case MatchCode::MATCH:
                     break;
-                case NOMATCH:
-                    return matchResultMatch;
+                case MatchCode::NO_MATCH:
+                    return $matchResultMatch;
             }
         }
 
-        return MatchResult.MM_MATCH;
+        return MatchResult::createMatch();
     }
 
     protected function validateComponent(): bool
     {
-        if (empty($this->matches)) {
-$this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing matches");
-return false;
-} else {
-    $this->setStatus(StatusCode::STATUS_CODE_OK());
-    return true;
-}
-}
+        if (0 === count($this->matches)) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing matches");
+
+            return false;
+        } else {
+            $this->setStatus(StatusCode::STATUS_CODE_OK());
+
+            return true;
+        }
+    }
 
 }

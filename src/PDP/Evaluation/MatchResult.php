@@ -18,6 +18,16 @@ class MatchResult
         $this->status = $status ?? new Status(StatusCode::STATUS_CODE_OK(), 'OK');
     }
 
+    public static function createMatch(): MatchResult
+    {
+        return new MatchResult(MatchCode::MATCH());
+    }
+
+    public static function createNoMatch(): MatchResult
+    {
+        return new MatchResult(MatchCode::NO_MATCH());
+    }
+
     public function getMatchCode(): MatchCode
     {
         return $this->matchCode;

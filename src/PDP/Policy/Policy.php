@@ -67,7 +67,8 @@ class Policy extends PolicyDef
         if (! $evaluationResultCombined = $this->getRuleCombiningAlgorithm()->combine(
             $evaluationContext,
             $ruleCombiningElements,
-            $this->getCombinerParameterList())
+            $this->getCombinerParameterList()
+            )
         ) {
             throw new EvaluationException();
         }
@@ -79,8 +80,8 @@ class Policy extends PolicyDef
             $evaluationResultCombined->addPolicyIdentifier($this->getIdentifier());
         }
 
-        if ($evaluationResultCombined->getDecision() === Decision::DENY()
-            || $evaluationResultCombined->getDecision() === Decision::PERMIT()
+        $decision = $evaluationResultCombined->getDecision();
+        if ($decision === Decision::DENY() || $decision === Decision::PERMIT()
         ) {
             $this->updateResult($evaluationResultCombined, $evaluationContext);
         }

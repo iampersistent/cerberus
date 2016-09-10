@@ -48,7 +48,7 @@ class MapperCest
     public function testNotApplicable(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("urn:oasis:names:tc:xacml:1.0:$subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
         $doc = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");

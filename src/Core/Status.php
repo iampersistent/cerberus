@@ -17,6 +17,16 @@ class Status
         $this->statusMessage = $statusMessage;
     }
 
+    public static function createOk($message = null): Status
+    {
+        return new Status(StatusCode::STATUS_CODE_OK(), $message);
+    }
+
+    public static function createProcessingError($message = null): Status
+    {
+        return new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $message);
+    }
+
     public function getStatusCode(): StatusCode
     {
         return $this->statusCode;
@@ -29,6 +39,6 @@ class Status
 
     public function isOk(): bool
     {
-        return StatusCode::STATUS_CODE_OK === $this->statusCode;
+        return StatusCode::STATUS_CODE_OK() === $this->statusCode;
     }
 }

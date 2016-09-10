@@ -49,10 +49,10 @@ class MapperRegistry
     protected function getClassMapper($className)
     {
         /** @var ObjectMapper */
-        $mapper = $this->map->hasKey($className) ? $this->map->get($className) : null;
+        $mapper = $this->map->get($className, null);
         if (! $mapper) {
             foreach (class_parents($className) as $class) {
-                $mapper = $this->map->hasKey($class) ? $this->map->get($class) : null;
+                $mapper = $this->map->get($class, null);
                 if ($mapper) {
                     return $mapper;
                 }
