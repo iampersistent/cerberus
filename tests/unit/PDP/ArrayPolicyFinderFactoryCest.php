@@ -15,4 +15,5 @@ class ArrayPolicyFinderFactoryCest
         $policyDef = $finder->getPolicy('test001:policy');
         $I->assertInstanceOf(Policy::class, $policyDef);
     }
+
 }

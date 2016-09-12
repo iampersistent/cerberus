@@ -5,8 +5,10 @@ use AspectMock\Test as Mock;
 use Cerberus\PEP\{
     Action, MapperRegistry, ObjectMapper, PepAgent, PepRequest, PepRequestFactory, PepResponseFactory, Subject
 };
-use Cerberus\PDP\CerberusEngine;
 use Cerberus\PDP\Policy\PolicyFinder;
+use Cerberus\PDP\{
+    ArrayPolicyFinderFactory, CerberusEngine
+};
 use Cerberus\PIP\PipFinder;
 use Ds\Set;
 use Test\Document;
@@ -19,7 +21,7 @@ class MapperCest
     public function _before(UnitTester $I)
     {
         require __DIR__ . '/../../_data/fixtures/testMap.php';
-        $policyFinder = new PolicyFinder();
+        $policyFinder = (new ArrayPolicyFinderFactory())->getPolicyFinder($properties);
         $pipFinder = new PipFinder();
         Mock::double(CerberusEngine::class, ['describe' => true]);
         $pdpEngine = new CerberusEngine($policyFinder, $pipFinder);
