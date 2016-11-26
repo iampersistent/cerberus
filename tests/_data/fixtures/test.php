@@ -6,7 +6,7 @@ $policy = [
         'policyId'                 => 'test001:policy',
         'rules'                    => [
             [
-                'ruleId'      => 'urn:oasis:names:tc:xacml:1.0:test001:rule-1',
+                'ruleId'      => 'test001:rule-1',
                 'effect'      => 'Permit',
                 'description' => "Julius Hibbert can read or write Bart Simpson's medical record.",
                 'target'      => [
