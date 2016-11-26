@@ -131,4 +131,14 @@ class PepAgent
     {
 
     }
+
+    public function getPdpEngine(): PDPEngine
+    {
+        return $this->pdpEngine;
+    }
+
+    public function getPepConfig(): PepConfig
+    {
+        return $this->pepConfig;
+    }
 }

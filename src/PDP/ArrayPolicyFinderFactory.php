@@ -11,11 +11,10 @@ use Exception;
 
 class ArrayPolicyFinderFactory extends PolicyFinderFactory
 {
-
-
     protected function init($properties)
     {
         $this->rootPolicies = $this->handleProperties($properties);
+        $this->needsInit = false;
     }
 
     protected function handleProperties($properties): Set

@@ -5,10 +5,13 @@ namespace Cerberus\PDP;
 
 use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
+use Cerberus\PDP\Policy\PolicySet;
+use Ds\Map;
 use Ds\Set;
 
 class PolicyFinderFactory
 {
+    protected $needsInit = true;
     /** @var PolicyDef[]|Set */
     protected $referencedPolicies;
 
