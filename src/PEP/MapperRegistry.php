@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\PDP\Utility\NullProperties;
 use Cerberus\PDP\Utility\Properties;
 use Cerberus\PEP\Exception\PepException;
 use Ds\Map;
@@ -11,8 +12,10 @@ class MapperRegistry
 {
     protected $map;
 
-    public function __construct(Properties $properties)
+    public function __construct(Properties $properties = null)
     {
+        $properties = $properties ?? new NullProperties();
+
         $this->map = new Map();
         $this->registerMappers([
             new ActionMapper(),

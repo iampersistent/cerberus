@@ -55,7 +55,7 @@ class PolicyDef extends PolicySetChild
         return $this->target->match($evaluationContext);
     }
 
-    public function getTarget(): Target
+    public function getTarget()
     {
         return $this->target;
     }
@@ -70,7 +70,7 @@ class PolicyDef extends PolicySetChild
 
     protected function validateComponent(): bool
     {
-        // todo: OpenAZ did a check for a version being present here, not sure why, example files don't necessarily have it
+        // todo: OpenAZ did a check for a version being present here, example files don't necessarily have it
         if (false === parent::validateComponent()) {
             return false;
         }

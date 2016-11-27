@@ -11,7 +11,7 @@ class ArrayPolicyFinderFactoryCest
     {
         $data = [
             'rootPolicies' => [
-                __DIR__ . '/../../_data/fixtures/test.php'
+                __DIR__ . '/../../_data/fixtures/testPolicy.php'
             ],
         ];
         $properties = new ArrayProperties($data);
