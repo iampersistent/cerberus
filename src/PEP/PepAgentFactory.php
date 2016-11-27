@@ -3,36 +3,33 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\PDP\Contract\PdpEngine;
 use Cerberus\PDP\Utility\Properties;
 
 class PepAgentFactory
 {
-    protected $pepAgent;
+    /** @var PepConfig */
+    protected $pepConfig;
+    /** @var PdpEngine */
+    protected $pdpEngine;
+    /** @var Properties */
+    protected $properties;
 
 
     public function __construct(Properties $properties)
     {
-
-        $policyFinder = (new ArrayPolicyFinderFactory())->getPolicyFinder($testMapperProperties);
-        $pipFinder = new PipFinder();
-        Mock::double(CerberusEngine::class, ['describe' => true]);
-
-        $pdpEngineFactory = $properties->get('factory.pdpEngineFactory');
-        $pdpEngine = new $pdpEngineFactory($properties);
-
-
-
-        require __DIR__ . '/../../_data/fixtures/PEP/testPolicy004.php';
-        $mappingRegistry = new MapperRegistry($testPolicy004);
-        $mappingRegistry->registerMapper(new DocumentMapper());
-        $pepRequestFactory = new PepRequestFactory($mappingRegistry);
-
-        $pepResponseFactory = new PepResponseFactory($mappingRegistry);
-        $this->pepAgent = new PepAgent($pdpEngine, $pepRequestFactory, $pepResponseFactory);
+        $this->properties = $properties;
+        $pdpEngineFactory = $properties->get('factory.pdpEngine');
+        $this->pdpEngine = (new $pdpEngineFactory())
+            ->newEngine($properties);
+        $this->pepConfig = new PepConfig($properties);
     }
 
     public function getPepAgent(): PepAgent
     {
-        return $this->pepAgent;
+        // todo: AZ lib had obligationHandlers
+        $pepAgent = new PepAgent($this->properties, $this->pepConfig, $this->pdpEngine);
+
+        return $pepAgent;
     }
 }

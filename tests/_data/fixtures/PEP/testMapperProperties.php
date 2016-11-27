@@ -2,28 +2,27 @@
 
 $testMapperProperties = [
 
-    'factories' => [
+    'factories'    => [
 //xacml.dataTypeFactory=org.apache.openaz.xacml.std.StdDataTypeFactory
-//xacml.pipFinderFactory=org.apache.openaz.xacml.std.pip.StdPIPFinderFactory
 //xacml.openaz.evaluationContextFactory=org.apache.openaz.xacml.pdp.std.StdEvaluationContextFactory
 //xacml.openaz.functionDefinitionFactory=org.apache.openaz.xacml.pdp.std.StdFunctionDefinitionFactory
-//xacml.openaz.policyFinderFactory=org.apache.openaz.xacml.pdp.std.StdPolicyFinderFactory
-
-        'pdpEngine' => \Cerberus\PDP\CerberusEngineFactory::class,
 
         'combiningAlgorithm' => \Cerberus\PDP\Policy\CombiningAlgorithmFactory::class,
+        'pdpEngine'          => \Cerberus\PDP\CerberusEngineFactory::class,
+        'pipFinder'          => \Cerberus\PIP\PipFinderFactory::class,
+        'policyFinder'       => \Cerberus\PDP\ArrayPolicyFinderFactory::class,
     ],
     'rootPolicies' => [
-        'testPolicy' => [
-            'type' => 'array',
-            'file' => __DIR__ . 'testPolicy004.php',
-        ]
+        __DIR__ . '/testPolicy004.php',
     ],
-    'pep' => [
-        'issuer' => 'test',
+    'pep'          => [
+        'issuer'  => 'test',
         'mappers' => [
-            'DocumentMapper', // class ? array
-        ]
-    ]
+            'classes' => [],
+            'configurations' => [
+                __DIR__ . '/documentMapper.php',
+            ],
+        ],
+    ],
 
 ];

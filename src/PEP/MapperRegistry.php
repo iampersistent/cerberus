@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\PDP\Utility\Properties;
 use Cerberus\PEP\Exception\PepException;
 use Ds\Map;
 
@@ -10,7 +11,7 @@ class MapperRegistry
 {
     protected $map;
 
-    public function __construct($config = [])
+    public function __construct(Properties $properties)
     {
         $this->map = new Map();
         $this->registerMappers([
@@ -19,8 +20,18 @@ class MapperRegistry
             new ResourceMapper(),
             new SubjectMapper(),
         ]);
-        foreach ($config as $classConfig) {
-            $this->registerMapper(new ConfiguredMapper($classConfig));
+
+        $mapperClasses = $properties->get('pep.mappers.classes', []);
+        foreach ($mapperClasses as $mapperClass) {
+            $this->registerMapper(new $mapperClass());
+        }
+
+        $mapperConfigs = $properties->get('pep.mappers.configurations', []);
+        foreach ($mapperConfigs as $configFile) {
+            include $configFile;
+            $parts = pathinfo($configFile);
+            $classConfig = $parts['filename'];
+            $this->registerMapper(new ConfiguredMapper($$classConfig));
         }
     }
 

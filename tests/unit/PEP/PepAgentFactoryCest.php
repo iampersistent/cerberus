@@ -1,6 +1,7 @@
 <?php
 
 use Cerberus\PDP\CerberusEngine;
+use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\PepAgentFactory;
 use Cerberus\PEP\PepConfig;
 
@@ -8,11 +9,8 @@ class PepAgentFactoryCest
 {
     public function testConstruct(UnitTester $I)
     {
-        $data = [
-            'factories' => [
-
-            ],
-        ];
+        require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
+        $properties = new ArrayProperties($testMapperProperties);
         $factory = new PepAgentFactory($properties);
 
         $pepAgent = $factory->getPepAgent();

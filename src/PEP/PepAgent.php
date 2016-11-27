@@ -5,24 +5,27 @@ namespace Cerberus\PEP;
 
 use Cerberus\PDP\Contract\PdpEngine;
 use Cerberus\PDP\Exception\PDPException;
+use Cerberus\PDP\Utility\Properties;
 use Cerberus\PEP\Exception\PepException;
 
 class PepAgent
 {
+    protected $pepConfig;
     /** @var PepRequestFactory */
     protected $pepRequestFactory;
-
     /** @var PepResponseFactory */
     protected $pepResponseFactory;
-
     /** @var PdpEngine */
     protected $pdpEngine;
 
-    public function __construct(PdpEngine $pdpEngine, PepRequestFactory $pepRequestFactory, PepResponseFactory $pepResponseFactory)
+    public function __construct(Properties $properties, PepConfig $pepConfig, PdpEngine $pdpEngine)
     {
         $this->pdpEngine = $pdpEngine;
-        $this->pepRequestFactory = $pepRequestFactory;
-        $this->pepResponseFactory = $pepResponseFactory;
+        $this->pepConfig = $pepConfig;
+
+        $mappingRegistry = new MapperRegistry($properties);
+        $this->pepRequestFactory = new PepRequestFactory($mappingRegistry);
+        $this->pepResponseFactory = new PepResponseFactory($mappingRegistry);
     }
 
     /**
@@ -132,7 +135,7 @@ class PepAgent
 
     }
 
-    public function getPdpEngine(): PDPEngine
+    public function getPdpEngine(): PdpEngine
     {
         return $this->pdpEngine;
     }

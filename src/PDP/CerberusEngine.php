@@ -24,13 +24,10 @@ class CerberusEngine implements PdpEngine
 
     /** @var EvaluationContextFactory */
     protected $evaluationContextFactory;
-
     /** @var PipFinder */
     protected $pipFinder;
-
     /** @var PolicyFinder */
     protected $policyFinder;
-
     /** @var ScopeResolver */
     protected $scopeResolver;
 

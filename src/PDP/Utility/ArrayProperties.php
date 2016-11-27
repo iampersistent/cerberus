@@ -9,6 +9,9 @@ class ArrayProperties extends Properties
     {
         if (isset($properties['factories'])) {
             $this->properties['factory'] = $properties['factories'];
+            unset($properties['factories']);
         }
+
+        $this->properties = array_merge($this->properties, $properties);
     }
 }

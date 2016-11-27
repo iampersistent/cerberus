@@ -1,6 +1,6 @@
 <?php
 
-$testMap = [
+$documentMapper = [
     [
         'className'               => \Test\Document::class,
         'resource:resource-id'    => 'getDocumentId',

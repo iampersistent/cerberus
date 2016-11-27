@@ -1,19 +1,19 @@
 <?php
 
 $testPolicy004 = [
-    'Policy' => [
-        'policyId'           => 'test004:policy',
-        'ruleCombiningAlgId' => 'rule-combining-algorithm:deny-overrides',
-        'rules'                => [
+    'policy' => [
+        'policyId'                 => 'test004:policy',
+        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'rules'                    => [
             [
-                'ruleId'   => 'mapper-test:rule1',
-                'effect'   => 'Permit',
+                'ruleId'    => 'mapper-test:rule1',
+                'effect'    => 'Permit',
                 'target'    => [
                     'anyOf' => [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'ROLE_DOCUMENT_WRITER',
@@ -30,7 +30,7 @@ $testPolicy004 = [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'Document',
@@ -47,7 +47,7 @@ $testPolicy004 = [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'write',
@@ -66,9 +66,9 @@ $testPolicy004 = [
                 'condition' => [
                     'apply' => [
                         'functionId' => 'function:string-equal',
-                        'apply'       => [
+                        'apply'      => [
                             [
-                                'functionId'         => 'function:string-one-and-only',
+                                'functionId'          => 'function:string-one-and-only',
                                 'attributeDesignator' => [
                                     'category'      => 'attribute-category:resource',
                                     'attributeId'   => 'document:document-owner',
@@ -77,7 +77,7 @@ $testPolicy004 = [
                                 ],
                             ],
                             [
-                                'functionId'         => 'function:string-one-and-only',
+                                'functionId'          => 'function:string-one-and-only',
                                 'attributeDesignator' => [
                                     'category'      => 'subject-category:access-subject',
                                     'attributeId'   => 'subject:subject-id',
@@ -90,14 +90,14 @@ $testPolicy004 = [
                 ],
             ],
             [
-                'ruleId'   => 'mapper-test:rule2',
-                'effect'   => 'Permit',
+                'ruleId'    => 'mapper-test:rule2',
+                'effect'    => 'Permit',
                 'target'    => [
                     'anyOf' => [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'ROLE_DOCUMENT_READER',
@@ -114,7 +114,7 @@ $testPolicy004 = [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'Document',
@@ -131,7 +131,7 @@ $testPolicy004 = [
                         [
                             'allOf' => [
                                 'match' => [
-                                    'matchId'            => 'function:string-equal',
+                                    'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
                                         'text'     => 'read',
@@ -150,9 +150,9 @@ $testPolicy004 = [
                 'condition' => [
                     'apply' => [
                         'functionId' => 'function:string-equal',
-                        'apply'       => [
+                        'apply'      => [
                             [
-                                'functionId'         => 'function:string-one-and-only',
+                                'functionId'          => 'function:string-one-and-only',
                                 'attributeDesignator' =>
                                     [
                                         'attributeId'   => 'client:country-of-domicile',
@@ -162,7 +162,7 @@ $testPolicy004 = [
                                     ],
                             ],
                             [
-                                'functionId'         => 'function:string-one-and-only',
+                                'functionId'          => 'function:string-one-and-only',
                                 'attributeDesignator' =>
                                     [
                                         'attributeId'   => 'request-context:country',
