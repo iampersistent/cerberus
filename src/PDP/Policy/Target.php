@@ -15,13 +15,12 @@ class Target implements Matchable
     use PolicyComponent;
 
     /** @var AnyOf[] */
-    protected $anyOfs;
+    protected $anyOfs = [];
 
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(),
-                new Status($this->getStatusCode(), $this->getStatusMessage()));
+            return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
         }
 
         foreach ($this->anyOfs as $anyOf) {
@@ -34,8 +33,14 @@ class Target implements Matchable
         return new MatchResult(MatchCode::MATCH());
     }
 
-    public function validate()
+    public function addAnyOf(AnyOf $anyOf)
     {
+        $this->anyOfs[] = $anyOf;
+    }
+
+    public function validate(): bool
+    {
+        // todo: add real code
         return true;
     }
 }

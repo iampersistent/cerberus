@@ -97,12 +97,12 @@ class Policy extends PolicyDef
         return $this->combiningAlgorithm;
     }
 
-    public function setRuleCombiningAlgorithm($combiningAlgorithm): self
-    {
-        $this->combiningAlgorithm = $combiningAlgorithm;
-
-        return $this;
-    }
+//    public function setRuleCombiningAlgorithm($combiningAlgorithm): self
+//    {
+//        $this->combiningAlgorithm = $combiningAlgorithm;
+//
+//        return $this;
+//    }
 
     protected function getCombiningRules(): Set
     {

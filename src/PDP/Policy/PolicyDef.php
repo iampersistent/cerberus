@@ -25,16 +25,37 @@ class PolicyDef extends PolicySetChild
 
     /** @var CombiningElement[] */
     protected $combiningRules;
+    protected $identifier;
 
     /** @var TargetedCombinerParameterMap */
     protected $ruleCombinerParameters;
-
+    /** @var Rule[] */
+    protected $rules = [];
     /** @var Target */
     protected $target;
 
     public function __construct()
     {
         $this->combinerParameters = new Set();
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier($identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function setRuleCombiningAlgorithm($combiningAlgorithm): self
+    {
+        $this->combiningAlgorithm = $combiningAlgorithm;
+
+        return $this;
     }
 
     public function getCombinerParameterList()
@@ -55,6 +76,11 @@ class PolicyDef extends PolicySetChild
         return $this->target->match($evaluationContext);
     }
 
+    public function addRule(Rule $rule)
+    {
+        $this->rule[] = $rule;
+    }
+
     public function getTarget()
     {
         return $this->target;
@@ -67,21 +93,23 @@ class PolicyDef extends PolicySetChild
         return $this;
     }
 
-
     protected function validateComponent(): bool
     {
         // todo: OpenAZ did a check for a version being present here, example files don't necessarily have it
-        if (false === parent::validateComponent()) {
+        if ($this->getIdentifier() == null) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing identifier");
+
             return false;
         }
-        if ($this->getTarget() == null) {
+        if (null === $this->getTarget()) {
             $this->setStatus(
                 StatusCode::STATUS_CODE_SYNTAX_ERROR(),
-                "Missing Target in policy " . $this->getIdReference()
+                "Missing Target in policy " . $this->getIdentifier()
             );
 
             return false;
         }
+        $this->setStatus(StatusCode::STATUS_CODE_OK());
 
         return true;
     }
