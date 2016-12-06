@@ -43,11 +43,11 @@ class Request
         if ($newRequestAttributes->getId()) {
             $this->requestAttributesById->put($newRequestAttributes->getId(), $newRequestAttributes);
         }
-        $attributeCategoryIncludeInResult = null; // MutableAttributeCategory
+        $attributeCategoryIncludeInResult = null; // AttributeCategory
         foreach ($newRequestAttributes->getAttributes() as $attribute) { // Attribute
             if ($attribute->getIncludeInResults()) {
                 if ($attributeCategoryIncludeInResult == null) {
-                    $attributeCategoryIncludeInResult = new MutableAttributeCategory();
+                    $attributeCategoryIncludeInResult = new AttributeCategory();
                     $attributeCategoryIncludeInResult->setCategory($newRequestAttributes->getCategory());
                 }
                 $attributeCategoryIncludeInResult->add($attribute);

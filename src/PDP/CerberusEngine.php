@@ -44,11 +44,9 @@ class CerberusEngine implements PdpEngine
         /*
          * Validate the request
          */
-        // call TraceEngine->trace()
-
         $statusRequest = $request->getStatus();
         if ($statusRequest && ! $statusRequest->isOk()) {
-            return new MutableResponse($statusRequest);
+            return new Response($statusRequest);
         }
 
         /*
@@ -60,17 +58,17 @@ class CerberusEngine implements PdpEngine
          * Determine if we are combining multiple $results into a single $result
          */
         $combineResults = $request->getCombinedDecision(); // boolean
-        $resultsCombined = null; // MutableResult
+        $resultsCombined = null; // Result
 
         /*
          * Iterate over all of the individual decision requests and process them, combining them into the
          * final response
          */
-        $response = new MutableResponse();
+        $response = new Response();
 
         $requestsIndividualDecision = $individualDecisionRequestGenerator->getIndividualDecisionRequests();
         if ($requestsIndividualDecision->isEmpty()) {
-            return new MutableResponse(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+            return new Response(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
                 "No individual decision requests"));
         }
 
@@ -81,11 +79,11 @@ class CerberusEngine implements PdpEngine
 //            }
             $status = $individualDecision->getStatus();
             if ($status && ! $status->isOk()) {
-                $individualDecisionResult = new MutableResult(); // was StdMutableResponse
+                $individualDecisionResult = new Result();
             } else {
                 $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($individualDecision); // EvaluationContext
                 if ($evaluationContext == null) {
-                    $individualDecisionResult = new MutableResult(
+                    $individualDecisionResult = new Result(
                         new Status(
                             StatusCode::STATUS_CODE_PROCESSING_ERROR(),
                             "Null EvaluationContext"));
@@ -115,9 +113,9 @@ class CerberusEngine implements PdpEngine
                     }
                 }
 
-                /** @var MutableResult $resultsCombined */
+                /** @var Result $resultsCombined */
                 if ($resultsCombined == null) {
-                    $resultsCombined = new MutableResult($decision, $status);
+                    $resultsCombined = new Result($decision, $status);
                 } else {
                     if ($resultsCombined->getDecision() != $individualDecisionResult->getDecision()) {
                         $resultsCombined->setDecision(Decision::INDETERMINATE());
@@ -151,7 +149,7 @@ class CerberusEngine implements PdpEngine
         try {
             $policyFinderResult = $evaluationContext->getRootPolicyDef();
             if ($policyFinderResult->getStatus() != null && ! $policyFinderResult->getStatus()->isOk()) {
-                return new MutableResult($policyFinderResult->getStatus());
+                return new Result($policyFinderResult->getStatus());
             }
 
             /** @var PolicyDef $policyDefRoot */
@@ -161,14 +159,14 @@ class CerberusEngine implements PdpEngine
                     case Decision::DENY:
                     case Decision::NOT_APPLICABLE:
                     case Decision::PERMIT:
-                        return new MutableResult($this->defaultDecision,
+                        return new Result($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_OK(),
                                 "No applicable policy"));
                     case Decision::INDETERMINATE:
                     case Decision::INDETERMINATE_DENY:
                     case Decision::INDETERMINATE_DENY_PERMIT:
                     case Decision::INDETERMINATE_PERMIT:
-                        return new MutableResult($this->defaultDecision,
+                        return new Result($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
                                 "No applicable policy"));
                 }
@@ -180,7 +178,7 @@ class CerberusEngine implements PdpEngine
                 if ($listRequestAttributesIncludeInResult != null
                     && count($listRequestAttributesIncludeInResult) > 0
                 ) {
-                    $mutableResult = new MutableResult($result);
+                    $mutableResult = new Result($result);
                     $mutableResult->addAttributeCategories($listRequestAttributesIncludeInResult);
                     $result = new Result($mutableResult);
                 }
@@ -188,7 +186,7 @@ class CerberusEngine implements PdpEngine
 
             return $result;
         } catch (EvaluationException $e) {
-            return new MutableResult(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
+            return new Result(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
         }
     }
 }

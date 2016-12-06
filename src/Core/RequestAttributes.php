@@ -5,5 +5,5 @@ namespace Cerberus\Core;
 
 class RequestAttributes extends AttributeCategory
 {
-
+   // does this need an id?
 }

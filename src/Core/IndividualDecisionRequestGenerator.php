@@ -100,7 +100,7 @@ class IndividualDecisionRequestGenerator
         foreach ($request->getRequestAttributes() as $requestAttribute) {
             $identifierCategory = $requestAttribute->getCategory();
             if ($identifierCategory == null) {
-                $this->individualDecisionRequests->add(new MutableRequest(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
+                $this->individualDecisionRequests->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
 
                 return;
             }
@@ -130,7 +130,7 @@ class IndividualDecisionRequestGenerator
                 $listRequestAttributes->add($requestAttributes);
             }
 
-            $requestRoot = new MutableRequest();
+            $requestRoot = new Request();
             $requestRoot->setRequestDefaults($request->getRequestDefaults());
             $requestRoot->setReturnPolicyIdList($request->getReturnPolicyIdList());
             $this->explodeOnCategory($mapCategories->keySet()->toArray($this->idArray), 0, $requestRoot,
@@ -177,7 +177,7 @@ class IndividualDecisionRequestGenerator
             $scopeQualifier = $this->getScopeQualifier($requestAttributesResource);
         } catch (ScopeResolverException $e) {
         $this->individualDecisionRequests
-            ->add(new MutableRequest(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR(), $e->getMessage())));
+            ->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR(), $e->getMessage())));
 
         return;
     }
@@ -193,7 +193,7 @@ class IndividualDecisionRequestGenerator
          */
         $attributesResourceId = $requestAttributesResource->getAttributes(ID_RESOURCE_RESOURCE_ID);
         if ($attributesResourceId == null) {
-            $this->individualDecisionRequests->add(new MutableRequest(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
+            $this->individualDecisionRequests->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
 
             return;
         }
@@ -201,7 +201,7 @@ class IndividualDecisionRequestGenerator
         /*
          * Make a copy of the $request attributes with the scope and resource ID values removed.
          */
-         $requestAttributesBase = $this->removeScopeAttributes($requestAttributesResource); // MutableRequestAttributes
+         $requestAttributesBase = $this->removeScopeAttributes($requestAttributesResource); // RequestAttributes
 
         /*
          * Set up the basic Request to match the input $request but with no resource attributes
@@ -278,7 +278,7 @@ class IndividualDecisionRequestGenerator
             $listRequestAttributes = new Set();
             $listRequestAttributes->addAll($request->getRequestAttributes());
 
-            $requestInProgress = new MutableRequest();
+            $requestInProgress = new Request();
             $requestInProgress->setRequestDefaults($request->getRequestDefaults());
             $requestInProgress->setReturnPolicyIdList($request->getReturnPolicyIdList());
             $this->explodeOnContentSelector($listRequestAttributes, 0, $requestInProgress);

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PIP;
 
 use Cerberus\Core\Attribute;
-use Cerberus\Core\MutableAttribute;
+use Cerberus\Core\Attribute;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Ds\Map;
@@ -160,7 +160,7 @@ class PipResponse
                         $attributeResponse->getValues());
                     if ($listAttributeValuesMatch != null && $listAttributeValuesMatch->size() > 0) {
                         if ($attributeMatch == null) {
-                            $attributeMatch = new MutableAttribute($pipRequest->getCategory(),
+                            $attributeMatch = new Attribute($pipRequest->getCategory(),
                                 $pipRequest->getAttributeId(),
                                 $listAttributeValuesMatch,
                                 $pipRequest->getIssuer(), false);
@@ -195,11 +195,10 @@ class PipResponse
         $map = new Map();
         foreach ($listAttributes as $attribute) {
             $pipRequest = new PipRequest($attribute);
-            if ($map->containsKey($pipRequest)) {
-                $mutableAttribute = $map->get($pipRequest);
-                $mutableAttribute->addValues($attribute->getValues());
+            if ($map->hasKey($pipRequest)) {
+                $map->get($pipRequest)->addValues($attribute->getValues());
             } else {
-                $map->put($pipRequest, new MutableAttribute($attribute));
+                $map->put($pipRequest, new Attribute($attribute));
             }
         }
 

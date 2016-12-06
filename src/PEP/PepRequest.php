@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PEP;
 
 use Cerberus\Core\Exception\IllegalArgumentException;
-use Cerberus\Core\MutableRequest;
 use Cerberus\Core\Request;
 use Ds\Map;
 
@@ -14,7 +13,6 @@ class PepRequest extends Request
     protected $requestObjects;
     protected $pepConfig;
     protected $pepRequestAttributesMapByCategory;
-    protected $wrappedRequest;
 
     public function __construct(MapperRegistry $mapperRegistry, $objects)
     {
@@ -27,7 +25,6 @@ class PepRequest extends Request
         //$this->pepConfig = $pepConfig;
         $this->pepRequestAttributesMapByCategory = new Map();
         //$this->idCounter = new AtomicInteger(1);
-        $this->wrappedRequest = new MutableRequest();
         $this->map();
     }
 
@@ -35,20 +32,13 @@ class PepRequest extends Request
     {
         if ($this->pepRequestAttributesMapByCategory->hasKey($categoryIdentifier)) {
             return $this->pepRequestAttributesMapByCategory->get($categoryIdentifier);
-        } else {
-            $xmlId = uniqid('cerberus');
-            $pepRequestAttributes = new PepRequestAttributes($xmlId, $categoryIdentifier);
-            //$pepRequestAttributes->setIssuer($this->pepConfig->getIssuer());
-            $this->pepRequestAttributesMapByCategory->put($categoryIdentifier, $pepRequestAttributes);
-            $this->wrappedRequest->add($pepRequestAttributes->getWrappedRequestAttributes());
         }
+        $xmlId = uniqid('cerberus');
+        $pepRequestAttributes = new PepRequestAttributes($xmlId, $categoryIdentifier);
+        //$pepRequestAttributes->setIssuer($this->pepConfig->getIssuer());
+        $this->pepRequestAttributesMapByCategory->put($categoryIdentifier, $pepRequestAttributes);
 
         return $pepRequestAttributes;
-    }
-
-    public function getWrappedRequest(): Request
-    {
-        return $this->wrappedRequest;
     }
 
     protected function map()

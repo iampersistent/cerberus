@@ -4,10 +4,10 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Evaluation;
 
 use Cerberus\Core\Decision;
+use Cerberus\Core\Result;
 use Cerberus\Core\Status;
-use Cerberus\PDP\MutableResult;
 
-class EvaluationResult extends MutableResult
+class EvaluationResult extends Result
 {
     /** @var Decision */
     protected $decision;
