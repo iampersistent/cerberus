@@ -14,35 +14,14 @@ use Ds\Set;
 
 class Policy extends PolicyDef
 {
-    protected $rules;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->rules = new Set();
-    }
-
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
     {
-        /*
-         * First check to see if we are valid. If not, return an error status immediately
-         */
-        if (! $this->validate()) {
-            return new EvaluationResult(
-                Decision::INDETERMINATE(),
-                new Status($this->getStatusCode(), $this->getStatusMessage())
-            );
-        }
-
         /*
          * See if we match
          */
         /** @var MatchResult $matchResult */
         $matchResult = $this->match($evaluationContext);
 
-//        if ($evaluationContext->isTracing()) {
-//            $evaluationContext->trace(new StdTraceEvent < MatchResult>("Match", this, thisMatchResult));
-//        }
         switch ($matchResult->getMatchCode()) {
             case MatchCode::INDETERMINATE:
                 return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus()); // todo: decision?
@@ -85,9 +64,6 @@ class Policy extends PolicyDef
         ) {
             $this->updateResult($evaluationResultCombined, $evaluationContext);
         }
-//        if ($evaluationContext->isTracing()) {
-//            $evaluationContext->trace(new StdTraceEvent<Result>("Result", $this, $evaluationResultCombined));
-//        }
 
         return $evaluationResultCombined;
     }
@@ -111,8 +87,8 @@ class Policy extends PolicyDef
             foreach ($this->rules as $rule) {
                 $this->combiningRules->add(
                     new CombiningElement(
-                        $rule,
-                        $this->ruleCombinerParameters->getCombinerParameters($rule)
+//                        $rule,
+//                        $this->ruleCombinerParameters->getCombinerParameters($rule)
                     )
                 );
             }

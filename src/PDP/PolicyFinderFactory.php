@@ -59,7 +59,9 @@ class PolicyFinderFactory
 
     protected function createPolicy(array $policyData): Policy
     {
-        $policy = new Policy();
+        $policy = (new Policy())
+            ->setTarget(new Target());
+
         foreach ($policyData as $policyName => $data) {
             try {
                 $processMethod = 'process' . ucfirst($policyName);
@@ -102,7 +104,12 @@ class PolicyFinderFactory
 
     protected function processRuleCombiningAlgorithmId(PolicyDef $policy, $data)
     {
-//        $this->combiningAlgorithmFactory->
-//        $policy->setRuleCombiningAlgorithm();
+        // todo: move into factory
+        $parts = explode(':', $data);
+        $identifier = array_pop($parts);
+        $combinerClass = '\\Cerberus\\PDP\\Combiner\\' . str_replace('-', '', ucwords($identifier, '-'));
+        $combiner = new $combinerClass($identifier);
+
+        $policy->setRuleCombiningAlgorithm($combiner);
     }
 }

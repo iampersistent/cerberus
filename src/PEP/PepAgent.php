@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\ObligationRouter;
 use Cerberus\PDP\Contract\PdpEngine;
 use Cerberus\PDP\Exception\PDPException;
 use Cerberus\PDP\Utility\Properties;
@@ -24,8 +25,9 @@ class PepAgent
         $this->pepConfig = $pepConfig;
 
         $mappingRegistry = new MapperRegistry($properties);
+        $obligationRouter = new ObligationRouter();
         $this->pepRequestFactory = new PepRequestFactory($mappingRegistry);
-        $this->pepResponseFactory = new PepResponseFactory($mappingRegistry);
+        $this->pepResponseFactory = new PepResponseFactory($obligationRouter);
     }
 
     /**

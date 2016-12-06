@@ -3,7 +3,10 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Combiner;
 
-class CombiningAlgorithm
+use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Evaluation\EvaluationResult;
+
+abstract class CombiningAlgorithm
 {
     protected $identifier;
 
@@ -11,4 +14,6 @@ class CombiningAlgorithm
     {
         $this->identifier = $identifier;
     }
+
+    abstract public function combine(EvaluationContext $evaluationContext, $elements, $combinerParameters): EvaluationResult;
 }

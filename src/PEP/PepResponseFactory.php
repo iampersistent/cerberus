@@ -10,7 +10,7 @@ class PepResponseFactory
 {
     protected $obligationRouter;
 
-    public function __construct( $obligationRouter) // ObligationRouter
+    public function __construct($obligationRouter) // ObligationRouter
     {
         $this->obligationRouter = $obligationRouter;
     }

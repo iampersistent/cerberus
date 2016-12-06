@@ -22,8 +22,7 @@ class MapperCest
     {
         require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
         $properties = new ArrayProperties($testMapperProperties);
-        $this->pepAgent = (new PepAgentFactory($properties))
-            ->getPepAgent();
+        $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
     }
 
     public function testPermit(UnitTester $I)
@@ -57,7 +56,7 @@ class MapperCest
 //        @Test(expected = PepException.class)
 
         $subject = new Subject("John Smith");
-        $subject->addAttribute("urn:oasis:names:tc:xacml:1.0:$subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
 
@@ -76,7 +75,7 @@ class MapperCest
     public function testVarArgsPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("urn:oasis:names:tc:xacml:1.0:$subject:role-id", "ROLE_DOCUMENT_READER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("USA", "05:00 EST");
 
         $action = new Action("read");
@@ -92,7 +91,7 @@ class MapperCest
     public function testVarArgsDeny(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("urn:oasis:names:tc:xacml:1.0:$subject:role-id", "ROLE_DOCUMENT_READER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("INDIA", "05:00 IST");
 
         $resources = new Set();

@@ -7,6 +7,7 @@ use Cerberus\Core\Request;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
+use Cerberus\PDP\Policy\PolicyFinderResult;
 use Cerberus\PDP\Policy\PolicySet;
 use Cerberus\PIP\PipFinder;
 use Cerberus\PIP\PipRequest;

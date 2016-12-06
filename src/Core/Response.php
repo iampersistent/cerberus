@@ -10,9 +10,16 @@ class Response
     /** @var Set */
     protected $results;
 
-    public function __construct()
+    public function __construct($result = null)
     {
         $this->results = new Set();
+
+        if ($result instanceof Status) {
+            $this->add(new Result($result));
+        }
+        if ($result instanceof Result) {
+            $this->add($result);
+        }
     }
 
     public function add(Result $result)

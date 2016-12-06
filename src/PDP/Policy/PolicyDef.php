@@ -29,14 +29,16 @@ class PolicyDef extends PolicySetChild
 
     /** @var TargetedCombinerParameterMap */
     protected $ruleCombinerParameters;
+
     /** @var Rule[] */
-    protected $rules = [];
+    protected $rules;
     /** @var Target */
     protected $target;
 
     public function __construct()
     {
         $this->combinerParameters = new Set();
+        $this->rules = new Set();
     }
 
     public function getIdentifier()
@@ -78,7 +80,7 @@ class PolicyDef extends PolicySetChild
 
     public function addRule(Rule $rule)
     {
-        $this->rule[] = $rule;
+        $this->rules->add($rule);
     }
 
     public function getTarget()
