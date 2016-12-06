@@ -37,13 +37,7 @@ class EvaluationContext extends PipFinder
         return $this->request;
     }
 
-    /**
-     * Gets the root {@link org.apache.openaz.xacml.pdp.policy.PolicyDef} from the policy store configured
-     * by the particular implementation of the <code>PolicyFinderFactory</code> class.
-     *
-     * @return a <code>PolicyFinderResult</code> with the root <code>PolicyDef</code>
-     */
-    public function getRootPolicyDef(): PolicyDef
+    public function getRootPolicyDef(): PolicyFinderResult
     {
         return $this->policyFinder->getRootPolicyDef($this);
     }

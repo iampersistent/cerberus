@@ -73,10 +73,6 @@ class CerberusEngine implements PdpEngine
         }
 
         foreach ($requestsIndividualDecision as $individualDecision) {
-//            if (traceEngineThis.isTracing()) {
-//                traceEngineThis.trace(new StdTraceEvent<Request>("Individual Request", $this,
-//                                                                 $requestIndividualDecision));
-//            }
             $status = $individualDecision->getStatus();
             if ($status && ! $status->isOk()) {
                 $individualDecisionResult = new Result();
@@ -92,11 +88,6 @@ class CerberusEngine implements PdpEngine
                 }
             }
 
-//            assert $resultIndividualDecision != null;
-//            if (traceEngineThis.isTracing()) {
-//                traceEngineThis.trace(new StdTraceEvent<Result>("Individual Result", $this,
-//                                                                $resultIndividualDecision));
-//            }
             if ($combineResults) {
                 $decision = $individualDecisionResult->getDecision(); // Decision
                 $status = $individualDecisionResult->getStatus(); // Status
@@ -127,10 +118,6 @@ class CerberusEngine implements PdpEngine
                 $resultsCombined->addPolicyIdentifiers($individualDecisionResult->getPolicyIdentifiers());
                 $resultsCombined->addPolicySetIdentifiers($individualDecisionResult->getPolicySetIdentifiers());
                 $resultsCombined->addAttributeCategories($individualDecisionResult->getAttributes());
-//                if (traceEngineThis.isTracing()) {
-//                    traceEngineThis.trace(new StdTraceEvent<Result>("Combined $result", $this,
-//                                                                    $resultCombined));
-//                }
             } else {
                 $response->add($individualDecisionResult);
             }

@@ -61,61 +61,20 @@ class PepAgent
      */
     public function decide($subject, $action, $resources): PepResponse
     {
-        $pepResponses = [];
         $request = $this->pepRequestFactory->newPepRequest($subject, $action, $resources);
-
-        // Log request
-//        if (logger.isDebugEnabled()) {
-//            logRequest(request);
-//        }
 
         try {
             $response = $this->pdpEngine->decide($request);
         } catch (PDPException $e) {
-            //logger.error(e);
             throw new PepException($e);
         }
 
-        // Log the response
-//        if (logger.isDebugEnabled()) {
-//            logResponse(response);
-//        }
-
         foreach ($response->getResults() as $result) {
-            $pepResponses[] = $this->pepResponseFactory->newPepResponse($result);
+            return $this->pepResponseFactory->newPepResponse($result);
         }
 
         return $pepResponses;
     }
-
-//    public function decide(array $objects): PepResponse
-//    {
-//        $pepResponses = [];
-////        Request $request = pepRequest.getWrappedRequest();
-//
-//        // Log request
-////        if (logger.isDebugEnabled()) {
-////            logRequest(request);
-////        }
-//
-//        try {
-//            $response = $this->pdpEngine->decide($request);
-//        } catch (PDPException $e) {
-//        logger.error(e);
-//        throw new PepException($e);
-//    }
-//
-//        // Log the response
-//        if (logger.isDebugEnabled()) {
-//            logResponse(response);
-//        }
-//
-//        for (Result result : response.getResults()) {
-//            pepResponses.add(pepResponseFactory.newPepResponse(result));
-//        }
-//
-//        return $pepResponses;
-//    }
 
     /**
      * Returns a PepResponse instance representing a collection of decisions, each of which corresponds to an
