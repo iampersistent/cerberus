@@ -9,13 +9,15 @@ use Cerberus\PDP\Evaluation\EvaluationResult;
 
 class CombiningElement
 {
-    public function __construct()
-    {
+    protected $evaluatable;
 
+    public function __construct($evaluatable, $combiningElement)
+    {
+        $this->evaluatable = $evaluatable;
     }
 
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
     {
-        return new EvaluationResult(Decision::INDETERMINATE());
+        return $this->evaluatable->evaluate($evaluationContext);
     }
 }

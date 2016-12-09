@@ -3,11 +3,15 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
 use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Evaluation\EvaluationResult;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
+use Cerberus\Trace\TraceEvent;
 
 class Rule implements Matchable
 {
@@ -27,6 +31,53 @@ class Rule implements Matchable
     public function __construct(PolicyDef $policy)
     {
         $this->policy = $policy;
+    }
+
+    public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
+    {
+        if (! $this->validate()) {
+            return new EvaluationResult(Decision::INDETERMINATE(), $this->getStatus());
+        }
+
+        /*
+         * See if our target matches
+         */
+        $matchResult = $this->match($evaluationContext);
+
+        switch ((string)$matchResult->getMatchCode()) {
+            case MatchCode::INDETERMINATE:
+                return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus());
+            case MatchCode::MATCH:
+                break;
+            case MatchCode::NO_MATCH:
+                return new EvaluationResult(Decision::NOT_APPLICABLE());
+        }
+
+        /*
+         * See if our condition matches
+         */
+        if ($thisCondition = $this->getCondition()) {
+            $expressionResultCondition = $thisCondition->evaluate($evaluationContext,
+                $this->getPolicy() . getPolicyDefaults());
+
+
+            if (! $expressionResultCondition->isOk()) {
+                return new EvaluationResult(Decision::INDETERMINATE(), $expressionResultCondition->getStatus());
+            } else {
+                if (! $expressionResultCondition->isTrue()) {
+                    return new EvaluationResult(Decision::NOT_APPLICABLE());
+                }
+            }
+        }
+
+        /*
+         * The target and condition match, so we can start creating the EvaluationResult
+         */
+//        List<Obligation > $listObligations = ObligationExpression->evaluate($evaluationContext, $this->getPolicy()->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getObligationExpressionList());
+//        List<Advice > $listAdvices = AdviceExpression->evaluate($evaluationContext, $this->getPolicy()
+//           ->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getAdviceExpressionList());
+
+        return new EvaluationResult($this->getRuleEffect()->getDecision(), $listObligations, $listAdvices);
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
@@ -88,5 +139,26 @@ class Rule implements Matchable
         $this->target = $target;
 
         return $this;
+    }
+
+    protected function validateComponent(): bool
+    {
+        if (! $this->getRuleId()) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing rule id");
+
+            return false;
+        }
+        if (! $this->getPolicy()) {
+            $this->setStatus(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Rule not in a Policy");
+
+            return false;
+        }
+        if (! $this->getRuleEffect()) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing effect");
+
+            return false;
+        }
+
+        return true;
     }
 }

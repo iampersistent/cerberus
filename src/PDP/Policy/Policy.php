@@ -14,6 +14,18 @@ use Ds\Set;
 
 class Policy extends PolicyDef
 {
+    /** @var CombiningElement[]|Set */
+    protected $combiningRules;
+
+    /** @var TargetedCombinerParameterMap */
+    protected $ruleCombinerParameters;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->ruleCombinerParameters = new TargetedCombinerParameterMap();
+    }
+
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
     {
         /*
@@ -87,8 +99,8 @@ class Policy extends PolicyDef
             foreach ($this->rules as $rule) {
                 $this->combiningRules->add(
                     new CombiningElement(
-//                        $rule,
-//                        $this->ruleCombinerParameters->getCombinerParameters($rule)
+                        $rule,
+                        $this->ruleCombinerParameters->getCombinerParameters($rule)
                     )
                 );
             }

@@ -23,12 +23,7 @@ class PolicyDef extends PolicySetChild
     /** @var CombiningAlgorithm */
     protected $combiningAlgorithm;
 
-    /** @var CombiningElement[] */
-    protected $combiningRules;
     protected $identifier;
-
-    /** @var TargetedCombinerParameterMap */
-    protected $ruleCombinerParameters;
 
     /** @var Rule[] */
     protected $rules;
