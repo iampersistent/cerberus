@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Status;
+use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\MatchCode;
@@ -17,16 +18,16 @@ class AnyOf implements Matchable
     /** @var AllOf[] */
     protected $allOfs = [];
 
-    public function __construct($data)
+    public function __construct($allOfs = [])
     {
-        foreach ($data as $datum) {
-
+        foreach ($allOfs as $allOf) {
+            $this->allOfs[] = new AllOf($allOf);
         }
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
-        if (!$this->validate()) {
+        if (! $this->validate()) {
             return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
         }
 
@@ -49,5 +50,18 @@ class AnyOf implements Matchable
         }
 
         return $resultFallThrough;
+    }
+
+    protected function validateComponent(): bool
+    {
+        if (empty($this->allOfs)) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing AllOf elements in AnyOf");
+
+            return false;
+        } else {
+            $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+
+            return true;
+        }
     }
 }

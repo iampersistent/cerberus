@@ -22,46 +22,51 @@ class Match implements Matchable
     protected $matchId;
     protected $policyDefaults;
 
-    public function __construct($matchId, AttributeValue $attributeValue, AttributeRetrievalBase $attributeBase, PolicyDefaults $policyDefaults)
-    {
-
+    public function __construct(
+        $matchId,
+        AttributeValue $attributeValue,
+        AttributeRetrievalBase $attributeBase,
+        PolicyDefaults $policyDefaults
+    ) {
+        $this->attributeBase = $attributeBase;
+        $this->attributeValue = $attributeValue;
+        $this->matchId = $matchId;
+        $this->policyDefaults = $policyDefaults;
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
-        if (!$this->validate()) {
+        if (! $this->validate()) {
             return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
         }
 
- $functionDefinitionMatch = $this->getFunctionDefinition();
+        $functionDefinitionMatch = $this->getFunctionDefinition();
         //assert functionDefinitionMatch != null;
 
-        $attributeValue = $this->getAttributeValue();
- $functionArgument1 = new FunctionArgumentAttributeValue(attributeValue); // FunctionArgument
-
-    $attributeRetrievalBase = $this->getAttributeRetrievalBase();
+        $functionArgument1 = new FunctionArgumentAttributeValue($this->attributeValue); // FunctionArgument
 
         /** @var ExpressionResult $expressionResult */
- $expressionResult = $attributeRetrievalBase->evaluate(evaluationContext,
-$this->getPolicyDefaults());
+        $expressionResult = $this->attributeBase->evaluate($evaluationContext,
+            $this->getPolicyDefaults());
 
-        if (!$expressionResult->isOk()) {
-return new MatchResult($expressionResult->getStatus());
-}
+        if (! $expressionResult->isOk()) {
+            return new MatchResult($expressionResult->getStatus());
+        }
 
-if ($expressionResult->isBag()) {
- $matchResult = new MatchResult(MatchCode::NO_MATCH());
- $bagAttributeValues = $expressionResult->getBag(); // Bag
-if ($bagAttributeValues != null) {
- $attributeValues = $bagAttributeValues->getAttributeValues(); // AttributeValue
-    while ($matchResult->getMatchCode() != MatchCode::MATCH
-        && iterAttributeValues.hasNext()) {
-         $matchResultValue = $this->processMatch($evaluationContext,
-            functionDefinitionMatch,
-            functionArgument1,
-            new FunctionArgumentAttributeValue(
-                iterAttributeValues
-                .next()));
+        if ($expressionResult->isBag()) {
+            $matchResult = new MatchResult(MatchCode::NO_MATCH());
+            $bagAttributeValues = $expressionResult->getBag(); // Bag
+            if ($bagAttributeValues) {
+                $attributeValues = $bagAttributeValues->getAttributeValues(); // AttributeValue
+                foreach ($attributeValues as $attributeValue) {
+                    $matchResult->getMatchCode() != MatchCode::MATCH
+
+                    $matchResultValue = $this->processMatch(
+                        $evaluationContext,
+                        $functionDefinitionMatch,
+                        $functionArgument1,
+                        new FunctionArgumentAttributeValue($attributeValue)
+                    );
                     switch ($matchResultValue->getMatchCode()) {
                         case MatchCode::INDETERMINATE:
                             if ($matchResult->getMatchCode() != MatchCode::INDETERMINATE) {
@@ -75,75 +80,96 @@ if ($bagAttributeValues != null) {
                             break;
                     }
                 }
-    }
-    return $matchResult;
-    } else {
-    /*
-     * There is a single value, so add it as the second argument and do the one function evaluation
-     */
-    $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
-                      if ($attributeValueExpressionResult == null) {
-                      return new MatchResult(MatchCode::INDETERMINATE, new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-"Null AttributeValue"));
-}
+            }
 
-return $this->processMatch(evaluationContext, functionDefinitionMatch, functionArgument1,
-new FunctionArgumentAttributeValue(attributeValueExpressionResult));
-    }
+            return $matchResult;
+        } else {
+            /*
+             * There is a single value, so add it as the second argument and do the one function evaluation
+             */
+            $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
+            if ($attributeValueExpressionResult == null) {
+                return new MatchResult(MatchCode::INDETERMINATE, new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+                    "Null AttributeValue"));
+            }
 
-/**
- * @return MatchResult
- */
-    protected function processMatch(EvaluationContext $evaluationContext,
-                                     FunctionDefinition $functionDefinition, FunctionArgument $arg1,
-                                     FunctionArgument $arg2): MatchResult {
+            return $this->processMatch($evaluationContext, $functionDefinitionMatch, $functionArgument1,
+                new FunctionArgumentAttributeValue(attributeValueExpressionResult));
+        }
+        }
+
+        /**
+         * @return MatchResult
+         */
+        protected function processMatch(
+            EvaluationContext $evaluationContext,
+            FunctionDefinition $functionDefinition,
+            FunctionArgument $arg1,
+            FunctionArgument $arg2
+        ): MatchResult
+        {
 //        List<FunctionArgument> listArguments = new ArrayList<FunctionArgument>(2);
 //        listArguments.add(arg1);
 //        listArguments.add(arg2);
 
-         $expressionResult = $functionDefinition->evaluate($evaluationContext, $listArguments); // ExpressionResult
-        if (!$expressionResult.isOk()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
-        }
+            $expressionResult = $functionDefinition->evaluate($evaluationContext, $listArguments); // ExpressionResult
+            if (! $expressionResult->isOk()) {
+                return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
+            }
 
-        AttributeValue<Boolean> attributeValueResult = null;
+            AttributeValue < Boolean> attributeValueResult = null;
         try {
-            $attributeValueResult = DataTypes.DT_BOOLEAN.convertAttributeValue($expressionResult->getValue());
+            $attributeValueResult = DataTypes->DT_BOOLEAN->convertAttributeValue($expressionResult->getValue());
         } catch (DataTypeException $e) {
-            return new MatchResult(MatchCode::INDETERMINATE(), new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
+            return new MatchResult(MatchCode::INDETERMINATE(),
+                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
         }
         if ($attributeValueResult == null) {
             return new MatchResult(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
                 "Non-boolean result from Match Function "
-                + $functionDefinition.getId() + " on "
-                + $expressionResult.getValue().toString()));
-        } else if ($attributeValueResult.getValue().booleanValue()) {
-            return MatchResult.MM_MATCH;
+                + $functionDefinition->getId() + " on "
+                + $expressionResult->getValue()->toString()));
         } else {
-            return MatchResult.MM_NOMATCH;
+            if ($attributeValueResult->getValue()->booleanValue()) {
+                return MatchResult::MM_MATCH;
+            } else {
+                return MatchResult::MM_NOMATCH;
+            }
         }
 
     }
 
-    /**
-     * @return AttributeRetrievalBase
-     */
-    protected function getAttributeRetrievalBase()
-    {
+        /**
+         * @return AttributeRetrievalBase
+         */
+        protected
+        function getAttributeRetrievalBase()
+        {
 
-    }
+        }
 
-    /**
-     * @return AttributeValue
-     */
-    protected function getAttributeValue()
-    {
-    }
+        /**
+         * @return AttributeValue
+         */
+        protected
+        function getAttributeValue()
+        {
+        }
 
-    /**
-     * @return FunctionDefinition
-     */
-    protected function getFunctionDefinition()
-    {
+        protected
+        function getFunctionDefinition(): FunctionDefinition
+        {
+            Identifier functionDefinitionId =$this->getMatchId();
+        if (this->functionDefinition == null && functionDefinitionId != null) {
+            try {
+               $this->functionDefinition = FunctionDefinitionFactory->newInstance()
+                   ->getFunctionDefinition(functionDefinitionId);
+            } catch (FactoryException ex) {
+               $this->setStatus(StdStatusCode->STATUS_CODE_PROCESSING_ERROR,
+                    "FactoryException getting FunctionDefinition");
+            }
+        }
+
+        return$this->functionDefinition;
     }
-}
+    }

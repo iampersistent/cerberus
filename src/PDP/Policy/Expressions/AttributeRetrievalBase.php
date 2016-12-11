@@ -14,8 +14,11 @@ class AttributeRetrievalBase
     protected $dataTypeId;
     protected $mustBePresent;
 
-    public function __construct(string $category, string $dataTypeId, boolean $mustBePresent)
-    {
+    public function __construct(
+        string $category,
+        string $dataTypeId,
+        bool $mustBePresent
+    ) {
         $this->category = $category;
         $this->dataTypeId = $dataTypeId;
         $this->mustBePresent = $mustBePresent;

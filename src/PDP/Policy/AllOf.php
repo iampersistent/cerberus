@@ -3,12 +3,15 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
+use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
+use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
+use Cerberus\PDP\Policy\Expressions\AttributeRetrievalBase;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
 class AllOf implements Matchable
@@ -17,6 +20,28 @@ class AllOf implements Matchable
 
     /** @var Match[] */
     protected $matches;
+
+    public function __construct($matches)
+    {
+        foreach ($matches as $match) {
+            $attributeValue = new AttributeValue(
+                $match['attributeValue']['dataType'],
+                $match['attributeValue']['text']
+            );
+            $attributeBase = new AttributeDesignator(
+                $match['attributeDesignator']['category'],
+                $match['attributeDesignator']['dataType'],
+                $match['attributeDesignator']['mustBePresent']
+            );
+            $policyDefaults = new PolicyDefaults();
+            $this->matches[] = new Match(
+                $match['matchId'],
+                $attributeValue,
+                $attributeBase,
+                $policyDefaults
+            );
+        }
+    }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
     {

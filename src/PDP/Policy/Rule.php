@@ -11,7 +11,6 @@ use Cerberus\PDP\Evaluation\EvaluationResult;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
-use Cerberus\Trace\TraceEvent;
 
 class Rule implements Matchable
 {
