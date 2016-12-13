@@ -15,15 +15,22 @@ use Cerberus\PIP\PipResponse;
 
 class EvaluationContext extends PipFinder
 {
+    protected $functionDefinitionFactory;
     protected $pipFinder;
     protected $policyFinder;
     protected $request;
 
-    public function __construct(Request $request, PolicyFinder $policyFinder, PipFinder $pipFinder)
+    public function __construct(Request $request, PolicyFinder $policyFinder, PipFinder $pipFinder, $functionDefinitionFactory)
     {
+        $this->functionDefinitionFactory = $functionDefinitionFactory;
         $this->pipFinder = $pipFinder;
         $this->policyFinder = $policyFinder;
         $this->request = $request;
+    }
+
+    public function getFunctionDefinitionFactory()
+    {
+        return $this->functionDefinitionFactory;
     }
 
     /**

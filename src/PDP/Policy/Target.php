@@ -25,7 +25,7 @@ class Target implements Matchable
 
         foreach ($this->anyOfs as $anyOf) {
             $matchResult = $anyOf->match($evaluationContext);
-            if ($matchResult->getMatchCode() != MatchCode::MATCH) {
+            if (!$matchResult->getMatchCode()->is(MatchCode::MATCH)) {
                 return $matchResult;
             }
         }

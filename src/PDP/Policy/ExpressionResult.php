@@ -3,17 +3,15 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-class ExpressionResult
+class ExpressionResult extends FunctionArgument
 {
-    protected $status;
-
     public function __construct($status)
     {
         $this->status = $status;
     }
 
-    public function isBag()
+    public function getFunctionalDefinition($id)
     {
-        return false;
+$doSOmething = true;
     }
 }

@@ -17,6 +17,9 @@ class CerberusEngineFactory
         $pipFinder = (new $pipFinderFactory())
             ->getPipFinder($properties);
 
-        return new CerberusEngine($policyFinder, $pipFinder);
+        $functionDefinitionFactoryClass = $properties->get('factory.functionDefinition');
+        $functionDefinitionFactory = (new $functionDefinitionFactoryClass());
+
+        return new CerberusEngine($policyFinder, $pipFinder, $functionDefinitionFactory);
     }
 }

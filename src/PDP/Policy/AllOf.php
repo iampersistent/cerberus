@@ -11,7 +11,6 @@ use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
 use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
-use Cerberus\PDP\Policy\Expressions\AttributeRetrievalBase;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
 class AllOf implements Matchable
@@ -72,7 +71,7 @@ class AllOf implements Matchable
     protected function validateComponent(): bool
     {
         if (0 === count($this->matches)) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing matches");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing matches');
 
             return false;
         } else {

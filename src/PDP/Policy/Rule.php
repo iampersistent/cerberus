@@ -143,17 +143,17 @@ class Rule implements Matchable
     protected function validateComponent(): bool
     {
         if (! $this->getRuleId()) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing rule id");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing rule id');
 
             return false;
         }
         if (! $this->getPolicy()) {
-            $this->setStatus(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Rule not in a Policy");
+            $this->setStatus(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'Rule not in a Policy');
 
             return false;
         }
         if (! $this->getRuleEffect()) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing effect");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing effect');
 
             return false;
         }

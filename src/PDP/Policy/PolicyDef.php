@@ -93,12 +93,12 @@ class PolicyDef extends PolicySetChild
     protected function validateComponent(): bool
     {
         // todo: OpenAZ did a check for a version being present here, example files don't necessarily have it
-        if ($this->getIdentifier() == null) {
+        if (! $this->getIdentifier()) {
             $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing identifier");
 
             return false;
         }
-        if (null === $this->getTarget()) {
+        if (! $this->getTarget()) {
             $this->setStatus(
                 StatusCode::STATUS_CODE_SYNTAX_ERROR(),
                 "Missing Target in policy " . $this->getIdentifier()

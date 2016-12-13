@@ -15,7 +15,8 @@ class Condition
 
     public function __construct($data)
     {
-
+        // function stuff
+        $todo = true;
     }
 
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults){
