@@ -57,7 +57,7 @@ class Rule implements Matchable
          */
         if ($thisCondition = $this->getCondition()) {
             $expressionResultCondition = $thisCondition->evaluate($evaluationContext,
-                $this->getPolicy() . getPolicyDefaults());
+                $this->policy->getPolicyDefaults());
 
 
             if (! $expressionResultCondition->isOk()) {

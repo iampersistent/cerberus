@@ -59,7 +59,7 @@ class DenyOverrides extends CombiningAlgorithm
                     $combinedResult->merge($evaluationResultElement);
                     break;
                 default:
-                    throw new EvaluationException("Illegal Decision: " . (string)$evaluationResultElement->getDecision());
+                    throw new EvaluationException('Illegal Decision: ' . (string)$evaluationResultElement->getDecision());
             }
         }
 

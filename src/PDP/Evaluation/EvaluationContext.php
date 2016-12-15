@@ -9,6 +9,9 @@ use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\Policy\PolicyFinderResult;
 use Cerberus\PDP\Policy\PolicySet;
+use Cerberus\PIP\Contract\PipEngine;
+use Cerberus\PIP\Engine\RequestEngine;
+use Cerberus\PIP\Finder\RequestFinder;
 use Cerberus\PIP\PipFinder;
 use Cerberus\PIP\PipRequest;
 use Cerberus\PIP\PipResponse;
@@ -19,6 +22,8 @@ class EvaluationContext extends PipFinder
     protected $pipFinder;
     protected $policyFinder;
     protected $request;
+    /** @var Request */
+    protected $requestFinder;
 
     public function __construct(Request $request, PolicyFinder $policyFinder, PipFinder $pipFinder, $functionDefinitionFactory)
     {
@@ -26,6 +31,13 @@ class EvaluationContext extends PipFinder
         $this->pipFinder = $pipFinder;
         $this->policyFinder = $policyFinder;
         $this->request = $request;
+
+        if ($pipFinder instanceof RequestFinder) {
+            $this->requestFinder = $pipFinder;
+        } else {
+            $this->requestFinder = new RequestFinder($pipFinder, new RequestEngine($request));
+        }
+        parent::__construct($pipFinder->getPipEngines());
     }
 
     public function getFunctionDefinitionFactory()
@@ -61,7 +73,6 @@ class EvaluationContext extends PipFinder
     public function getPolicy(IdReferenceMatch $idReferenceMatch): Policy
     {
         return $this->policyFinder->getPolicy($this);
-
     }
 
     /**
@@ -72,23 +83,13 @@ class EvaluationContext extends PipFinder
      * @return a <code>PolicyFinderResult</code> with the <code>PolicySet</code> matching the given
      *         <code>IdReferenceMatch</code>.
      */
-    public function getPolicySet(IdReferenceMatch $idReferenceMatch): PolicySet
+    public function getPolicySet($idReferenceMatch): PolicySet
     {
         return $this->policyFinder->getPolicySet($this);
     }
 
-    /**
-     * Gets the {@link org.apache.openaz.xacml.api.pip.PIPResponse} containing
-     * {@link org.apache.openaz.xacml.api.Attribute}s that match the given
-     * {@link org.apache.openaz.xacml.api.pip.PIPRequest} from this <code>EvaluationContext</code>.
-     *
-     * @param pipRequest the <code>PIPRequest</code> specifying which <code>Attribute</code>s to retrieve
-     * @return the <code>PIPResponse</code> containing the {@link org.apache.openaz.xacml.api.Status} and
-     *         <code>Attribute</code>s
-     * @throws EvaluationException if there is an error retrieving the <code>Attribute</code>s
-     */
-//    public function getAttributes(PipRequest $pipRequest): PipResponse
-//    {
-//
-//    }
+    public function getAttributes(PipRequest $pipRequest, PipEngine $exclude = null, PipFinder $pipFinderParent = null): PipResponse
+    {
+        return $this->requestFinder->getAttributes($pipRequest, $exclude, $pipFinderParent);
+    }
 }

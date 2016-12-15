@@ -24,7 +24,7 @@ class CategoryContainer
     /**
      * Returns all the contained attributes as a Map of key - value pairs.
      */
-    public function getAttributeMap()
+    public function getAttributeMap(): Map
     {
         return $this->attributeMap;
     }

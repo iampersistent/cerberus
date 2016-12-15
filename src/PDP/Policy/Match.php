@@ -46,17 +46,15 @@ class Match implements Matchable
             return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
         }
 
-        $functionDefinitionMatch = $this->getFunctionDefinition();
-        //assert functionDefinitionMatch != null;
-
-        $functionArgument1 = new FunctionArgumentAttributeValue($this->attributeValue); // FunctionArgument
-
         /** @var ExpressionResult $expressionResult */
         $expressionResult = $this->attributeBase->evaluate($evaluationContext, $this->policyDefaults);
 
         if (! $expressionResult->isOk()) {
-            return new MatchResult($expressionResult->getStatus());
+            return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
         }
+
+        $functionDefinitionMatch = $this->getFunctionDefinition();
+        $functionArgument1 = new FunctionArgumentAttributeValue($this->attributeValue);
 
         if ($expressionResult->isBag()) {
             $matchResult = new MatchResult(MatchCode::NO_MATCH());
@@ -74,9 +72,9 @@ class Match implements Matchable
                         $functionArgument1,
                         new FunctionArgumentAttributeValue($attributeValue)
                     );
-                    switch ($matchResultValue->getMatchCode()) {
+                    switch ($matchResultValue->getMatchCode()->getName()) {
                         case MatchCode::INDETERMINATE:
-                            if ($matchResult->getMatchCode() != MatchCode::INDETERMINATE) {
+                            if (! $matchResult->getMatchCode()->is(MatchCode::INDETERMINATE)) {
                                 $matchResult = $matchResultValue;
                             }
                             break;
@@ -90,20 +88,20 @@ class Match implements Matchable
             }
 
             return $matchResult;
-        } else {
-            /*
-             * There is a single value, so add it as the second argument and do the one function evaluation
-             */
-            $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
-            if (! $attributeValueExpressionResult) {
-                return new MatchResult(MatchCode::INDETERMINATE(),
-                    new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                        'Null AttributeValue'));
-            }
-
-            return $this->processMatch($evaluationContext, $functionDefinitionMatch, $functionArgument1,
-                new FunctionArgumentAttributeValue($attributeValueExpressionResult));
         }
+
+        /*
+         * There is a single value, so add it as the second argument and do the one function evaluation
+         */
+        $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
+        if (! $attributeValueExpressionResult) {
+            return new MatchResult(MatchCode::INDETERMINATE(),
+                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+                    'Null AttributeValue'));
+        }
+
+        return $this->processMatch($evaluationContext, $functionDefinitionMatch, $functionArgument1,
+            new FunctionArgumentAttributeValue($attributeValueExpressionResult));
     }
 
     /**
@@ -135,14 +133,12 @@ class Match implements Matchable
                 'Non-boolean result from Match Function ' .
                 $functionDefinition->getId() . ' on ' .
                 $expressionResult->getValue()->toString()));
-        } else {
-            if ($attributeValueResult->getValue()->booleanValue()) {
-                return new MatchResult(MatchCode::MATCH());
-            } else {
-                return new MatchResult(MatchCode::NO_MATCH());
-            }
+        }
+        if ($attributeValueResult->getValue()->booleanValue()) {
+            return new MatchResult(MatchCode::MATCH());
         }
 
+        return new MatchResult(MatchCode::NO_MATCH());
     }
 
     protected function getFunctionDefinition(): FunctionDefinition

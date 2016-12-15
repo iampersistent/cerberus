@@ -5,13 +5,19 @@ namespace Cerberus\PIP;
 
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
-use Ds\Collection;
+use Cerberus\PIP\Contract\PipEngine;
+use Ds\Set;
 use Exception;
 
 class PipFinder
 {
-    /** @var PipEngine[] */
+    /** @var PipEngine[]|Set */
     protected $pipEngines;
+
+    public function __construct($engines = [])
+    {
+        $this->pipEngines = new Set($engines);
+    }
 
     /**
      * Retrieves <code>Attribute</code>s that based on the given
@@ -32,7 +38,7 @@ class PipFinder
     {
         $pipResponse = new PipResponse();
         $firstErrorStatus = null;
-        foreach ($this->pipEngines as $pipEngine) {
+        foreach ($this->getPipEngines() as $pipEngine) {
             if ($pipEngine != $exclude) {
                 $pipEngineReponse = null;
                 try {
@@ -49,7 +55,7 @@ class PipFinder
                 }
             }
         }
-        if ($pipResponse->getAttributes()->isEmpty() && $firstErrorStatus != null) {
+        if ($firstErrorStatus && !$pipResponse->getAttributes()) {
             $pipResponse->setStatus($firstErrorStatus);
         }
 
@@ -73,12 +79,12 @@ class PipFinder
      */
     public function getMatchingAttributes(PipRequest $pipRequest, PipEngine $exclude, PipFinder $pipFinderParent = null): PipResponse
     {
-        return PipResponse.getMatchingResponse(pipRequest, $this->getAttributes(pipRequest, exclude));
+        return PipResponse.getMatchingResponse($pipRequest, $this->getAttributes($pipRequest, $exclude));
     }
 
-    public function getPipEngines(): Collection
+    public function getPipEngines(): Set
     {
-
+        return $this->pipEngines;
     }
 
     /**
@@ -88,6 +94,6 @@ class PipFinder
      */
     public function register(PipEngine $pipEngine)
     {
-        $this->pipEngines[] = $pipEngine;
+        $this->pipEngines->add($pipEngine);
     }
 }

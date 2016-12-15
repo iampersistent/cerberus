@@ -10,7 +10,7 @@ class Subject extends CategoryContainer
     public function __construct(string $subjectIdValue)
     {
         $this->subjectIdValue = $subjectIdValue;
-        parent::__construct($subjectIdValue);
+        parent::__construct('subject-category:access-subject');
     }
 
     /**

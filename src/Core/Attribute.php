@@ -3,22 +3,21 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
+use Ds\Set;
+
 class Attribute
 {
     protected $attributeId;
-    protected $categoryIdentifier;
+    protected $category;
     protected $includeInResults;
+    protected $issuer = '';
     protected $values = [];
 
-    public function __construct(string $attributeId = null, string $categoryIdentifier = null)
+    public function __construct(string $attributeId = null, string $category = null)
     {
         $this->attributeId = $attributeId;
-        $this->categoryIdentifier = $categoryIdentifier;
-    }
-
-    public function addValue(AttributeValue $value)
-    {
-        $this->values[] = $value;
+        $this->category = $category;
+        $this->values = new Set();
     }
 
     public function getAttributeId()
@@ -26,9 +25,9 @@ class Attribute
         return $this->attributeId;
     }
 
-    public function getCategoryIdentifier()
+    public function getCategory()
     {
-        return $this->categoryIdentifier;
+        return $this->category;
     }
 
     public function setIncludeInResults(bool $include): self
@@ -36,5 +35,22 @@ class Attribute
         $this->includeInResults = $include;
 
         return $this;
+    }
+
+    public function getIssuer(): string
+    {
+        return $this->issuer;
+    }
+
+    public function addValue(AttributeValue $value): self
+    {
+        $this->values->add($value);
+
+        return $this;
+    }
+
+    public function getValues(): Set
+    {
+        return $this->values;
     }
 }

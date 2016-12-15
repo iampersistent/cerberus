@@ -5,5 +5,16 @@ namespace Cerberus\Core;
 
 class RequestAttributes extends AttributeCategory
 {
-   // does this need an id?
+    protected $id;
+
+    public function __construct($id, $categoryIdentifier)
+    {
+        $this->id = $id;
+        parent::__construct($categoryIdentifier);
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }

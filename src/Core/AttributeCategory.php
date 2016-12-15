@@ -25,14 +25,11 @@ class AttributeCategory
     }
 
     /**
-     * Gets the <code>Collection</code> of {@link Attribute}s in this <code>AttributeCategory</code>. If there
-     * are no <code>Attribute</code>s in this <code>AttributeCategory</code> then an empty
-     * <code>Collection</code> must be returned. The returned <code>Collection</code> should not be modified.
-     * Implementations are free to return an immutable view to enforce this.
+     * @return Attribute[]|Map
      */
-    public function getAttributes(): array
+    public function getAttributes(): Map
     {
-        return $this->attributes->toArray();
+        return $this->attributes;
     }
 
     /**
@@ -48,10 +45,6 @@ class AttributeCategory
         }
     }
 
-    /**
-     * Determines if there is at least one {@link Attribute} in this <code>AttributeCategory</code> whose
-     * XACML AttributeId matches the given {@link Identifier}.
-     */
     public function hasAttribute($attributeId): bool
     {
         return $this->attributes->hasKey($attributeId);

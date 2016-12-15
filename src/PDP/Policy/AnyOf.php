@@ -35,10 +35,10 @@ class AnyOf implements Matchable
         $resultFallThrough = MatchResult::createNoMatch();
         foreach ($this->allOfs as $allOf) {
             $matchResultAllOf = $allOf->match($evaluationContext);
-            switch ((string)$matchResultAllOf->getMatchCode()) {
+            switch ($matchResultAllOf->getMatchCode()->getName()) {
                 case MatchCode::INDETERMINATE:
                     // Keep the first indeterminate value to return if no other match is found
-                    if (MatchCode::INDETERMINATE !== (string)$resultFallThrough->getMatchCode()) {
+                    if (! $resultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE )) {
                         $resultFallThrough = $matchResultAllOf;
                     }
                     break;
@@ -55,7 +55,7 @@ class AnyOf implements Matchable
     protected function validateComponent(): bool
     {
         if (empty($this->allOfs)) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing AllOf elements in AnyOf");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing AllOf elements in AnyOf');
 
             return false;
         } else {

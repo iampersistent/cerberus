@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PIP;
 
 use Cerberus\Core\Attribute;
-use Cerberus\Core\Attribute;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Ds\Map;
@@ -12,15 +11,26 @@ use Ds\Set;
 
 class PipResponse
 {
-    /** @var Attribute[] */
+    /** @var Attribute[]|Set */
     protected $attributes;
-
     /** @var Status */
     protected $status;
+
+    public function __construct()
+    {
+        $this->attributes = new Set();
+    }
 
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public function setStatus(Status $status = null): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
     public function getAttributes()
@@ -40,13 +50,13 @@ class PipResponse
      */
     public static function matches(PipRequest $pipRequest, Attribute $attribute): bool
     {
-        if (! $pipRequest->getCategory()->equals($attribute->getCategory())) {
+        if (! $pipRequest->getCategory() === $attribute->getCategory()) {
             return false;
         }
-        if (! $pipRequest->getAttributeId()->equals($attribute->getAttributeId())) {
+        if (! $pipRequest->getAttributeId() === $attribute->getAttributeId()) {
             return false;
         }
-        if ($pipRequest->getIssuer() != null && ! $pipRequest->getIssuer()->equals($attribute->getIssuer())) {
+        if ($pipRequest->getIssuer() && $pipRequest->getIssuer() !== $attribute->getIssuer()) {
             return false;
         }
 
@@ -66,7 +76,7 @@ class PipResponse
      */
     public function matchingValues(PipRequest $pipRequest, $listAttributeValues)
     {
-        if ($listAttributeValues->size() == 0) {
+        if ($listAttributeValues->size() === 0) {
             return $listAttributeValues;
         }
 
@@ -132,7 +142,7 @@ class PipResponse
             $attributeResponse = $pipResponse->getAttributes()->next();
             if (matches($pipRequest, $attributeResponse)) {
                 $attributeValues = $attributeResponse->getValues();
-                if ($attributeValues == null || $attributeValues . size() == 0) {
+                if (!$attributeValues || $attributeValues->size() === 0) {
                     return $pipResponse;
                 } else {
                     $attributeValueResponse = $attributeResponse->getValues()->next();
@@ -258,7 +268,7 @@ class PipResponse
     protected function simplifyAttribute(Attribute $attribute)
     {
         $listAttributes = new Set();
-        if ($attribute->getValues() == null || $attribute->getValues()->size() <= 1) {
+        if ($attribute->getValues()->isEmpty()) {
             $listAttributes->add($attribute);
         } else {
             foreach ($attribute->getValues() as $attributeValue) {

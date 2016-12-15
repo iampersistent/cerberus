@@ -17,7 +17,7 @@ class PepRequest extends Request
     public function __construct(MapperRegistry $mapperRegistry, $objects)
     {
         parent::__construct();
-        if (!is_array($objects)) {
+        if (! is_array($objects)) {
             $objects = [$objects];
         }
         $this->mapperRegistry = $mapperRegistry;
@@ -33,24 +33,24 @@ class PepRequest extends Request
         if ($this->pepRequestAttributesMapByCategory->hasKey($categoryIdentifier)) {
             return $this->pepRequestAttributesMapByCategory->get($categoryIdentifier);
         }
-        $xmlId = uniqid('cerberus');
-        $pepRequestAttributes = new PepRequestAttributes($xmlId, $categoryIdentifier);
+        $id = uniqid('cerberus');
+        $pepRequestAttributes = new PepRequestAttributes($id, $categoryIdentifier);
         //$pepRequestAttributes->setIssuer($this->pepConfig->getIssuer());
         $this->pepRequestAttributesMapByCategory->put($categoryIdentifier, $pepRequestAttributes);
+        $this->add($pepRequestAttributes);
 
         return $pepRequestAttributes;
     }
 
     protected function map()
     {
-        if ($this->requestObjects == null) {
-            throw new IllegalArgumentException("One or more arguments are null");
+        if (! $this->requestObjects) {
+            throw new IllegalArgumentException('One or more arguments are null');
         }
         foreach ($this->requestObjects as $object) {
-
             $mapper = $this->mapperRegistry->getMapper(get_class($object));
-            if ($mapper == null) {
-                throw new IllegalArgumentException("No mappers found for class: " . get_class($object));
+            if (! $mapper) {
+                throw new IllegalArgumentException('No mappers found for class: ' . get_class($object));
             }
             $mapper->map($object, $this);
         }

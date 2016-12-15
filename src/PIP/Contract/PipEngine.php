@@ -1,7 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\PIP;
+namespace Cerberus\PIP\Contract;
+
+use Cerberus\PIP\PipFinder;
+use Cerberus\PIP\PipRequest;
+use Cerberus\PIP\PipResponse;
 
 interface PipEngine
 {
@@ -48,5 +52,5 @@ interface PipEngine
      * @return a {@link org.apache.openaz.xacml.pip.PIPResponse} with the results of the request
      * @throws PIPException if there is an error retrieving the <code>Attribute</code>s.
      */
-    public function getAttributes(PipRequest $pipRequest, PipFinder $pipFinder): PipResponse;
+    public function getAttributes(PipRequest $pipRequest, PipFinder $pipFinder = null): PipResponse;
 }

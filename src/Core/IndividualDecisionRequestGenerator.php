@@ -255,6 +255,7 @@ class IndividualDecisionRequestGenerator
         $requestAttributes = $request->getRequestAttributes();
         if ($requestAttributes->isEmpty()) {
             $this->individualDecisionRequests->add($request);
+
             return;
         }
 
@@ -263,7 +264,9 @@ class IndividualDecisionRequestGenerator
          */
         $hasMultipleContentSelectors = false;
         foreach ($requestAttributes as $attribute) {
-            if ($hasMultipleContentSelectors = $attribute->hasAttributes(ID_MULTIPLE_CONTENT_SELECTOR)) {
+            if ($hasMultipleContentSelectors = $attribute->hasAttribute(Identifier::MULTIPLE_CONTENT_SELECTOR)) {
+                $hasMultipleContentSelectors = true;
+
                 break;
             }
         }
@@ -276,7 +279,7 @@ class IndividualDecisionRequestGenerator
             $this->individualDecisionRequests->add($request);
         } else {
             $listRequestAttributes = new Set();
-            $listRequestAttributes->addAll($request->getRequestAttributes());
+            $listRequestAttributes->add($request->getRequestAttributes());
 
             $requestInProgress = new Request();
             $requestInProgress->setRequestDefaults($request->getRequestDefaults());

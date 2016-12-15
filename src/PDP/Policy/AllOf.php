@@ -30,7 +30,8 @@ class AllOf implements Matchable
             $attributeBase = new AttributeDesignator(
                 $match['attributeDesignator']['category'],
                 $match['attributeDesignator']['dataType'],
-                $match['attributeDesignator']['mustBePresent']
+                $match['attributeDesignator']['mustBePresent'],
+                $match['attributeDesignator']['attributeId']
             );
             $policyDefaults = new PolicyDefaults();
             $this->matches[] = new Match(
@@ -52,9 +53,9 @@ class AllOf implements Matchable
         $matchResultFallThrough = MatchResult::createMatch();
         foreach ($this->matches as $match) {
             $matchResultMatch = $match->match($evaluationContext);
-            switch ((string)$matchResultMatch->getMatchCode()) {
+            switch ($matchResultMatch->getMatchCode()->getName()) {
                 case MatchCode::INDETERMINATE:
-                    if ($matchResultFallThrough->getMatchCode() != MatchCode::INDETERMINATE()) {
+                    if (! $matchResultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE)) {
                         $matchResultFallThrough = $matchResultMatch;
                     }
                     break;
@@ -65,7 +66,7 @@ class AllOf implements Matchable
             }
         }
 
-        return MatchResult::createMatch();
+        return $matchResultFallThrough;
     }
 
     protected function validateComponent(): bool
