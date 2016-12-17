@@ -15,6 +15,8 @@ class Request
     protected $requestAttributes;
     protected $requestAttributesByCategoryId;
     protected $requestAttributesById;
+    protected $requestDefaults;
+    protected $returnPolicyIdList;
     protected $status;
 
     public function __construct()
@@ -22,10 +24,12 @@ class Request
         $this->requestAttributes = new Set();
         $this->requestAttributesByCategoryId = new Map();
         $this->requestAttributesById = new Map();
+        $this->returnPolicyIdList = false;
     }
 
     public function add(RequestAttributes $newRequestAttributes)
     {
+        // where is the class name?
         $this->requestAttributes->add($newRequestAttributes);
         if ($this->requestAttributesByCategoryId->hasKey($newRequestAttributes->getCategory())) {
             $listRequestAttributesForCategoryId = $this->requestAttributesByCategoryId->get($newRequestAttributes->getCategory());
@@ -56,32 +60,23 @@ class Request
         }
     }
 
-    /**
-     * Gets the {@link org.apache.openaz.xacml.api.RequestDefaults} representing the XACML RequestDefaults for
-     * this <code>Request</code>.
-     *
-     * @return the <code>RequestDefaults</code> representing the XACML RequestDefaults for this
-     *         <code>Request</code>.
-     */
     public function getRequestDefaults(): RequestDefaults
     {
-
+        return $this->requestDefaults;
     }
 
-    /**
-     * Returns true if the list of XACML PolicyIds should be returned for this Request.
-     */
-    public function getReturnPolicyIdList(): bool
+    public function setReturnPolicyIdList(bool $state): self
     {
+        $this->returnPolicyIdList = $state;
 
+        return $this;
     }
 
-    /**
-     * Returns true if the results from multiple individual decisions for this <code>Request</code> should be
-     * combined into a single XACML Result.
-     *
-     * @return true if multiple results should be combined, otherwise false.
-     */
+    public function shouldReturnPolicyIdList(): bool
+    {
+        return $this->returnPolicyIdList;
+    }
+
     public function getCombinedDecision(): bool
     {
         return $this->combinedDecision;
@@ -89,17 +84,20 @@ class Request
 
     public function getRequestAttributeByCategoryId(string $category)
     {
-        return $this->requestAttributesByCategoryId->get($category);
+        return $this->requestAttributesByCategoryId->get($category, null);
     }
 
-    /**
-     * @param string|null $category
-     *
-     * @return RequestAttributes[]|Set
-     */
     public function getRequestAttributes(string $category = null): Set
     {
-        return $category ? $this->getRequestAttributeByCategoryId($category) : $this->requestAttributes;
+        if ($category) {
+            if (!$attribute = $this->getRequestAttributeByCategoryId($category)) {
+                return new Set();
+            }
+
+            return $attribute;
+        }
+
+        return $this->requestAttributes;
     }
 
     /**
@@ -132,13 +130,6 @@ class Request
         return $this->multiRequests;
     }
 
-
-    /**
-     * Gets the {@link Status} representing the XACML Status element for the Request represented by this
-     * <code>Request</code>.
-     *
-     * @return Status|null
-     */
     public function getStatus()
     {
         return $this->status;
@@ -157,6 +148,6 @@ class Request
      */
     public function equals($object): bool
     {
-
+        $todo = true;
     }
 }

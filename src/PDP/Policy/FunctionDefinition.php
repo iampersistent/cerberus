@@ -7,7 +7,7 @@ use Cerberus\PDP\Evaluation\EvaluationContext;
 
 abstract class FunctionDefinition
 {
-    protected $dataType;
+    protected $dataTypeId;
     protected $id;
 
     public function getId()
@@ -15,9 +15,9 @@ abstract class FunctionDefinition
         return $this->id;
     }
 
-    public function getDataTypeId()
+    public function getDataType()
     {
-        return $this->dataType;
+        return $this->dataTypeId;
     }
 
     public function returnsBag(): bool
@@ -25,8 +25,14 @@ abstract class FunctionDefinition
         return false;
     }
 
+    /**
+     * @param EvaluationContext    $evaluationContext
+     * @param FunctionDefinition[] $arguments
+     *
+     * @return ExpressionResult
+     */
     abstract public function evaluate(
         EvaluationContext $evaluationContext,
-        FunctionArgument ...$arguments
+        $arguments
     ): ExpressionResult;
 }

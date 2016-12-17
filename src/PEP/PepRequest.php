@@ -24,7 +24,6 @@ class PepRequest extends Request
         $this->requestObjects = $objects;
         //$this->pepConfig = $pepConfig;
         $this->pepRequestAttributesMapByCategory = new Map();
-        //$this->idCounter = new AtomicInteger(1);
         $this->map();
     }
 

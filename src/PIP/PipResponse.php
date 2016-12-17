@@ -13,6 +13,8 @@ class PipResponse
 {
     /** @var Attribute[]|Set */
     protected $attributes;
+    /** @var bool */
+    protected $simple = true;
     /** @var Status */
     protected $status;
 
@@ -21,19 +23,35 @@ class PipResponse
         $this->attributes = new Set();
     }
 
-    public function getStatus()
+    public function addAttribute(Attribute $attribute): self
     {
-        return $this->status;
-    }
-
-    public function setStatus(Status $status = null): self
-    {
-        $this->status = $status;
+        /*
+         * Determine if the simple status should be changed or not
+         */
+        if ($this->simple && ! $this->attributes->isEmpty()) {
+            $this->simple = false;
+        }
+        $this->attributes->add($attribute);
 
         return $this;
     }
 
-    public function getAttributes()
+    public function addAttributes(Set $attributes): self
+    {
+        /*
+         * Determine if the simple status should be changed or not
+         */
+        if ($this->simple && (! $this->attributes->isEmpty() || $attributes->count() > 1)) {
+            $this->simple = false;
+        }
+        foreach ($attributes as $attribute) {
+            $this->attributes->add($attribute);
+        }
+
+        return $this;
+    }
+
+    public function getAttributes(): Set
     {
         return $this->attributes;
     }
@@ -142,7 +160,7 @@ class PipResponse
             $attributeResponse = $pipResponse->getAttributes()->next();
             if (matches($pipRequest, $attributeResponse)) {
                 $attributeValues = $attributeResponse->getValues();
-                if (!$attributeValues || $attributeValues->size() === 0) {
+                if (! $attributeValues || $attributeValues->size() === 0) {
                     return $pipResponse;
                 } else {
                     $attributeValueResponse = $attributeResponse->getValues()->next();
@@ -188,6 +206,17 @@ class PipResponse
         }
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status = null): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
 
     /**
      * Takes a list of simple Attributes and collapses $attributes with the same category, id, value data type,

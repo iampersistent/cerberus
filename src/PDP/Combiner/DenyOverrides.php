@@ -27,7 +27,7 @@ class DenyOverrides extends CombiningAlgorithm
         foreach ($elements as $combiningElement) {
             $evaluationResultElement = $combiningElement->evaluate($evaluationContext);
 
-            switch ((string) $evaluationResultElement->getDecision()) {
+            switch ($evaluationResultElement->getDecision()->getValue()) {
                 case Decision::DENY:
                     return $evaluationResultElement;
                 case Decision::INDETERMINATE:
@@ -39,14 +39,14 @@ class DenyOverrides extends CombiningAlgorithm
                     }
                     break;
                 case Decision::INDETERMINATE_DENY:
-                    if (!$firstIndeterminateD) {
+                    if (! $firstIndeterminateD) {
                         $firstIndeterminateD = $evaluationResultElement;
                     } else {
                         $firstIndeterminateD->merge($evaluationResultElement);
                     }
                     break;
                 case Decision::INDETERMINATE_PERMIT:
-                    if (!$firstIndeterminateP) {
+                    if (! $firstIndeterminateP) {
                         $firstIndeterminateP = $evaluationResultElement;
                     } else {
                         $firstIndeterminateP->merge($evaluationResultElement);
@@ -65,24 +65,20 @@ class DenyOverrides extends CombiningAlgorithm
 
         if ($firstIndeterminateDP) {
             return $firstIndeterminateDP;
-        } else {
-            if ($firstIndeterminateD && ($firstIndeterminateP || $atLeastOnePermit)) {
-                return new EvaluationResult(Decision::INDETERMINATE_DENY_PERMIT(), $firstIndeterminateD->getStatus());
-            } else {
-                if ($firstIndeterminateD) {
-                    return $firstIndeterminateD;
-                } else {
-                    if ($atLeastOnePermit) {
-                        return $combinedResult;
-                    } else {
-                        if ($firstIndeterminateP) {
-                            return $firstIndeterminateP;
-                        } else {
-                            return new EvaluationResult(Decision::NOTAPPLICABLE());
-                        }
-                    }
-                }
-            }
         }
+        if ($firstIndeterminateD && ($firstIndeterminateP || $atLeastOnePermit)) {
+            return new EvaluationResult(Decision::INDETERMINATE_DENY_PERMIT(), $firstIndeterminateD->getStatus());
+        }
+        if ($firstIndeterminateD) {
+            return $firstIndeterminateD;
+        }
+        if ($atLeastOnePermit) {
+            return $combinedResult;
+        }
+        if ($firstIndeterminateP) {
+            return $firstIndeterminateP;
+        }
+
+        return new EvaluationResult(Decision::NOTAPPLICABLE());
     }
 }

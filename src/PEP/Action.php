@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\Identifier;
+
 class Action extends CategoryContainer
 {
     protected $actionIdValue;
@@ -10,7 +12,8 @@ class Action extends CategoryContainer
     public function __construct(string $actionIdValue)
     {
         $this->actionIdValue = $actionIdValue;
-        parent::__construct($actionIdValue);
+        parent::__construct(Identifier::ATTRIBUTE_CATEGORY_ACTION);
+        $this->addAttribute('action:action-id', $actionIdValue);
     }
 
     /**

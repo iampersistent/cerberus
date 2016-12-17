@@ -44,14 +44,14 @@ class RequestEngine implements PipEngine
         }
 
         $requestAttributes = $this->request->getRequestAttributes($pipRequest->getCategory());
-        if (empty($requestAttributes)) {
+        if ($requestAttributes->isEmpty()) {
             return new PipResponse(new Status(StatusCode::STATUS_CODE_OK()));
         }
 
-        $pipResponse = null;
+        $pipResponse = new PipResponse();
         foreach ($requestAttributes as $requestAttribute) {
             $attributes = $requestAttribute->getAttributes($pipRequest->getAttributeId());
-            foreach ($attributes as $attribute) {
+            foreach ([$attributes] as $attribute) {
                 if (! $attribute->getValues()->isEmpty()
                     && $pipRequest->getIssuer() === $attribute->getIssuer()
                 ) {
@@ -61,35 +61,25 @@ class RequestEngine implements PipEngine
                      */
                     $allMatch = true;
                     foreach ($attribute->getValues() as $attributeValue) {
-                        if (! $pipRequest->getDataTypeId() === $attributeValue->getDataTypeId()) {
+                        if ($pipRequest->getDataTypeId() !== $attributeValue->getDataTypeId()) {
                             $allMatch = false;
                             break;
                         }
                     }
                     if ($allMatch) {
-                        if (! $pipResponse) {
-                            $pipResponse = new PipResponse($attribute);
-                        } else {
-                            $pipResponse->addAttribute($attribute);
-                        }
+                        $pipResponse->addAttribute($attribute);
                     } else {
                         /*
                         * Only a subset of the values match, so we have to construct a new Attribute
                         * containing only the matching values.
                         */
-                        $listAttributeValues = null; //List
-                        foreach ($attributes->getValues as $attributeValue) {
+                        $listAttributeValues = new Set();
+                        foreach ($attribute->getValues() as $attributeValue) {
                             if ($pipRequest->getDataTypeId() === $attributeValue->getDataTypeId()) {
-                                if (! $listAttributeValues) {
-                                    $listAttributeValues = new ArrayList();
-                                }
                                 $listAttributeValues->add($attributeValue);
                             }
-    }
-                        if ($listAttributeValues) {
-                            if (! $pipResponse) {
-                                $pipResponse = new PipResponse();
-                            }
+                        }
+                        if (! $listAttributeValues->isEmpty()) {
                             $pipResponse->addAttribute(new Attribute($attribute->getCategory(),
                                 $attribute->getAttributeId(),
                                 $listAttributeValues, $attribute->getIssuer(), $attribute->getIncludeInResults()));
@@ -99,11 +89,7 @@ class RequestEngine implements PipEngine
             }
         }
 
-        if (! $pipResponse) {
-            return new PipResponse(new Status(StatusCode::STATUS_CODE_OK()));
-    } else {
-            return $pipResponse;
-        }
+        return $pipResponse;
     }
 
     public function attributesRequired()

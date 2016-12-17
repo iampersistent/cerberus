@@ -8,4 +8,15 @@ use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
 abstract class PolicySetChild
 {
+    protected $policyDefaults;
+
+    public function __construct()
+    {
+        $this->policyDefaults = new PolicyDefaults();
+    }
+
+    public function getPolicyDefaults()
+    {
+        return $this->policyDefaults;
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\Attribute;
+use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
@@ -19,7 +20,7 @@ use Cerberus\PIP\PipRequest;
 class AttributeDesignator extends AttributeRetrievalBase
 {
     protected $attributeId;
-    protected $issuer;
+    protected $issuer = '';
     protected $pipRequest;
 
     public function __construct($category, $dataTypeId, $mustBePresent, $attributeId)
@@ -69,9 +70,9 @@ class AttributeDesignator extends AttributeRetrievalBase
          */
         $bagAttributeValues = new Bag();
         foreach ($pipResponse->getAttributes() as $attribute) {
-            if ($this->match($attribute)) {
+            if ($this->matchAttribute($attribute)) {
                 foreach ($attribute->getValues() as $attributeValue) {
-                    if ($this->match($attributeValue)) {
+                    if ($this->matchAttributeValue($attributeValue)) {
                         $bagAttributeValues->add($attributeValue);
                     }
                 }
@@ -85,7 +86,7 @@ class AttributeDesignator extends AttributeRetrievalBase
         }
     }
 
-    public function getIssuer()
+    public function getIssuer(): string
     {
         return $this->issuer;
     }
@@ -111,15 +112,24 @@ class AttributeDesignator extends AttributeRetrievalBase
         return true;
     }
 
-    protected function match(Attribute $attribute): bool
+    protected function matchAttribute(Attribute $attribute): bool
     {
-        if (! $this->getCategory() === $attribute->getCategory()) {
+        if ($this->getCategory() !== $attribute->getCategory()) {
             return false;
         }
-        if (! $this->getAttributeId() === $attribute->getAttributeId()) {
+        if ($this->getAttributeId() !== $attribute->getAttributeId()) {
             return false;
         }
         if ($this->getIssuer() && $this->getIssuer() !== $attribute->getIssuer()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function matchAttributeValue(AttributeValue $attributeValue): bool
+    {
+        if ($this->getDataTypeId() !== $attributeValue->getDataTypeId()) {
             return false;
         }
 

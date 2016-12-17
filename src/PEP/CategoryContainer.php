@@ -32,7 +32,7 @@ class CategoryContainer
     /**
      * Add a new attribute with the given id and one or more values
      */
-    public function addAttribute(string $id, ...$values)
+    public function addAttribute(string $id, $values)
     {
         $this->attributeMap->put($id, $values);
     }

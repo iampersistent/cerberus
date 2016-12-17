@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\CategoryType;
+use Cerberus\Core\Identifier;
 
 class ConfiguredMapper extends ObjectMapper
 {
@@ -18,14 +18,14 @@ class ConfiguredMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $requestAttributes = $pepRequest->getPepRequestAttributes(CategoryType::ID_ATTRIBUTE_CATEGORY_RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
         foreach ($this->config as $name => $lookup) {
             if ('resource:resource-type' === $name) {
-                $requestAttributes->addAttribute($name, $lookup);
+                $pepRequestAttributes->addAttribute($name, $lookup);
 
                 continue;
             }
-            $requestAttributes->addAttribute($name, $object->$lookup());
+            $pepRequestAttributes->addAttribute($name, $object->$lookup());
         }
     }
 }

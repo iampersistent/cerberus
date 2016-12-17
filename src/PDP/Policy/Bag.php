@@ -16,7 +16,9 @@ class Bag
 
     public function add(...$values)
     {
-        $this->values->add($values);
+        foreach ($values as $value) {
+            $this->values->add($value);
+        }
 
         return $this;
     }

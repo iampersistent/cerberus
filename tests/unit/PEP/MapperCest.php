@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 
 use AspectMock\Test as Mock;
+use Cerberus\Core\Identifier;
 use Cerberus\PEP\{
     Action, MapperRegistry, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, PepRequestFactory, PepResponseFactory, Subject
 };
@@ -48,7 +49,7 @@ class MapperCest
         $doc = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
         $response = $this->pepAgent->decide($subject, $action, $doc);
         $I->assertNotNull($response);
-        $I->assertFalse(false, $response->allowed());
+        $I->assertFalse($response->allowed());
     }
 
     public function testMix(UnitTester $I)
@@ -68,7 +69,7 @@ class MapperCest
 
         $response = $this->pepAgent->decide($subject, $action, $resourceList);
         $I->assertNotNull($response);
-        $I->assertEquals(false, $response->allowed());
+        $I->assertFalse($response->allowed());
         $response->allowed();
     }
 
@@ -114,7 +115,7 @@ class DocumentMapper extends ObjectMapper
      */
     public function map($document, PepRequest $pepRequest)
     {
-        $resourceAttributes = $pepRequest->getPepRequestAttributes('XACML3.ID_ATTRIBUTE_CATEGORY_RESOURCE');
+        $resourceAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
         $resourceAttributes->addAttribute("resource:resource-id", $document->getDocumentId());
         $resourceAttributes->addAttribute("resource:resource-type", Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());

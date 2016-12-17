@@ -11,18 +11,19 @@ class ObligationRouter
     /** @var ObligationHandlerRegistry */
     protected $registrationHandler;
 
-    /** @var ThreadLocalObligationStore */
+    /** @var ObligationStore */
     protected $obligationStore;
 
     public function __construct()
     {
+        $this->obligationStore = new ObligationStore();
     }
 
     public function routeObligations(Map $obligationMap)
     {
         // Clear any stale Obligations on the current thread.
         $this->obligationStore->clear();
-        if ($obligationMap != null) {
+        if (! $obligationMap->isEmpty()) {
             $obligationMapByHandlerClass = new Map();
             foreach ($obligationMap->pairs() as $pair) {
                 $isObligationHandleable = false;
@@ -39,10 +40,6 @@ class ObligationRouter
                         }
                         $handlerObligationSet->add($obligation);
                         $isObligationHandleable = true;
-//if (logger.isDebugEnabled()) {
-//    logger.debug("Obligation - " + $obligationId + " matched by Handler - "
-//        + $handlerClass);
-//}
                     }
                 }
                 if (! $isObligationHandleable) {

@@ -12,6 +12,6 @@ class ExpressionResult extends FunctionArgument
 
     public function getFunctionalDefinition($id)
     {
-$doSOmething = true;
+        throw \Exception('implement');
     }
 }

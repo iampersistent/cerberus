@@ -7,30 +7,28 @@ use Cerberus\Core\Decision;
 use Cerberus\Core\ObligationRouter;
 use Cerberus\Core\Result;
 use Cerberus\PEP\Exception\PepException;
+use Ds\Map;
 
 class PepResponse
 {
     protected $obligationRouter;
+    /** @var Map */
+    protected $obligations;
+    /** @var Result */
     protected $result;
 
     public function __construct(ObligationRouter $obligationRouter, Result $result)
     {
         $this->obligationRouter = $obligationRouter;
+        $this->obligations = new Map();
         $this->result = $result;
     }
-    /**
-     * Returns the decision associated with the current result.
-     *
-     * @return true if the user was granted access to the resource, otherwise false
-     * @throws PepException if the {@link PepResponseBehavior} configured in the {@link PepResponseFactory}
-     *             indicates that for the response should be thrown
-     */
+
     public function allowed(): bool
     {
-//        if (obligationRouter != null) {
-//            obligationRouter . routeObligations(getObligations());
-//        }
-        switch ($this->result->getDecision()) {
+        $this->obligationRouter->routeObligations($this->getObligations());
+        
+        switch ($this->result->getDecision()->getValue()) {
             case Decision::PERMIT:
                 return true;
             case Decision::DENY:
@@ -41,24 +39,17 @@ class PepResponse
             case Decision::INDETERMINATE_DENY_PERMIT:
             case Decision::INDETERMINATE_PERMIT:
                 $status = $this->result->getStatus();
-                $message = sprintf("Decision: Indeterminate, Status Code: %s, Status Message: %s",
+                $message = sprintf('Decision: Indeterminate, Status Code: %s, Status Message: %s',
                     $status->getStatusCode(), $status->getStatusMessage());
                 throw new PepException($message);
             default:
-                throw new PepException("Invalid response from PDP");
+                throw new PepException('Invalid response from PDP');
         }
     }
 
-    /**
-     * Return the set of {@link org.apache.openaz.pepapi.Obligation}s associated with the
-     * current result indexed by ObligationId.
-     * @return a Map of ObligationId, Obligation pairs Map<String, Obligation>
-     * @throws PepException
-     * @see org.apache.openaz.pepapi.Obligation#getId()
-     */
-    public function getObligations(): array
+    public function getObligations(): Map
     {
-
+        return $this->obligations;
     }
 
     /**

@@ -69,7 +69,7 @@ class CerberusEngine implements PdpEngine
         $requestsIndividualDecision = $individualDecisionRequestGenerator->getIndividualDecisionRequests();
         if ($requestsIndividualDecision->isEmpty()) {
             return new Response(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                "No individual decision requests"));
+                'No individual decision requests'));
         }
 
         foreach ($requestsIndividualDecision as $individualDecision) {
@@ -78,11 +78,11 @@ class CerberusEngine implements PdpEngine
                 $individualDecisionResult = new Result();
             } else {
                 $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($individualDecision); // EvaluationContext
-                if ($evaluationContext == null) {
+                if (!$evaluationContext) {
                     $individualDecisionResult = new Result(
                         new Status(
                             StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                            "Null EvaluationContext"));
+                            'Null EvaluationContext'));
                 } else {
                     $individualDecisionResult = $this->processRequest($evaluationContext);
                 }
@@ -135,36 +135,34 @@ class CerberusEngine implements PdpEngine
     {
         try {
             $policyFinderResult = $evaluationContext->getRootPolicyDef();
-            if ($policyFinderResult->getStatus() != null && ! $policyFinderResult->getStatus()->isOk()) {
+            if ($policyFinderResult->getStatus() && ! $policyFinderResult->getStatus()->isOk()) {
                 return new Result($policyFinderResult->getStatus());
             }
 
             /** @var PolicyDef $policyDefRoot */
             $policyDefRoot = $policyFinderResult->getPolicyDef();
-            if ($policyDefRoot == null) {
+            if (! $policyDefRoot) {
                 switch ($this->defaultDecision) {
                     case Decision::DENY:
                     case Decision::NOT_APPLICABLE:
                     case Decision::PERMIT:
                         return new Result($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_OK(),
-                                "No applicable policy"));
+                                'No applicable policy'));
                     case Decision::INDETERMINATE:
                     case Decision::INDETERMINATE_DENY:
                     case Decision::INDETERMINATE_DENY_PERMIT:
                     case Decision::INDETERMINATE_PERMIT:
                         return new Result($this->defaultDecision,
                             new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                                "No applicable policy"));
+                                'No applicable policy'));
                 }
             }
             /** @var Result $result */
             $result = $policyDefRoot->evaluate($evaluationContext);
             if ($result->getStatus()->isOk()) {
                 $listRequestAttributesIncludeInResult = $evaluationContext->getRequest()->getRequestAttributesIncludedInResult(); //Collection < AttributeCategory>
-                if ($listRequestAttributesIncludeInResult != null
-                    && count($listRequestAttributesIncludeInResult) > 0
-                ) {
+                if ($listRequestAttributesIncludeInResult && ! $listRequestAttributesIncludeInResult->isEmpty()) {
                     $mutableResult = new Result($result);
                     $mutableResult->addAttributeCategories($listRequestAttributesIncludeInResult);
                     $result = new Result($mutableResult);

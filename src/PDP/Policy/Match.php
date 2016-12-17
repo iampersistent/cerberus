@@ -62,10 +62,6 @@ class Match implements Matchable
             if ($bagAttributeValues) {
                 $attributeValues = $bagAttributeValues->getAttributeValues(); // AttributeValue
                 foreach ($attributeValues as $attributeValue) {
-                    if (! $matchResult->getMatchCode()->is(MatchCode::MATCH)) {
-                        break;
-                    }
-
                     $matchResultValue = $this->processMatch(
                         $evaluationContext,
                         $functionDefinitionMatch,
@@ -104,26 +100,19 @@ class Match implements Matchable
             new FunctionArgumentAttributeValue($attributeValueExpressionResult));
     }
 
-    /**
-     * @return MatchResult
-     */
     protected function processMatch(
         EvaluationContext $evaluationContext,
         FunctionDefinition $functionDefinition,
-        FunctionArgument ...$args
+        FunctionArgument ...$arguments
     ): MatchResult
     {
-//        List<FunctionArgument> listArguments = new ArrayList<FunctionArgument>(2);
-//        listArguments.add(arg1);
-//        listArguments.add(arg2);
-
-        $expressionResult = $functionDefinition->evaluate($evaluationContext, $args); // ExpressionResult
+        $expressionResult = $functionDefinition->evaluate($evaluationContext, $arguments); // ExpressionResult
         if (! $expressionResult->isOk()) {
             return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
         }
 
         try {
-            $attributeValueResult = (bool)$expressionResult->getValue();
+            $attributeValueResult = $expressionResult->getValue();
         } catch (DataTypeException $e) {
             return new MatchResult(MatchCode::INDETERMINATE(),
                 new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
@@ -134,7 +123,7 @@ class Match implements Matchable
                 $functionDefinition->getId() . ' on ' .
                 $expressionResult->getValue()->toString()));
         }
-        if ($attributeValueResult->getValue()->booleanValue()) {
+        if ($attributeValueResult->getValue()) {
             return new MatchResult(MatchCode::MATCH());
         }
 

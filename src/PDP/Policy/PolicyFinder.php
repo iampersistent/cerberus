@@ -75,16 +75,16 @@ class PolicyFinder
                 $matchResult = $policyDef->match($evaluationContext);
                 switch ($matchResult->getMatchCode()) {
                     case MatchCode::INDETERMINATE:
-                        if ($firstIndeterminate == null) {
+                        if (! $firstIndeterminate) {
                             $firstIndeterminate = new PolicyFinderResult($matchResult->getStatus());
                         }
                         break;
                     case MatchCode::MATCH:
-                        if ($policyDefFirstMatch == null) {
+                        if (! $policyDefFirstMatch) {
                             $policyDefFirstMatch = $policyDef;
                         } else {
                             return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Multiple applicable root policies")
+                                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'Multiple applicable root policies')
                             );
                         }
                         break;
@@ -92,7 +92,7 @@ class PolicyFinder
                         break;
                 }
             } catch (EvaluationException $e) {
-                if ($firstIndeterminate == null) {
+                if (! $firstIndeterminate) {
                     $firstIndeterminate = new PolicyFinderResult(
                         new Status(
                             StatusCode::STATUS_CODE_PROCESSING_ERROR(),
@@ -101,20 +101,20 @@ class PolicyFinder
             }
         }
 
-        if ($policyDefFirstMatch == null) {
-            if ($firstIndeterminate != null) {
+        if (! $policyDefFirstMatch) {
+            if (! $firstIndeterminate) {
                 return $firstIndeterminate;
             } else {
                 return new PolicyFinderResult(
-                    new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "No matching root policy found")
+                    new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'No matching root policy found')
                 );
             }
-        } else {
-            return new PolicyFinderResult(
-                new Status(StatusCode::STATUS_CODE_OK()),
-                $policyDefFirstMatch
-            );
         }
+
+        return new PolicyFinderResult(
+            new Status(StatusCode::STATUS_CODE_OK()),
+            $policyDefFirstMatch
+        );
     }
 
     protected function storeInPolicyMap(PolicyDef $policyDef)

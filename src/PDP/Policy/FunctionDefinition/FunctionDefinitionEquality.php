@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
+use Cerberus\Core\AttributeValue;
+use Cerberus\Core\Identifier;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\ExpressionResult;
-use Cerberus\PDP\Policy\FunctionArgument;
+use Cerberus\PDP\Policy\ExpressionResultSingle;
 use Cerberus\PDP\Policy\FunctionDefinition;
 
 class FunctionDefinitionEquality extends FunctionDefinition
@@ -18,10 +20,12 @@ class FunctionDefinitionEquality extends FunctionDefinition
 
     public function evaluate(
         EvaluationContext $evaluationContext,
-        FunctionArgument ...$arguments
+        $arguments
     ): ExpressionResult
     {
-        // TODO: Implement evaluate() method.
+        $result = $arguments[0]->getValue()->getValue() === $arguments[1]->getValue()->getValue();
+
+        return new ExpressionResultSingle(new AttributeValue(Identifier::DATATYPE_BOOLEAN, $result));
     }
 
 }

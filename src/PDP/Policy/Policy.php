@@ -67,7 +67,7 @@ class Policy extends PolicyDef
         /*
          * Add my id to the policy identifiers
          */
-        if ($evaluationContext->getRequest()->getReturnPolicyIdList()) {
+        if ($evaluationContext->getRequest()->shouldReturnPolicyIdList()) {
             $evaluationResultCombined->addPolicyIdentifier($this->getIdentifier());
         }
 

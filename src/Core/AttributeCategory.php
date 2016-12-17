@@ -4,15 +4,18 @@ declare(strict_types = 1);
 namespace Cerberus\Core;
 
 use Ds\Map;
+use Ds\Set;
 
 class AttributeCategory
 {
     protected $attributes;
+    protected $attributeMapById;
     protected $categoryIdentifier;
 
     public function __construct($categoryIdentifier)
     {
-        $this->attributes = new Map();
+        $this->attributes = new Set();
+        $this->attributeMapById = new Map();
         $this->categoryIdentifier = $categoryIdentifier;
     }
 
@@ -25,10 +28,14 @@ class AttributeCategory
     }
 
     /**
-     * @return Attribute[]|Map
+     * @return Attribute[]|Set
      */
-    public function getAttributes(): Map
+    public function getAttributes($attributeId = null)
     {
+        if ($attributeId) {
+            return $this->attributeMapById->get($attributeId);
+        }
+
         return $this->attributes;
     }
 
@@ -39,7 +46,7 @@ class AttributeCategory
     public function getAttribute(string $attributeId)
     {
         try {
-            return $this->attributes->get($attributeId);
+            return $this->attributeMapById->get($attributeId);
         } catch (\Exception $e) {
             return null;
         }
@@ -47,6 +54,6 @@ class AttributeCategory
 
     public function hasAttribute($attributeId): bool
     {
-        return $this->attributes->hasKey($attributeId);
+        return $this->attributeMapById->hasKey($attributeId);
     }
 }

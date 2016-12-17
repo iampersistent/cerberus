@@ -33,7 +33,7 @@ $testPolicy004 = [
                                     'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
-                                        'text'     => 'Document',
+                                        'text'     => 'Test\Document',
                                     ],
                                     'attributeDesignator' => [
                                         'category'      => 'attribute-category:resource',
@@ -117,7 +117,7 @@ $testPolicy004 = [
                                     'matchId'             => 'function:string-equal',
                                     'attributeValue'      => [
                                         'dataType' => 'string',
-                                        'text'     => 'Document',
+                                        'text'     => 'Test\Document',
                                     ],
                                     'attributeDesignator' => [
                                         'category'      => 'attribute-category:resource',

@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
+use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
@@ -19,17 +20,18 @@ class Condition
         $todo = true;
     }
 
-    public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults){
+    public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults)
+    {
         if (! $this->validate()) {
             return new ExpressionResultBoolean($this->getStatus());
         }
 
-/*
- * Evaluate the expression
- */
-$expressionResult = $this->getExpression()->evaluate($evaluationContext, $policyDefaults);
+        /*
+         * Evaluate the expression
+         */
+        $expressionResult = $this->getExpression()->evaluate($evaluationContext, $policyDefaults);
 
-        if (!$expressionResult->isOk()) {
+        if (! $expressionResult->isOk()) {
             return new ExpressionResultBoolean($expressionResult->getStatus());
         }
 
@@ -40,10 +42,12 @@ $expressionResult = $this->getExpression()->evaluate($evaluationContext, $policy
             return ERB_RETURNED_BAG;
         }
 
-        if (!$attributeValueResult = $expressionResult->getValue()) {
-        return ERB_RETURNED_NULL;
-        } else if (!DataTypes.DT_BOOLEAN.getId().equals($attributeValueResult->getDataTypeId())) {
-        return ERB_RETURNED_NON_BOOLEAN;
+        if (! $attributeValueResult = $expressionResult->getValue()) {
+            return ERB_RETURNED_NULL;
+        } else {
+            if (! DataTypes . DT_BOOLEAN . getId() . equals($attributeValueResult->getDataTypeId())) {
+                return ERB_RETURNED_NON_BOOLEAN;
+            }
         }
 
         /*
@@ -63,5 +67,18 @@ $expressionResult = $this->getExpression()->evaluate($evaluationContext, $policy
 //        return (booleanValue.booleanValue()
 //        ? ExpressionResultBoolean.ERB_TRUE : ExpressionResultBoolean.ERB_FALSE);
 //        }
+    }
+
+    protected function validateComponent(): bool
+    {
+        if (! $this->getExpression()) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing Expression');
+
+            return false;
+        } else {
+            $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+
+            return true;
+        }
     }
 }

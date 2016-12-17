@@ -132,7 +132,7 @@ class IndividualDecisionRequestGenerator
 
             $requestRoot = new Request();
             $requestRoot->setRequestDefaults($request->getRequestDefaults());
-            $requestRoot->setReturnPolicyIdList($request->getReturnPolicyIdList());
+            $requestRoot->setReturnPolicyIdList($request->shouldReturnPolicyIdList());
             $this->explodeOnCategory($mapCategories->keySet()->toArray($this->idArray), 0, $requestRoot,
                 $mapCategories);
         }
@@ -163,7 +163,7 @@ class IndividualDecisionRequestGenerator
          * Scope only applies to the resource category, so just get the RequestAttributes for that. At this
          * point there should be at most one.
          */
-        $requestAttributesResource = $request->getRequestAttributes(ID_ATTRIBUTE_CATEGORY_RESOURCE);
+        $requestAttributesResource = $request->getRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
         if ($requestAttributesResource == null) {
             $this->processContentSelectors($request);
 
@@ -283,7 +283,7 @@ class IndividualDecisionRequestGenerator
 
             $requestInProgress = new Request();
             $requestInProgress->setRequestDefaults($request->getRequestDefaults());
-            $requestInProgress->setReturnPolicyIdList($request->getReturnPolicyIdList());
+            $requestInProgress->setReturnPolicyIdList($request->shouldReturnPolicyIdList());
             $this->explodeOnContentSelector($listRequestAttributes, 0, $requestInProgress);
         }
     }

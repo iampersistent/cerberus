@@ -7,7 +7,7 @@ use Cerberus\Core\{
     Decision, Status, StatusCode
 };
 use Cerberus\PDP\Evaluation\{
-    EvaluationContext, MatchCode, MatchResult
+    EvaluationContext, EvaluationResult, MatchCode, MatchResult
 };
 use Cerberus\PDP\Exception\EvaluationException;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
@@ -17,14 +17,13 @@ class PolicyDef extends PolicySetChild
 {
     use PolicyComponent;
 
+    protected $adviceExpressions;
     /** @var CombinerParameter[]|Set */
     protected $combinerParameters;
-
     /** @var CombiningAlgorithm */
     protected $combiningAlgorithm;
-
     protected $identifier;
-
+    protected $obligationExpressions;
     /** @var Rule[] */
     protected $rules;
     /** @var Target */
@@ -34,6 +33,12 @@ class PolicyDef extends PolicySetChild
     {
         $this->combinerParameters = new Set();
         $this->rules = new Set();
+        parent::__construct();
+    }
+
+    public function getAdviceExpressions()
+    {
+        return $this->adviceExpressions;
     }
 
     public function getIdentifier()
@@ -46,6 +51,11 @@ class PolicyDef extends PolicySetChild
         $this->identifier = $identifier;
 
         return $this;
+    }
+
+    public function getObligationExpressions()
+    {
+        return $this->obligationExpressions;
     }
 
     public function setRuleCombiningAlgorithm($combiningAlgorithm): self
@@ -90,6 +100,30 @@ class PolicyDef extends PolicySetChild
         return $this;
     }
 
+    protected function updateResult(EvaluationResult $evaluationResult, EvaluationContext $evaluationContext)
+    {
+        $obligationExpressions = $this->getObligationExpressions();
+        if ($obligationExpressions && ! $obligationExpressions->isEmpty()) {
+            $listObligations = ObligationExpression::evaluate($evaluationContext,
+                $this->getPolicyDefaults(),
+                $evaluationResult->getDecision(),
+                $obligationExpressions);
+            if ($listObligations && ! $listObligations->isEmpty()) {
+                $evaluationResult->addObligations($listObligations);
+            }
+        }
+
+        $adviceExpressions = $this->getAdviceExpressions();
+        if ($adviceExpressions && ! $adviceExpressions->isEmpty()) {
+            $advices = AdviceExpression::evaluate($evaluationContext, $this->getPolicyDefaults(),
+                $evaluationResult->getDecision(),
+                $adviceExpressions);
+            if ($advices && ! $advices->isEmpty()) {
+                $evaluationResult->addAdvice($advices);
+            }
+        }
+    }
+    
     protected function validateComponent(): bool
     {
         // todo: OpenAZ did a check for a version being present here, example files don't necessarily have it

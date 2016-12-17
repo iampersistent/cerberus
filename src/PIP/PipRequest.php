@@ -7,14 +7,14 @@ class PipRequest
 {
     protected $attributeId;
     protected $category;
-    protected $dataType;
+    protected $dataTypeId;
     protected $issuer;
 
-    public function __construct($category, $attributeId, $dataType, string $issuer = '')
+    public function __construct($category, $attributeId, $dataTypeId, string $issuer = '')
     {
         $this->attributeId = $attributeId;
         $this->category = $category;
-        $this->dataType = $dataType;
+        $this->dataTypeId = $dataTypeId;
         $this->issuer = $issuer;
     }
 
@@ -28,9 +28,9 @@ class PipRequest
         return $this->category;
     }
 
-    public function getDataType()
+    public function getDataTypeId()
     {
-        return $this->dataType;
+        return $this->dataTypeId;
     }
 
     public function getIssuer()

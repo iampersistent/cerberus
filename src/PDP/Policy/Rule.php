@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Decision;
+use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
 use Cerberus\PDP\Evaluation\EvaluationContext;
@@ -43,7 +44,7 @@ class Rule implements Matchable
          */
         $matchResult = $this->match($evaluationContext);
 
-        switch ((string)$matchResult->getMatchCode()) {
+        switch ($matchResult->getMatchCode()->getValue()) {
             case MatchCode::INDETERMINATE:
                 return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus());
             case MatchCode::MATCH:
@@ -72,11 +73,12 @@ class Rule implements Matchable
         /*
          * The target and condition match, so we can start creating the EvaluationResult
          */
-//        List<Obligation > $listObligations = ObligationExpression->evaluate($evaluationContext, $this->getPolicy()->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getObligationExpressionList());
+//        List<Obligation > $listObligations = ObligationExpression->evaluate($evaluationContext, $this->getPolicy()->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getObligationExpressions());
 //        List<Advice > $listAdvices = AdviceExpression->evaluate($evaluationContext, $this->getPolicy()
-//           ->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getAdviceExpressionList());
+//           ->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getAdviceExpressions());
+//        return new EvaluationResult($this->getRuleEffect()->getDecision(), $listObligations, $listAdvices);
 
-        return new EvaluationResult($this->getRuleEffect()->getDecision(), $listObligations, $listAdvices);
+        return new EvaluationResult($this->getRuleEffect()->getDecision(), new Status(StatusCode::STATUS_CODE_OK()));
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
@@ -92,7 +94,7 @@ class Rule implements Matchable
         }
     }
 
-    public function getCondition(): Condition
+    public function getCondition()
     {
         return $this->condition;
     }

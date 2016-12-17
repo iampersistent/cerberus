@@ -18,9 +18,9 @@ class Document
         $this->documentOwner = $documentOwner;
     }
 
-    public function getDocumentId(): int
+    public function getDocumentId(): string
     {
-        return $this->documentId;
+        return (string) $this->documentId;
     }
 
     public function getDocumentName(): string

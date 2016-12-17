@@ -3,10 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
+use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 
 abstract class FunctionArgument
 {
+    /** @var AttributeValue */
     protected $attributeValue;
     /** @var Bag */
     protected $bag;
