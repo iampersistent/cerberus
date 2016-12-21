@@ -35,7 +35,7 @@ class AnyOf implements Matchable
         $resultFallThrough = MatchResult::createNoMatch();
         foreach ($this->allOfs as $allOf) {
             $matchResultAllOf = $allOf->match($evaluationContext);
-            switch ($matchResultAllOf->getMatchCode()->getName()) {
+            switch ($matchResultAllOf->getMatchCode()->getValue()) {
                 case MatchCode::INDETERMINATE:
                     // Keep the first indeterminate value to return if no other match is found
                     if (! $resultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE )) {

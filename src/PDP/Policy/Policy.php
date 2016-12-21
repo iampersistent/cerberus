@@ -34,26 +34,17 @@ class Policy extends PolicyDef
         /** @var MatchResult $matchResult */
         $matchResult = $this->match($evaluationContext);
 
-        switch ($matchResult->getMatchCode()) {
+        switch ($matchResult->getMatchCode()->getValue()) {
             case MatchCode::INDETERMINATE:
-                return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus()); // todo: decision?
+                return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus());
             case MatchCode::MATCH:
                 break;
             case MatchCode::NO_MATCH:
-                return new EvaluationResult(Decision::NOT_APPLICABLE()); // todo: decision?
+                return new EvaluationResult(Decision::NOT_APPLICABLE());
         }
 
-        /*
-         * Get the combining elements
-         */
-        // List<CombiningElement < Rule >>
         $ruleCombiningElements = $this->getCombiningRules();
-        // assert $ruleCombiningElements != null;
 
-        /*
-         * Run the combining algorithm
-         */
-        // assert $this->getRuleCombiningAlgorithm() != null;
         /** @var EvaluationResult $evaluationResultCombined */
         if (! $evaluationResultCombined = $this->getRuleCombiningAlgorithm()->combine(
             $evaluationContext,

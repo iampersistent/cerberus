@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PIP;
 
 use Cerberus\Core\Status;
-use Cerberus\Core\StatusCode;
 use Cerberus\PIP\Contract\PipEngine;
 use Ds\Set;
 use Exception;
@@ -47,7 +46,7 @@ class PipFinder
                 try {
                     $pipEngineResponse = $pipEngine->getAttributes($pipRequest, $pipFinderParent);
                 } catch (Exception $e) {
-                    $pipEngineResponse = new PipResponse(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR()));
+                    $pipEngineResponse = (new PipResponse())->setStatus(Status::createProcessingError());
                 }
 
                 if (! $pipEngineResponse->getStatus() || $pipEngineResponse->getStatus()->isOk()) {

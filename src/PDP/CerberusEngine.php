@@ -68,8 +68,7 @@ class CerberusEngine implements PdpEngine
 
         $requestsIndividualDecision = $individualDecisionRequestGenerator->getIndividualDecisionRequests();
         if ($requestsIndividualDecision->isEmpty()) {
-            return new Response(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                'No individual decision requests'));
+            return new Response(Status::createProcessingError('No individual decision requests'));
         }
 
         foreach ($requestsIndividualDecision as $individualDecision) {
@@ -79,9 +78,7 @@ class CerberusEngine implements PdpEngine
             } else {
                 $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($individualDecision); // EvaluationContext
                 if (!$evaluationContext) {
-                    $individualDecisionResult = new Result(
-                        new Status(
-                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+                    $individualDecisionResult = new Result(Status::createProcessingError(
                             'Null EvaluationContext'));
                 } else {
                     $individualDecisionResult = $this->processRequest($evaluationContext);
@@ -91,28 +88,24 @@ class CerberusEngine implements PdpEngine
             if ($combineResults) {
                 $decision = $individualDecisionResult->getDecision(); // Decision
                 $status = $individualDecisionResult->getStatus(); // Status
-                if ($individualDecisionResult->getAssociatedAdvice()->size() > 0) {
+                if (! $individualDecisionResult->getAssociatedAdvice()->isEmpty()) {
                     $decision = Decision::INDETERMINATE();
-                    $status = new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                        "Advice not allowed in combined decision");
+                    $status = Status::createProcessingError('Advice not allowed in combined decision');
                 } else {
-                    if ($individualDecisionResult->getObligations()->size() > 0) {
+                    if (! $individualDecisionResult->getObligations()->isEmpty()) {
                         $decision = Decision::INDETERMINATE();
-                        $status = new Status(
-                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                            "Obligations not allowed in combined decision");
+                        $status = Status::createProcessingError('Obligations not allowed in combined decision');
                     }
                 }
 
                 /** @var Result $resultsCombined */
-                if ($resultsCombined == null) {
+                if (! $resultsCombined) {
                     $resultsCombined = new Result($decision, $status);
                 } else {
-                    if ($resultsCombined->getDecision() != $individualDecisionResult->getDecision()) {
+                    if ($resultsCombined->getDecision() !== $individualDecisionResult->getDecision()) {
                         $resultsCombined->setDecision(Decision::INDETERMINATE());
-                        $resultsCombined->setStatus(new Status(
-                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                            "Individual decisions do not match"));
+                        $resultsCombined->setStatus(Status::createProcessingError(
+                            'Individual decisions do not match'));
                     }
                 }
                 $resultsCombined->addPolicyIdentifiers($individualDecisionResult->getPolicyIdentifiers());
@@ -147,31 +140,28 @@ class CerberusEngine implements PdpEngine
                     case Decision::NOT_APPLICABLE:
                     case Decision::PERMIT:
                         return new Result($this->defaultDecision,
-                            new Status(StatusCode::STATUS_CODE_OK(),
-                                'No applicable policy'));
+                            Status::createOk('No applicable policy'));
                     case Decision::INDETERMINATE:
                     case Decision::INDETERMINATE_DENY:
                     case Decision::INDETERMINATE_DENY_PERMIT:
                     case Decision::INDETERMINATE_PERMIT:
                         return new Result($this->defaultDecision,
-                            new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                                'No applicable policy'));
+                            Status::createProcessingError('No applicable policy'));
                 }
             }
             /** @var Result $result */
             $result = $policyDefRoot->evaluate($evaluationContext);
             if ($result->getStatus()->isOk()) {
-                $listRequestAttributesIncludeInResult = $evaluationContext->getRequest()->getRequestAttributesIncludedInResult(); //Collection < AttributeCategory>
-                if ($listRequestAttributesIncludeInResult && ! $listRequestAttributesIncludeInResult->isEmpty()) {
-                    $mutableResult = new Result($result);
-                    $mutableResult->addAttributeCategories($listRequestAttributesIncludeInResult);
-                    $result = new Result($mutableResult);
+                $requestAttributesIncludeInResult = $evaluationContext->getRequest()->getRequestAttributesIncludedInResult(); //Collection < AttributeCategory>
+                if ($requestAttributesIncludeInResult && ! $requestAttributesIncludeInResult->isEmpty()) {
+                    $result = new Result();
+                    $result->addAttributeCategories($requestAttributesIncludeInResult);
                 }
             }
 
             return $result;
         } catch (EvaluationException $e) {
-            return new Result(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
+            return new Result(Status::createProcessingError($e->getMessage()));
         }
     }
 }

@@ -71,11 +71,9 @@ class PepAgent
             throw new PepException($e);
         }
 
-        foreach ($response->getResults() as $result) {
-            return $this->pepResponseFactory->newPepResponse($result);
-        }
+        $result = $response->getResults()->first();
 
-        return $pepResponses;
+        return $this->pepResponseFactory->newPepResponse($result);
     }
 
     /**

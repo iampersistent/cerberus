@@ -34,6 +34,9 @@ class PepResponse
             case Decision::DENY:
                 return false;
             case Decision::NOT_APPLICABLE:
+                return false;
+                //return enforceBehavior($this->pepConfig->getNotApplicableBehavior(), "Not Applicable");
+            // TODO: Handle various indeterminate status codes.
             case Decision::INDETERMINATE:
             case Decision::INDETERMINATE_DENY:
             case Decision::INDETERMINATE_DENY_PERMIT:

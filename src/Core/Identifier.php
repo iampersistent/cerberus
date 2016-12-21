@@ -12,6 +12,8 @@ class Identifier extends Enum
     const ATTRIBUTE_CATEGORY_ACTION = 'attribute-category:action';
     const ATTRIBUTE_CATEGORY_RESOURCE = 'attribute-category:resource';
 
+    const SUBJECT_CATEGORY_ACCESS_SUBJECT = 'subject-category:access-subject';
+
     const DATATYPE_BOOLEAN = 'boolean';
     const DATATYPE_DOUBLE = 'double';
     const DATATYPE_DATETIME = 'dateTime';

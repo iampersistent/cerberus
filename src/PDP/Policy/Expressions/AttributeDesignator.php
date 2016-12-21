@@ -40,7 +40,7 @@ class AttributeDesignator extends AttributeRetrievalBase
     ): ExpressionResult
     {
         if (! $this->validate()) {
-            return new ExpressionResult($this->getStatus());
+            return new ExpressionResultError($this->getStatus());
         }
 
         /*

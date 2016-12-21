@@ -79,6 +79,6 @@ class DenyOverrides extends CombiningAlgorithm
             return $firstIndeterminateP;
         }
 
-        return new EvaluationResult(Decision::NOTAPPLICABLE());
+        return new EvaluationResult(Decision::NOT_APPLICABLE());
     }
 }

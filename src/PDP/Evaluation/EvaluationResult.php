@@ -19,7 +19,7 @@ class EvaluationResult extends Result
     {
         parent::__construct();
         $this->decision = $decision;
-        $this->status = $status;
+        $this->status = $status ?? Status::createOk();
     }
 
     public function merge(EvaluationResult $evaluationResult)

@@ -18,7 +18,7 @@ class PipResponse
     /** @var Status */
     protected $status;
 
-    public function __construct()
+    public function __construct($attributes = [], $pipRequest = null)
     {
         $this->attributes = new Set();
     }
@@ -87,44 +87,43 @@ class PipResponse
      * {@link org.apache.openaz.xacml.api.pip.PipRequest}.
      *
      * @param $pipRequest the <code>PipRequest</code> to compare against
-     * @param $listAttributeValues the <code>Collection</code> of <code>AttributeValue</code>s to select from
+     * @param $attributeValues the <code>Collection</code> of <code>AttributeValue</code>s to select from
      *
      * @return a <code>Collection</code> of matching <code>AttributeValue</code>s or null if there are no
      *         matches
      */
-    public function matchingValues(PipRequest $pipRequest, $listAttributeValues)
+    public function matchingValues(PipRequest $pipRequest, $attributeValues)
     {
-        if ($listAttributeValues->size() === 0) {
-            return $listAttributeValues;
+        if ($attributeValues->size() === 0) {
+            return $attributeValues;
         }
 
         /*
          * See if all of the values match the requested data type
          */
         $allMatch = true;
-        foreach ($listAttributeValues as $attributeValue) {
+        foreach ($attributeValues as $attributeValue) {
             $allMatch = $attributeValue->getDataTypeId()->equals($pipRequest->getDataTypeId());
         }
         if ($allMatch) {
-            return $listAttributeValues;
+            return $attributeValues;
         }
 
         /*
          * If there was only one, return a null list
          */
-        if ($listAttributeValues->size() == 1) {
+        if ($attributeValues->size() == 1) {
             return null;
         }
 
-        $listAttributeValuesMatching = new Set();
-        foreach ($listAttributeValues as $attributeValue) {
-
+        $attributeValuesMatching = new Set();
+        foreach ($attributeValues as $attributeValue) {
             if ($attributeValue->getDataTypeId()->equals($pipRequest->getDataTypeId())) {
-                $listAttributeValuesMatching->add($attributeValue);
+                $attributeValuesMatching->add($attributeValue);
             }
         }
 
-        return $listAttributeValuesMatching->isEmpty() ? null : $listAttributeValuesMatching;
+        return $attributeValuesMatching->isEmpty() ? null : $attributeValuesMatching;
     }
 
     /**
@@ -184,16 +183,16 @@ class PipResponse
                     /*
                      * Get subset of the matching $attribute values
                      */
-                    $listAttributeValuesMatch = $this->matchingValues($pipRequest,
+                    $attributeValuesMatch = $this->matchingValues($pipRequest,
                         $attributeResponse->getValues());
-                    if ($listAttributeValuesMatch != null && $listAttributeValuesMatch->size() > 0) {
+                    if ($attributeValuesMatch != null && $attributeValuesMatch->size() > 0) {
                         if ($attributeMatch == null) {
                             $attributeMatch = new Attribute($pipRequest->getCategory(),
                                 $pipRequest->getAttributeId(),
-                                $listAttributeValuesMatch,
+                                $attributeValuesMatch,
                                 $pipRequest->getIssuer(), false);
                         } else {
-                            $attributeMatch->addValues($listAttributeValuesMatch);
+                            $attributeMatch->addValues($attributeValuesMatch);
                         }
                     }
                 }

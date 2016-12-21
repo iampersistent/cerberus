@@ -5,14 +5,13 @@ namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;
 use Cerberus\PDP\Policy\PolicyDefaults;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-abstract class AttributeRetrievalBase
+abstract class AttributeRetrievalBase extends Expression
 {
-    use PolicyComponent;
-
     protected $category;
     protected $dataTypeId;
     protected $mustBePresent;
@@ -41,8 +40,6 @@ abstract class AttributeRetrievalBase
     {
         return $this->mustBePresent;
     }
-
-    abstract public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult;
 
     protected function validateComponent(): bool
     {

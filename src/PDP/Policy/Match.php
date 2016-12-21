@@ -14,6 +14,7 @@ use Cerberus\PDP\Evaluation\{
 use Cerberus\PDP\Exception\FactoryException;
 use Cerberus\PDP\Policy\Expressions\AttributeRetrievalBase;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
+use Ds\Set;
 
 class Match implements Matchable
 {
@@ -68,7 +69,7 @@ class Match implements Matchable
                         $functionArgument1,
                         new FunctionArgumentAttributeValue($attributeValue)
                     );
-                    switch ($matchResultValue->getMatchCode()->getName()) {
+                    switch ($matchResultValue->getMatchCode()->getValue()) {
                         case MatchCode::INDETERMINATE:
                             if (! $matchResult->getMatchCode()->is(MatchCode::INDETERMINATE)) {
                                 $matchResult = $matchResultValue;
@@ -106,7 +107,7 @@ class Match implements Matchable
         FunctionArgument ...$arguments
     ): MatchResult
     {
-        $expressionResult = $functionDefinition->evaluate($evaluationContext, $arguments); // ExpressionResult
+        $expressionResult = $functionDefinition->evaluate($evaluationContext, new Set($arguments)); // ExpressionResult
         if (! $expressionResult->isOk()) {
             return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
         }

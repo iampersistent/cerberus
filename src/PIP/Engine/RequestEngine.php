@@ -51,39 +51,37 @@ class RequestEngine implements PipEngine
         $pipResponse = new PipResponse();
         foreach ($requestAttributes as $requestAttribute) {
             $attributes = $requestAttribute->getAttributes($pipRequest->getAttributeId());
-            foreach ([$attributes] as $attribute) {
-                if (! $attribute->getValues()->isEmpty()
-                    && $pipRequest->getIssuer() === $attribute->getIssuer()
-                ) {
+            if (! $attributes->getValues()->isEmpty()
+                && $pipRequest->getIssuer() === $attributes->getIssuer()
+            ) {
+                /*
+                 * If all of the attribute values in the given Attribute match the requested data type, we
+                 * can just return the whole Attribute as part of the response.
+                 */
+                $allMatch = true;
+                foreach ($attributes->getValues() as $attributeValue) {
+                    if ($pipRequest->getDataTypeId() !== $attributeValue->getDataTypeId()) {
+                        $allMatch = false;
+                        break;
+                    }
+                }
+                if ($allMatch) {
+                    $pipResponse->addAttribute($attributes);
+                } else {
                     /*
-                     * If all of the attribute values in the given Attribute match the requested data type, we
-                     * can just return the whole Attribute as part of the response.
-                     */
-                    $allMatch = true;
-                    foreach ($attribute->getValues() as $attributeValue) {
-                        if ($pipRequest->getDataTypeId() !== $attributeValue->getDataTypeId()) {
-                            $allMatch = false;
-                            break;
+                    * Only a subset of the values match, so we have to construct a new Attribute
+                    * containing only the matching values.
+                    */
+                    $listAttributeValues = new Set();
+                    foreach ($attributes->getValues() as $attributeValue) {
+                        if ($pipRequest->getDataTypeId() === $attributeValue->getDataTypeId()) {
+                            $listAttributeValues->add($attributeValue);
                         }
                     }
-                    if ($allMatch) {
-                        $pipResponse->addAttribute($attribute);
-                    } else {
-                        /*
-                        * Only a subset of the values match, so we have to construct a new Attribute
-                        * containing only the matching values.
-                        */
-                        $listAttributeValues = new Set();
-                        foreach ($attribute->getValues() as $attributeValue) {
-                            if ($pipRequest->getDataTypeId() === $attributeValue->getDataTypeId()) {
-                                $listAttributeValues->add($attributeValue);
-                            }
-                        }
-                        if (! $listAttributeValues->isEmpty()) {
-                            $pipResponse->addAttribute(new Attribute($attribute->getCategory(),
-                                $attribute->getAttributeId(),
-                                $listAttributeValues, $attribute->getIssuer(), $attribute->getIncludeInResults()));
-                        }
+                    if (! $listAttributeValues->isEmpty()) {
+                        $pipResponse->addAttribute(new Attribute($attributes->getCategory(),
+                            $attributes->getAttributeId(),
+                            $listAttributeValues, $attributes->getIssuer(), $attributes->getIncludeInResults()));
                     }
                 }
             }

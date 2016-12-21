@@ -39,7 +39,6 @@ class MapperCest
         $I->assertTrue($response->allowed());
     }
 
-
     public function testNotApplicable(UnitTester $I)
     {
         $subject = new Subject("John Smith");
@@ -52,6 +51,9 @@ class MapperCest
         $I->assertFalse($response->allowed());
     }
 
+    /**
+     * @skip
+     */
     public function testMix(UnitTester $I)
     {
 //        @Test(expected = PepException.class)
@@ -73,6 +75,9 @@ class MapperCest
         $response->allowed();
     }
 
+    /**
+     * @skip
+     */
     public function testVarArgsPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
@@ -89,6 +94,10 @@ class MapperCest
         $I->assertEquals(true, $response->allowed());
     }
 
+
+    /**
+     * @skip
+     */
     public function testVarArgsDeny(UnitTester $I)
     {
         $subject = new Subject("John Smith");

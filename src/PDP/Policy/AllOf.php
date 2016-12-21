@@ -53,7 +53,7 @@ class AllOf implements Matchable
         $matchResultFallThrough = MatchResult::createMatch();
         foreach ($this->matches as $match) {
             $matchResultMatch = $match->match($evaluationContext);
-            switch ($matchResultMatch->getMatchCode()->getName()) {
+            switch ($matchResultMatch->getMatchCode()->getValue()) {
                 case MatchCode::INDETERMINATE:
                     if (! $matchResultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE)) {
                         $matchResultFallThrough = $matchResultMatch;

@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\Identifier;
+
 class Subject extends CategoryContainer
 {
     protected $subjectIdValue;
@@ -10,7 +12,8 @@ class Subject extends CategoryContainer
     public function __construct(string $subjectIdValue)
     {
         $this->subjectIdValue = $subjectIdValue;
-        parent::__construct('subject-category:access-subject');
+        parent::__construct(Identifier::SUBJECT_CATEGORY_ACCESS_SUBJECT);
+        $this->addAttribute('subject:subject-id', $subjectIdValue);
     }
 
     /**

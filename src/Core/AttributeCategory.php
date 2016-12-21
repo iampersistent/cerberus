@@ -28,7 +28,7 @@ class AttributeCategory
     }
 
     /**
-     * @return Attribute[]|Set
+     * @return Attribute|Attribute[]|Set
      */
     public function getAttributes($attributeId = null)
     {

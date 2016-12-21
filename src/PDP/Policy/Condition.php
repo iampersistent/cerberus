@@ -3,9 +3,14 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
+use Cerberus\Core\Identifier;
+use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Policy\Expressions\Apply;
+use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
+use Ds\Set;
 
 class Condition
 {
@@ -14,59 +19,58 @@ class Condition
     /** @var Expression */
     protected $expression;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
-        // function stuff
-        $todo = true;
+        $arguments = new Set();
+        foreach ($data['apply']['apply'] as $applyData) {
+            $attribute = new AttributeDesignator(
+                $applyData['attributeDesignator']['category'],
+                $applyData['attributeDesignator']['dataType'],
+                $applyData['attributeDesignator']['mustBePresent'],
+                $applyData['attributeDesignator']['attributeId']
+            );
+            $arguments->add(new Apply($applyData['functionId'], new Set([$attribute])));
+        }
+        $this->expression = new Apply($data['apply']['functionId'], $arguments);
     }
 
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults)
     {
         if (! $this->validate()) {
-            return new ExpressionResultBoolean($this->getStatus());
+            return new ExpressionResultBoolean(false, $this->getStatus());
         }
 
-        /*
-         * Evaluate the expression
-         */
         $expressionResult = $this->getExpression()->evaluate($evaluationContext, $policyDefaults);
 
         if (! $expressionResult->isOk()) {
-            return new ExpressionResultBoolean($expressionResult->getStatus());
+            return new ExpressionResultBoolean(false, $expressionResult->getStatus());
         }
 
-        /*
-         * Ensure the result is a single element of type boolean
-         */
         if ($expressionResult->isBag()) {
-            return ERB_RETURNED_BAG;
+            return new ExpressionResultBoolean(false, Status::createProcessingError('Condition Expression returned a bag'));
         }
 
         if (! $attributeValueResult = $expressionResult->getValue()) {
-            return ERB_RETURNED_NULL;
-        } else {
-            if (! DataTypes . DT_BOOLEAN . getId() . equals($attributeValueResult->getDataTypeId())) {
-                return ERB_RETURNED_NON_BOOLEAN;
-            }
+            return new ExpressionResultBoolean(false, Status::createProcessingError('Null value from Condition Expression'));
         }
 
-        /*
-        * Otherwise it is a valid condition evaluation
-        */
-//        Boolean booleanValue = null;
-//        try {
-//        booleanValue = DataTypes.DT_BOOLEAN.convert($attributeValueResult->getValue());
-//        } catch (DataTypeException ex) {
-//        return new ExpressionResultBoolean(new StdStatus(StdStatusCode.STATUS_CODE_PROCESSING_ERROR,
-//        ex.getMessage()));
-//        }
-//
-//        if (booleanValue == null) {
-//        return ERB_INVALID_BOOLEAN;
-//        } else {
-//        return (booleanValue.booleanValue()
-//        ? ExpressionResultBoolean.ERB_TRUE : ExpressionResultBoolean.ERB_FALSE);
-//        }
+        if ($attributeValueResult->getDataTypeId() !== Identifier::DATATYPE_BOOLEAN) {
+            return new ExpressionResultBoolean(false, Status::createProcessingError('Non-boolean value from Condition Expression'));
+        }
+
+        return new ExpressionResultBoolean($attributeValueResult->getValue(), Status::createOk());
+    }
+
+    public function getExpression(): Expression
+    {
+        return $this->expression;
+    }
+
+    public function setExpression(Expression $expression): self
+    {
+        $this->expression = $expression;
+
+        return $this;
     }
 
     protected function validateComponent(): bool
@@ -76,7 +80,7 @@ class Condition
 
             return false;
         } else {
-            $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+            $this->setStatus(StatusCode::STATUS_CODE_OK());
 
             return true;
         }

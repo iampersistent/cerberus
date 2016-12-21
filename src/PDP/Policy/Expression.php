@@ -3,8 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-class Expression
+use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Policy\Traits\PolicyComponent;
+
+abstract class Expression
 {
     use PolicyComponent;
 
+    public abstract function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult;
 }

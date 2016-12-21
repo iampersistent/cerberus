@@ -87,6 +87,11 @@ class Request
         return $this->requestAttributesByCategoryId->get($category, null);
     }
 
+    /**
+     * @param string|null $category
+     *
+     * @return RequestAttributes[]|Set
+     */
     public function getRequestAttributes(string $category = null): Set
     {
         if ($category) {
@@ -130,6 +135,9 @@ class Request
         return $this->multiRequests;
     }
 
+    /**
+     * @return Status|null
+     */
     public function getStatus()
     {
         return $this->status;

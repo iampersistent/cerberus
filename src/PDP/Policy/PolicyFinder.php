@@ -73,7 +73,7 @@ class PolicyFinder
             $matchResult = null;
             try {
                 $matchResult = $policyDef->match($evaluationContext);
-                switch ($matchResult->getMatchCode()) {
+                switch ($matchResult->getMatchCode()->getValue()) {
                     case MatchCode::INDETERMINATE:
                         if (! $firstIndeterminate) {
                             $firstIndeterminate = new PolicyFinderResult($matchResult->getStatus());

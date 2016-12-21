@@ -56,10 +56,8 @@ class Rule implements Matchable
         /*
          * See if our condition matches
          */
-        if ($thisCondition = $this->getCondition()) {
-            $expressionResultCondition = $thisCondition->evaluate($evaluationContext,
-                $this->policy->getPolicyDefaults());
-
+        if ($condition = $this->getCondition()) {
+            $expressionResultCondition = $condition->evaluate($evaluationContext, $this->policy->getPolicyDefaults());
 
             if (! $expressionResultCondition->isOk()) {
                 return new EvaluationResult(Decision::INDETERMINATE(), $expressionResultCondition->getStatus());
@@ -78,7 +76,7 @@ class Rule implements Matchable
 //           ->getPolicyDefaults(), $this->getRuleEffect()->getDecision(), $this->getAdviceExpressions());
 //        return new EvaluationResult($this->getRuleEffect()->getDecision(), $listObligations, $listAdvices);
 
-        return new EvaluationResult($this->getRuleEffect()->getDecision(), new Status(StatusCode::STATUS_CODE_OK()));
+        return new EvaluationResult($this->getRuleEffect()->getDecision(), Status::createOk());
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
