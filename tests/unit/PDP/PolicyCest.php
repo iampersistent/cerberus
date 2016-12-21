@@ -26,7 +26,7 @@ class PolicyCest
                 'getRequest' => Stub::make(
                     Request::class,
                     [
-                        'getReturnPolicyIdList' => true,
+                        'shouldReturnPolicyIdList' => true,
                     ]
                 ),
             ]
