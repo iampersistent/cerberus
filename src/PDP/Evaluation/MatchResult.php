@@ -18,14 +18,19 @@ class MatchResult
         $this->status = $status ?? Status::createOk('OK');
     }
 
-    public static function createMatch(): MatchResult
+    public static function createIndeterminate(Status $status = null): MatchResult
     {
-        return new MatchResult(MatchCode::MATCH());
+        return new MatchResult(MatchCode::INDETERMINATE(), $status);
     }
 
-    public static function createNoMatch(): MatchResult
+    public static function createMatch(Status $status = null): MatchResult
     {
-        return new MatchResult(MatchCode::NO_MATCH());
+        return new MatchResult(MatchCode::MATCH(), $status);
+    }
+
+    public static function createNoMatch(Status $status = null): MatchResult
+    {
+        return new MatchResult(MatchCode::NO_MATCH(), $status);
     }
 
     public function getMatchCode(): MatchCode

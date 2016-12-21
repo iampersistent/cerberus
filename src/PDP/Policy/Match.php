@@ -44,24 +44,24 @@ class Match implements Matchable
     {
         $this->functionDefinitionFactory = $evaluationContext->getFunctionDefinitionFactory();
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
+            return MatchResult::createIndeterminate($this->getStatus());
         }
 
         /** @var ExpressionResult $expressionResult */
         $expressionResult = $this->attributeBase->evaluate($evaluationContext, $this->policyDefaults);
 
         if (! $expressionResult->isOk()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
+            return MatchResult::createIndeterminate($expressionResult->getStatus());
         }
 
         $functionDefinitionMatch = $this->getFunctionDefinition();
         $functionArgument1 = new FunctionArgumentAttributeValue($this->attributeValue);
 
         if ($expressionResult->isBag()) {
-            $matchResult = new MatchResult(MatchCode::NO_MATCH());
-            $bagAttributeValues = $expressionResult->getBag(); // Bag
+            $matchResult = MatchResult::createNoMatch();
+            $bagAttributeValues = $expressionResult->getBag();
             if ($bagAttributeValues) {
-                $attributeValues = $bagAttributeValues->getAttributeValues(); // AttributeValue
+                $attributeValues = $bagAttributeValues->getAttributeValues();
                 foreach ($attributeValues as $attributeValue) {
                     $matchResultValue = $this->processMatch(
                         $evaluationContext,
@@ -92,7 +92,7 @@ class Match implements Matchable
          */
         $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
         if (! $attributeValueExpressionResult) {
-            return new MatchResult(MatchCode::INDETERMINATE(), Status::createProcessingError('Null AttributeValue'));
+            return MatchResult::createIndeterminate(Status::createProcessingError('Null AttributeValue'));
         }
 
         return $this->processMatch($evaluationContext, $functionDefinitionMatch, $functionArgument1,
@@ -105,28 +105,28 @@ class Match implements Matchable
         FunctionArgument ...$arguments
     ): MatchResult
     {
-        $expressionResult = $functionDefinition->evaluate($evaluationContext, new Set($arguments)); // ExpressionResult
+        $expressionResult = $functionDefinition->evaluate($evaluationContext, new Set($arguments));
         if (! $expressionResult->isOk()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $expressionResult->getStatus());
+            return MatchResult::createIndeterminate($expressionResult->getStatus());
         }
 
         try {
             $attributeValueResult = $expressionResult->getValue();
         } catch (DataTypeException $e) {
-            return new MatchResult(MatchCode::INDETERMINATE(),
+            return MatchResult::createIndeterminate(
                 Status::createProcessingError($e->getMessage()));
         }
         if (! $attributeValueResult) {
-            return new MatchResult(MatchCode::INDETERMINATE(), Status::createProcessingError(
+            return MatchResult::createIndeterminate(Status::createProcessingError(
                 'Non-boolean result from Match Function ' .
                 $functionDefinition->getId() . ' on ' .
                 $expressionResult->getValue()->toString()));
         }
         if ($attributeValueResult->getValue()) {
-            return new MatchResult(MatchCode::MATCH());
+            return MatchResult::createMatch();
         }
 
-        return new MatchResult(MatchCode::NO_MATCH());
+        return MatchResult::createNoMatch();
     }
 
     protected function getFunctionDefinition(): FunctionDefinition
@@ -135,8 +135,7 @@ class Match implements Matchable
             try {
                 $this->functionDefinition = $this->functionDefinitionFactory->getFunctionDefinition($this->matchId);
             } catch (FactoryException $e) {
-                $this->setStatus(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                    'FactoryException getting FunctionDefinition');
+                $this->setStatus(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'FactoryException getting FunctionDefinition');
             }
         }
 

@@ -40,26 +40,17 @@ class Apply extends Expression
             return new ExpressionResultError($this->getStatus());
         }
 
-        /*
-         * Get the FunctionDefinition
-         */
         $functionDefinition = $this->getFunctionDefinition();
         if (! $functionDefinition) {
             return new ExpressionResultError(Status::createProcessingError("Unknown Function: $this->functionId"));
         }
 
-        /*
-         * Get all of the arguments and convert them into FunctionArgument objects->
-         */
         $functionArguments = new Set();
         foreach ($this->arguments as $argument) {
             $functionArguments->add(new FunctionArgumentExpression($argument,
                 $evaluationContext, $policyDefaults));
         }
 
-        /*
-         * Apply the FunctionDefinition to the arguments
-         */
         return $functionDefinition->evaluate($evaluationContext, $functionArguments);
     }
 

@@ -83,9 +83,7 @@ class PolicyFinder
                         if (! $policyDefFirstMatch) {
                             $policyDefFirstMatch = $policyDef;
                         } else {
-                            return new PolicyFinderResult(
-                                Status::createProcessingError('Multiple applicable root policies')
-                            );
+                            return new PolicyFinderResult(Status::createProcessingError('Multiple applicable root policies'));
                         }
                         break;
                     case MatchCode::NO_MATCH:
@@ -93,28 +91,20 @@ class PolicyFinder
                 }
             } catch (EvaluationException $e) {
                 if (! $firstIndeterminate) {
-                    $firstIndeterminate = new PolicyFinderResult(
-                        new Status(
-                            StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                            $e->getMessage()));
+                    $firstIndeterminate = new PolicyFinderResult(Status::createProcessingError($e->getMessage()));
                 }
             }
         }
 
         if (! $policyDefFirstMatch) {
-            if (! $firstIndeterminate) {
+            if ($firstIndeterminate) {
                 return $firstIndeterminate;
             } else {
-                return new PolicyFinderResult(
-                    Status::createProcessingError('No matching root policy found')
-                );
+                return new PolicyFinderResult(Status::createProcessingError('No matching root policy found'));
             }
         }
 
-        return new PolicyFinderResult(
-            Status::createOk(),
-            $policyDefFirstMatch
-        );
+        return new PolicyFinderResult(Status::createOk(), $policyDefFirstMatch);
     }
 
     protected function storeInPolicyMap(PolicyDef $policyDef)

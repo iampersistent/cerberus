@@ -14,7 +14,6 @@ class FunctionDefinitionFactory
 
     public function __construct($map = [])
     {
-
     }
 
     /**
@@ -25,7 +24,6 @@ class FunctionDefinitionFactory
     public function getFunctionDefinition($id)
     {
         $parts = explode(':', $id);
-
         $method = 'create' . str_replace('-', '', ucwords($parts[1], '-'));
 
         return $this->$method($id);

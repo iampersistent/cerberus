@@ -76,8 +76,7 @@ class PolicyDef extends PolicySetChild
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(),
-                new Status($this->getStatusCode(), $this->getStatusMessage()));
+            return MatchResult::createIndeterminate($this->getStatus());
         }
 
         return $this->target->match($evaluationContext);

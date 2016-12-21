@@ -47,8 +47,7 @@ class AllOf implements Matchable
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(),
-                new Status($this->getStatusCode(), $this->getStatusMessage()));
+            return MatchResult::createIndeterminate($this->getStatus());
         }
 
         $matchResultFallThrough = MatchResult::createMatch();

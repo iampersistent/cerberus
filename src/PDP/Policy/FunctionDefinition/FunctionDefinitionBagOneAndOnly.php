@@ -37,15 +37,12 @@ class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
 
         if ($bag->size() !== 1) {
             return new ExpressionResultError(Status::createProcessingError(
-                $this->getShortFunctionId() . ' Expected 1 but Bag has '
-                . $bag->size() . ' elements'));
+                $this->getShortFunctionId() . ' Expected 1 but Bag has ' . $bag->size() . ' elements'));
         }
 
         // get the single value from the bag
         $attributeValueOneAndOnly = $bag->getAttributeValues()->first();
 
-// make sure it has the right type
-//
         if ($this->getDataTypeId() !== $attributeValueOneAndOnly->getDataTypeId()) {
             return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId()

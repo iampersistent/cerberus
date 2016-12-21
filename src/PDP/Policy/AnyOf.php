@@ -28,7 +28,7 @@ class AnyOf implements Matchable
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
+            return MatchResult::createIndeterminate($this->getStatus());
         }
 
         // Assume "No Match" until we find a match or an indeterminate result

@@ -78,8 +78,7 @@ class CerberusEngine implements PdpEngine
             } else {
                 $evaluationContext = $this->evaluationContextFactory->getEvaluationContext($individualDecision); // EvaluationContext
                 if (!$evaluationContext) {
-                    $individualDecisionResult = new Result(Status::createProcessingError(
-                            'Null EvaluationContext'));
+                    $individualDecisionResult = new Result(Status::createProcessingError('Null EvaluationContext'));
                 } else {
                     $individualDecisionResult = $this->processRequest($evaluationContext);
                 }

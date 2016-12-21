@@ -20,7 +20,7 @@ class Target implements Matchable
     public function match(EvaluationContext $evaluationContext): MatchResult
     {
         if (! $this->validate()) {
-            return new MatchResult(MatchCode::INDETERMINATE(), $this->getStatus());
+            return MatchResult::createIndeterminate($this->getStatus());
         }
 
         foreach ($this->anyOfs as $anyOf) {
@@ -30,7 +30,7 @@ class Target implements Matchable
             }
         }
 
-        return new MatchResult(MatchCode::MATCH());
+        return MatchResult::createMatch();
     }
 
     public function addAnyOf(AnyOf $anyOf)

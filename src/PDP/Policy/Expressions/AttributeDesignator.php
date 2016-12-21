@@ -34,40 +34,25 @@ class AttributeDesignator extends AttributeRetrievalBase
         return $this->attributeId;
     }
 
-    public function evaluate(
-        EvaluationContext $evaluationContext,
-        PolicyDefaults $policyDefaults
-    ): ExpressionResult
+    public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult
     {
         if (! $this->validate()) {
             return new ExpressionResultError($this->getStatus());
         }
 
-        /*
-         * Set up the PIPRequest representing this
-         */
         $pipRequest = $this->getPipRequest();
 
-        /*
-         * Query the evaluation context for results
-         */
         try {
             $pipResponse = $evaluationContext->getAttributes($pipRequest);
         } catch (PipException $e) {
             throw new EvaluationException("PIPException getting Attributes", $e);
         }
 
-        /*
-         * See if the request was successful
-         */
         $pipStatus = $pipResponse->getStatus();
         if ($pipStatus && ! $pipStatus->getStatusCode()->is(StatusCode::STATUS_CODE_OK)) {
             return new ExpressionResult($pipStatus);
         }
 
-        /*
-         * See if there were any results
-         */
         $bagAttributeValues = new Bag();
         foreach ($pipResponse->getAttributes() as $attribute) {
             if ($this->matchAttribute($attribute)) {
@@ -79,8 +64,8 @@ class AttributeDesignator extends AttributeRetrievalBase
             }
         }
         if ($this->getMustBePresent() && $bagAttributeValues->count() == 0) {
-            return new ExpressionResultError(new Status(StatusCode::STATUS_CODE_MISSING_ATTRIBUTE(),
-                'Missing required attribute' . $this->getMissingAttributeDetail())); // originally missing attribute detail was separate param
+            return new ExpressionResultError(Status::createMissingAttribute(
+                "Missing required attribute: $this->attributeId"));
         } else {
             return new ExpressionResultBag($bagAttributeValues);
         }
@@ -129,14 +114,10 @@ class AttributeDesignator extends AttributeRetrievalBase
 
     protected function matchAttributeValue(AttributeValue $attributeValue): bool
     {
-        if ($this->getDataTypeId() !== $attributeValue->getDataTypeId()) {
-            return false;
-        }
-
-        return true;
+        return $this->getDataTypeId() === $attributeValue->getDataTypeId();
     }
 
-    protected function getPIPRequest(): PipRequest
+    protected function getPipRequest(): PipRequest
     {
         if (! $this->pipRequest) {
             $this->pipRequest = new PipRequest($this->getCategory(), $this->getAttributeId(),

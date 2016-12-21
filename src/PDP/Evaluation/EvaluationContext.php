@@ -45,13 +45,6 @@ class EvaluationContext extends PipFinder
         return $this->functionDefinitionFactory;
     }
 
-    /**
-     * Gets the original <code>Request</code> provided to the <code>ATTPDPEngine</code>'s <code>decide</code>
-     * method.
-     *
-     * @return the <code>Request</code> provided to the <code>ATTPDPEngine</code>'s <code>decide</code>
-     *         method.
-     */
     public function getRequest(): Request
     {
         return $this->request;
@@ -70,7 +63,7 @@ class EvaluationContext extends PipFinder
      * @return a <code>PolicyFinderResult</code> with the <code>Policy</code> matching the given
      *         <code>IdReferenceMatch</code>
      */
-    public function getPolicy(IdReferenceMatch $idReferenceMatch): Policy
+    public function getPolicy($idReferenceMatch): Policy
     {
         return $this->policyFinder->getPolicy($this);
     }

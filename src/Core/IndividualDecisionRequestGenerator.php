@@ -3,9 +3,11 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
+use Cerberus\Core\Exception\ScopeResolverException;
 use Cerberus\PDP\ScopeResolver;
 use Ds\Map;
 use Ds\Set;
+use Exception;
 
 class IndividualDecisionRequestGenerator
 {
@@ -96,7 +98,7 @@ class IndividualDecisionRequestGenerator
         foreach ($request->getRequestAttributes() as $requestAttribute) {
             $identifierCategory = $requestAttribute->getCategory();
             if ($identifierCategory == null) {
-                $this->individualDecisionRequests->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
+                $this->individualDecisionRequests->add(new Request(Status::createSyntaxError()));
 
                 return;
             }
@@ -143,7 +145,7 @@ class IndividualDecisionRequestGenerator
     protected function processScopes(Request $request)
     {
         if ($request->getStatus() && !$request->getStatus()->isOk()) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         /*
@@ -160,7 +162,7 @@ class IndividualDecisionRequestGenerator
          * point there should be at most one.
          */
         $requestAttributesResource = $request->getRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
-        if ($requestAttributesResource == null) {
+        if (! $requestAttributesResource) {
             $this->processContentSelectors($request);
 
             return;
@@ -172,12 +174,12 @@ class IndividualDecisionRequestGenerator
         try {
             $scopeQualifier = $this->getScopeQualifier($requestAttributesResource);
         } catch (ScopeResolverException $e) {
-        $this->individualDecisionRequests
-            ->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR(), $e->getMessage())));
+            $this->individualDecisionRequests
+                ->add(new Request(Status::createSyntaxError($e->getMessage())));
 
-        return;
-    }
-        if ($scopeQualifier == null) {
+            return;
+        }
+        if (! $scopeQualifier) {
             $this->processContentSelectors($request);
 
             return;
@@ -188,8 +190,8 @@ class IndividualDecisionRequestGenerator
          * using the scope resolver.
          */
         $attributesResourceId = $requestAttributesResource->getAttributes(ID_RESOURCE_RESOURCE_ID);
-        if ($attributesResourceId == null) {
-            $this->individualDecisionRequests->add(new Request(new Status(StatusCode::STATUS_CODE_SYNTAX_ERROR())));
+        if (! $attributesResourceId) {
+            $this->individualDecisionRequests->add(new Request(Status::createSyntaxError()));
 
             return;
         }

@@ -50,7 +50,7 @@ class PolicyCest
         $target = Stub::make(
             Target::class,
             [
-                'match' => new MatchResult(MatchCode::MATCH()),
+                'match' => MatchResult::createMatch(),
             ]
         );
 

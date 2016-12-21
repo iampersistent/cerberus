@@ -27,11 +27,7 @@ class Response
         $this->results->add($result);
     }
 
-    /**
-     * Gets the <code>Collection</code> of {@link Result}s objects in this <code>Response</code>. If there are
-     * no <code>Result</code>s, this method must return an empty <code>Collection</code>.
-     */
-    public function getResults()
+    public function getResults(): Set
     {
         return $this->results;
     }
