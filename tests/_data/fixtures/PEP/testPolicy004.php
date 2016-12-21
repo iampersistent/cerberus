@@ -12,51 +12,57 @@ $testPolicy004 = [
                     'anyOf' => [
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'ROLE_DOCUMENT_WRITER',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'subject-category:access-subject',
-                                        'attributeId'   => 'subject:role-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
-                                    ],
-                                ],
-                            ],
-                        ],
-                        [
-                            'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'Test\Document',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'attribute-category:resource',
-                                        'attributeId'   => 'resource:resource-type',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'ROLE_DOCUMENT_WRITER',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'subject-category:access-subject',
+                                            'attributeId'   => 'subject:role-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'write',
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'Test\Document',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'attribute-category:resource',
+                                            'attributeId'   => 'resource:resource-type',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'attribute-category:action',
-                                        'attributeId'   => 'action:action-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                ],
+                            ],
+                        ],
+                        [
+                            'allOf' => [
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'write',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'attribute-category:action',
+                                            'attributeId'   => 'action:action-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],
@@ -96,51 +102,57 @@ $testPolicy004 = [
                     'anyOf' => [
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'ROLE_DOCUMENT_READER',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'subject-category:access-subject',
-                                        'attributeId'   => 'subject:role-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
-                                    ],
-                                ],
-                            ],
-                        ],
-                        [
-                            'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'Test\Document',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'attribute-category:resource',
-                                        'attributeId'   => 'resource:resource-type',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'ROLE_DOCUMENT_READER',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'subject-category:access-subject',
+                                            'attributeId'   => 'subject:role-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'read',
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'Test\Document',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'attribute-category:resource',
+                                            'attributeId'   => 'resource:resource-type',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'attribute-category:action',
-                                        'attributeId'   => 'action:action-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                ],
+                            ],
+                        ],
+                        [
+                            'allOf' => [
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'read',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'attribute-category:action',
+                                            'attributeId'   => 'action:action-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],

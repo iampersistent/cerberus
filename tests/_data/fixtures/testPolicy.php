@@ -13,34 +13,38 @@ $testPolicy = [
                     'anyOf' => [
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'Julius Hibbert',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'subject-category:access-subject',
-                                        'attributeId'   => 'subject:subject-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'Julius Hibbert',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'subject-category:access-subject',
+                                            'attributeId'   => 'subject:subject-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],
                         ],
                         [
                             'allOf' => [
-                                'match' => [
-                                    'matchId'             => 'function:string-equal',
-                                    'attributeValue'      => [
-                                        'dataType' => 'string',
-                                        'text'     => 'http://medico.com/record/patient/BartSimpson',
-                                    ],
-                                    'attributeDesignator' => [
-                                        'category'      => 'attribute-category:resource',
-                                        'attributeId'   => 'resource:resource-id',
-                                        'dataType'      => 'string',
-                                        'mustBePresent' => false,
+                                [
+                                    'match' => [
+                                        'matchId'             => 'function:string-equal',
+                                        'attributeValue'      => [
+                                            'dataType' => 'string',
+                                            'text'     => 'http://medico.com/record/patient/BartSimpson',
+                                        ],
+                                        'attributeDesignator' => [
+                                            'category'      => 'attribute-category:resource',
+                                            'attributeId'   => 'resource:resource-id',
+                                            'dataType'      => 'string',
+                                            'mustBePresent' => false,
+                                        ],
                                     ],
                                 ],
                             ],

@@ -88,11 +88,12 @@ class PolicyFinderFactory
                 $target->addAnyOf($anyOf);
             }
             $rule = (new Rule($policy))
-                ->setCondition(new Condition($ruleData['condition']))
                 ->setRuleEffect(RuleEffect::getRuleEffect($ruleData['effect']))
                 ->setRuleId($ruleData['ruleId'])
                 ->setTarget($target);
-
+            if (isset($ruleData['condition'])) {
+                $rule->setCondition(new Condition($ruleData['condition']));
+            }
             $policy->addRule($rule);
         }
     }

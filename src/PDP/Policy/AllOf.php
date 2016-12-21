@@ -23,19 +23,20 @@ class AllOf implements Matchable
     public function __construct($matches)
     {
         foreach ($matches as $match) {
+            $matchData = $match['match'];
             $attributeValue = new AttributeValue(
-                $match['attributeValue']['dataType'],
-                $match['attributeValue']['text']
+                $matchData['attributeValue']['dataType'],
+                $matchData['attributeValue']['text']
             );
             $attributeBase = new AttributeDesignator(
-                $match['attributeDesignator']['category'],
-                $match['attributeDesignator']['dataType'],
-                $match['attributeDesignator']['mustBePresent'],
-                $match['attributeDesignator']['attributeId']
+                $matchData['attributeDesignator']['category'],
+                $matchData['attributeDesignator']['dataType'],
+                $matchData['attributeDesignator']['mustBePresent'],
+                $matchData['attributeDesignator']['attributeId']
             );
             $policyDefaults = new PolicyDefaults();
             $this->matches[] = new Match(
-                $match['matchId'],
+                $matchData['matchId'],
                 $attributeValue,
                 $attributeBase,
                 $policyDefaults
