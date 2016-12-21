@@ -40,12 +40,12 @@ class RequestEngine implements PipEngine
     public function getAttributes(PipRequest $pipRequest, PipFinder $pipFinder = null): PipResponse
     {
         if (! $this->request) {
-            return new PipResponse(new Status(StatusCode::STATUS_CODE_OK()));
+            return new PipResponse(Status::createOk());
         }
 
         $requestAttributes = $this->request->getRequestAttributes($pipRequest->getCategory());
         if ($requestAttributes->isEmpty()) {
-            return new PipResponse(new Status(StatusCode::STATUS_CODE_OK()));
+            return new PipResponse(Status::createOk());
         }
 
         $pipResponse = new PipResponse();
@@ -72,16 +72,16 @@ class RequestEngine implements PipEngine
                     * Only a subset of the values match, so we have to construct a new Attribute
                     * containing only the matching values.
                     */
-                    $listAttributeValues = new Set();
+                    $attributeValues = new Set();
                     foreach ($attributes->getValues() as $attributeValue) {
                         if ($pipRequest->getDataTypeId() === $attributeValue->getDataTypeId()) {
-                            $listAttributeValues->add($attributeValue);
+                            $attributeValues->add($attributeValue);
                         }
                     }
-                    if (! $listAttributeValues->isEmpty()) {
+                    if (! $attributeValues->isEmpty()) {
                         $pipResponse->addAttribute(new Attribute($attributes->getCategory(),
                             $attributes->getAttributeId(),
-                            $listAttributeValues, $attributes->getIssuer(), $attributes->getIncludeInResults()));
+                            $attributeValues, $attributes->getIssuer(), $attributes->getIncludeInResults()));
                     }
                 }
             }

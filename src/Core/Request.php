@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\Core;
 
 use Ds\Map;
+use Ds\Sequence;
 use Ds\Set;
 
 class Request
@@ -32,13 +33,13 @@ class Request
         // where is the class name?
         $this->requestAttributes->add($newRequestAttributes);
         if ($this->requestAttributesByCategoryId->hasKey($newRequestAttributes->getCategory())) {
-            $listRequestAttributesForCategoryId = $this->requestAttributesByCategoryId->get($newRequestAttributes->getCategory());
+            $requestAttributesForCategoryId = $this->requestAttributesByCategoryId->get($newRequestAttributes->getCategory());
         } else {
-            $listRequestAttributesForCategoryId = new Set();
+            $requestAttributesForCategoryId = new Set();
             $this->requestAttributesByCategoryId->put($newRequestAttributes->getCategory(),
-                $listRequestAttributesForCategoryId);
+                $requestAttributesForCategoryId);
         }
-        $listRequestAttributesForCategoryId->add($newRequestAttributes);
+        $requestAttributesForCategoryId->add($newRequestAttributes);
         if ($newRequestAttributes->getId()) {
             $this->requestAttributesById->put($newRequestAttributes->getId(), $newRequestAttributes);
         }
@@ -132,7 +133,8 @@ class Request
      */
     public function getMultiRequests()
     {
-        return $this->multiRequests;
+        // todo
+        return null;
     }
 
     /**
@@ -156,6 +158,8 @@ class Request
      */
     public function equals($object): bool
     {
-        $todo = true;
+        // todo
+
+        return false;
     }
 }

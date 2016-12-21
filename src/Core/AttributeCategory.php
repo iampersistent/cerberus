@@ -19,9 +19,6 @@ class AttributeCategory
         $this->categoryIdentifier = $categoryIdentifier;
     }
 
-    /**
-     * Gets the {@link Identifier} for the XACML Category of this <code>AttributeCategory</code>.
-     */
     public function getCategory(): string
     {
         return $this->categoryIdentifier;
@@ -40,8 +37,7 @@ class AttributeCategory
     }
 
     /**
-     * Gets an <code>Iterator</code> over all of the {@link Attribute}s in this <code>AttributeCategory</code>
-     * with the given {@link Identifier} matching their XACML AttributeId.
+     * @return Attribute|null
      */
     public function getAttribute(string $attributeId)
     {

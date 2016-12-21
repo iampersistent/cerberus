@@ -56,8 +56,7 @@ class FunctionArgumentExpression extends FunctionArgument
             $this->expressionResult = $this->expression->evaluate($this->evaluationContext,
                 $this->policyDefaults);
         } catch (EvaluationException $e) {
-            $this->expressionResult = new ExpressionResultError(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                $e->getMessage()));
+            $this->expressionResult = new ExpressionResultError(Status::createProcessingError($e->getMessage()));
         }
 
         return $this->expressionResult;

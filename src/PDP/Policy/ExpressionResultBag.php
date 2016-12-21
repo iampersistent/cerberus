@@ -14,7 +14,7 @@ class ExpressionResultBag extends ExpressionResult
     {
         $this->bag = $bag;
 
-        parent::__construct(new Status(StatusCode::STATUS_CODE_OK()));
+        parent::__construct(Status::createOk());
     }
 
     public function isBag(): bool

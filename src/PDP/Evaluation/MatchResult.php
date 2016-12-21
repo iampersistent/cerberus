@@ -15,7 +15,7 @@ class MatchResult
     public function __construct(MatchCode $matchCode, Status $status = null)
     {
         $this->matchCode = $matchCode;
-        $this->status = $status ?? new Status(StatusCode::STATUS_CODE_OK(), 'OK');
+        $this->status = $status ?? Status::createOk('OK');
     }
 
     public static function createMatch(): MatchResult

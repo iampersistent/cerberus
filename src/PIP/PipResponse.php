@@ -281,7 +281,7 @@ class PipResponse
 
     protected function generateOkResponse()
     {
-        return new PipResponse(new Status(StatusCode::STATUS_CODE_OK()));
+        return new PipResponse(Status::createOk());
     }
 
 

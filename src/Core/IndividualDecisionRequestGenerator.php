@@ -27,20 +27,16 @@ class IndividualDecisionRequestGenerator
         $this->createIndividualDecisionRequests($request);
     }
 
-    /**
-     * Gets an <code>Iterator</code> over the individual decision <code>Request</code>s for the original
-     * <code>Request</code>.
-     */
-    public function getIndividualDecisionRequests()
+    public function getIndividualDecisionRequests(): Set
     {
         return $this->individualDecisionRequests;
     }
 
     /**
-     * Populates the individual decision <code>Request</code>s from the given <code>Request</code> using all
+     * Populates the individual decision Request from the given Request using all
      * supported profiles. The process here is documented as step 1. of Section 4 of the XACML document.
      *
-     * @param request the <code>Request</code> to explode
+     * @param Request $request
      */
     protected function createIndividualDecisionRequests(Request $request)
     {
@@ -59,7 +55,7 @@ class IndividualDecisionRequestGenerator
         if ($requestReferences = $request->getMultiRequests()) {
             foreach ($requestReferences as $requestReference) {
                 $requestFromReferences = $this->processMultiRequest($request, $requestReference);
-                if ($requestFromReferences->getStatus() == null || $requestFromReferences->getStatus()->isOk()) {
+                if (! $requestFromReferences->getStatus() || $requestFromReferences->getStatus()->isOk()) {
                     $this->processRepeatedCategories($requestFromReferences);
                 } else {
                     /*

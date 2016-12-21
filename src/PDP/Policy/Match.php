@@ -92,9 +92,7 @@ class Match implements Matchable
          */
         $attributeValueExpressionResult = $expressionResult->getValue(); // AttributeValue
         if (! $attributeValueExpressionResult) {
-            return new MatchResult(MatchCode::INDETERMINATE(),
-                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                    'Null AttributeValue'));
+            return new MatchResult(MatchCode::INDETERMINATE(), Status::createProcessingError('Null AttributeValue'));
         }
 
         return $this->processMatch($evaluationContext, $functionDefinitionMatch, $functionArgument1,
@@ -116,10 +114,10 @@ class Match implements Matchable
             $attributeValueResult = $expressionResult->getValue();
         } catch (DataTypeException $e) {
             return new MatchResult(MatchCode::INDETERMINATE(),
-                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage()));
+                Status::createProcessingError($e->getMessage()));
         }
         if (! $attributeValueResult) {
-            return new MatchResult(MatchCode::INDETERMINATE(), new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+            return new MatchResult(MatchCode::INDETERMINATE(), Status::createProcessingError(
                 'Non-boolean result from Match Function ' .
                 $functionDefinition->getId() . ' on ' .
                 $expressionResult->getValue()->toString()));
@@ -183,7 +181,7 @@ class Match implements Matchable
             return false;
         }
 
-        $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+        $this->setStatus(StatusCode::STATUS_CODE_OK());
 
         return true;
     }

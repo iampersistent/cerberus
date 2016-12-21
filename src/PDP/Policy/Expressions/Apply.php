@@ -45,8 +45,7 @@ class Apply extends Expression
          */
         $functionDefinition = $this->getFunctionDefinition();
         if (! $functionDefinition) {
-            return new ExpressionResultError(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
-                "Unknown Function: $this->functionId"));
+            return new ExpressionResultError(Status::createProcessingError("Unknown Function: $this->functionId"));
         }
 
         /*
@@ -88,7 +87,7 @@ class Apply extends Expression
 
             return false;
         } else {
-            $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+            $this->setStatus(StatusCode::STATUS_CODE_OK());
 
             return true;
         }

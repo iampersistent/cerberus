@@ -42,7 +42,7 @@ class PolicyCest
 
     protected function createPolicy(): Policy
     {
-        $policy = new Policy(new Status(StatusCode::STATUS_CODE_OK()));
+        $policy = new Policy(Status::createOk());
         $combiningAlgorithm = Stub::make(
             DenyOverrides::class, [
             'combine' => new EvaluationResult(Decision::INDETERMINATE()),

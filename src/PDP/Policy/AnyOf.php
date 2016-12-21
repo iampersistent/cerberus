@@ -59,7 +59,7 @@ class AnyOf implements Matchable
 
             return false;
         } else {
-            $this->setStatus(StatusCode::STATUS_CODE_OK(), null);
+            $this->setStatus(StatusCode::STATUS_CODE_OK());
 
             return true;
         }

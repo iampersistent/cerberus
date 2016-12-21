@@ -84,7 +84,7 @@ class PolicyFinder
                             $policyDefFirstMatch = $policyDef;
                         } else {
                             return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'Multiple applicable root policies')
+                                Status::createProcessingError('Multiple applicable root policies')
                             );
                         }
                         break;
@@ -106,13 +106,13 @@ class PolicyFinder
                 return $firstIndeterminate;
             } else {
                 return new PolicyFinderResult(
-                    new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), 'No matching root policy found')
+                    Status::createProcessingError('No matching root policy found')
                 );
             }
         }
 
         return new PolicyFinderResult(
-            new Status(StatusCode::STATUS_CODE_OK()),
+            Status::createOk(),
             $policyDefFirstMatch
         );
     }
@@ -130,23 +130,12 @@ class PolicyFinder
     protected function getFromPolicyMap($idReferenceMatch, $classPolicyDef)
     {
         /*
-         * Get all of the PolicyDefs for the Identifier in the reference $match
-         */
-        return $this->policiesMap->get($idReferenceMatch, null);
-
-        /*
          * todo: if versioning gets implemented, Iterate over all of the PolicyDefs that were found and select only the ones that $match the version
          * request and the isPolicySet
          */
+        return $this->policiesMap->get($idReferenceMatch, null);
     }
 
-    /**
-     * Looks up the given {@link org.apache.openaz.xacml.api.Identifier} in the map first. If not found, and
-     * the <code>Identifier</code> contains a URL, then attempts to retrieve the document from the URL and
-     * caches it.
-     *
-     * @param $idReferenceMatch the <code>IdReferenceMatch</code> to look up
-     */
     protected function lookupPolicyByIdentifier($id): PolicyFinderResult
     {
         $listCachedPolicies = $this->getFromPolicyMap($id, Policy::class);
@@ -157,35 +146,23 @@ class PolicyFinder
                 $this->getBestMatch($listCachedPolicies)
             );
         } else {
-            return new PolicyFinderResult(
-                Status::createProcessingError("No matching policy found")
-            );
+            return new PolicyFinderResult(Status::createProcessingError('No matching policy found'));
         }
     }
 
-    /**
-     * Looks up the given {@link org.apache.openaz.xacml.api.Identifier} in the map first. If not found, and
-     * the <code>Identifier</code> contains a URL, then attempts to retrieve the document from the URL and
-     * caches it.
-     *
-     * @param $idReferenceMatch the <code>IdReferenceMatch</code> to look up
-     *
-     * @return a <code>PolicyFinderResult</code> with the requested <code>PolicySet</code> or an error status
-     */
     protected function lookupPolicySetByIdentifier($idReferenceMatch): PolicyFinderResult
     {
-        $listCachedPolicySets = $this->getFromPolicyMap($idReferenceMatch, PolicySet::class);
-        if ($listCachedPolicySets == null) {
-            $id = $idReferenceMatch->getId();
-            if ($id != null) {
+        $cachedPolicySets = $this->getFromPolicyMap($idReferenceMatch, PolicySet::class);
+        if (! $cachedPolicySets) {
+            if ($id = $idReferenceMatch->getId()) {
                 $uri = $id->getUri();
-                if ($uri != null && $uri->isAbsolute()) {
+                if ($uri && $uri->isAbsolute()) {
                     $policyDef = null;
                     try {
                         $policyDef = $this->loadPolicyDefFromURI($uri);
                     } catch (PolicyFinderException $e) {
                         return new PolicyFinderResult(
-                            new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $e->getMessage())
+                            Status::createProcessingError($e->getMessage())
                         );
                     }
                     if ($policyDef) {
@@ -196,27 +173,27 @@ class PolicyFinder
                             $this->policiesMap->put($policyDef->getIdentifier(), $listPolicyDefs);
 
                             return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_OK()),
+                                Status::createOk(),
                                 $policyDef
                             );
                         } else {
                             return new PolicyFinderResult(
-                                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "Not a policy set")
+                                Status::createProcessingError('Not a policy set')
                             );
                         }
                     } else {
                         return new PolicyFinderResult(
-                            new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "No matching policy set found")
+                            Status::createProcessingError('No matching policy set found')
                         );
                     }
                 }
             }
         }
-        if ($listCachedPolicySets != null) {
-            return new PolicyFinderResult($this->getBestMatch($listCachedPolicySets));
+        if ($cachedPolicySets) {
+            return new PolicyFinderResult($this->getBestMatch($cachedPolicySets));
         } else {
             return new PolicyFinderResult(
-                new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), "No matching policy set found")
+                Status::createProcessingError('No matching policy set found')
             );
         }
     }
@@ -227,12 +204,12 @@ class PolicyFinder
         $bestMatch = null;
         $bestVersion = null;
         foreach ($matches as $match) {
-            if ($bestMatch == null) {
+            if (! $bestMatch) {
                 $bestMatch = $match;
                 $bestVersion = $match->getVersion();
             } else {
                  $matchVersion = $match->getVersion();
-                if ($matchVersion != null && $matchVersion->compareTo($bestVersion) > 0) {
+                if ($matchVersion && $matchVersion->compareTo($bestVersion) > 0) {
                     $bestMatch = $match;
                     $bestVersion = $matchVersion;
                 }
@@ -254,12 +231,6 @@ class PolicyFinder
         }
     }
 
-    /**
-     * Adds the given <code>PolicyDef</code> to the map of loaded <code>PolicyDef</code>s and adds its child
-     * <code>PolicyDef</code>s recursively.
-     *
-     * @param policyDef the <code>PolicyDef</code> to add
-     */
     protected function updatePolicyMap(PolicyDef $policyDef)
     {
         $this->storeInPolicyMap($policyDef);

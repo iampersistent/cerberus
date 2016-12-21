@@ -19,7 +19,7 @@ class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
     public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
         if (! $arguments || $arguments->count() !== 1) {
-            return new ExpressionResultError(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+            return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId()
                 . ' Expected 1 argument, got '
                 . (! $arguments ? 'null' : $arguments->count())));
@@ -36,7 +36,7 @@ class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
         $bag = $convertedArgument->getBag();
 
         if ($bag->size() !== 1) {
-            return new ExpressionResultError(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+            return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId() . ' Expected 1 but Bag has '
                 . $bag->size() . ' elements'));
         }
@@ -47,7 +47,7 @@ class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
 // make sure it has the right type
 //
         if ($this->getDataTypeId() !== $attributeValueOneAndOnly->getDataTypeId()) {
-            return new ExpressionResultError(new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(),
+            return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId()
                 . ' Element in bag of wrong type-> Expected '
                 . $this->getShortDataType($this->getDataTypeId())

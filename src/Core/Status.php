@@ -11,18 +11,18 @@ class Status
     /** @var string */
     protected $statusMessage;
 
-    public function __construct(StatusCode $statusCode, string $statusMessage = null)
+    public function __construct(StatusCode $statusCode, string $statusMessage = '')
     {
         $this->statusCode = $statusCode;
         $this->statusMessage = $statusMessage;
     }
 
-    public static function createOk($message = null): Status
+    public static function createOk($message = ''): Status
     {
         return new Status(StatusCode::STATUS_CODE_OK(), $message);
     }
 
-    public static function createProcessingError($message = null): Status
+    public static function createProcessingError($message = ''): Status
     {
         return new Status(StatusCode::STATUS_CODE_PROCESSING_ERROR(), $message);
     }
@@ -34,7 +34,7 @@ class Status
 
     public function getStatusMessage(): string
     {
-        return $this->statusMessage ?? '';
+        return $this->statusMessage;
     }
 
     public function isOk(): bool

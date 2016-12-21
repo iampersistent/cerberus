@@ -12,6 +12,6 @@ class ExpressionResultSingle extends ExpressionResult
     public function __construct(AttributeValue $attributeValue)
     {
         $this->attributeValue = $attributeValue;
-        parent::__construct(new Status(StatusCode::STATUS_CODE_OK()));
+        parent::__construct(Status::createOk());
     }
 }
