@@ -27,7 +27,7 @@ abstract class FunctionArgument
 
     public function isOk(): bool
     {
-        return $this->getStatus() === null || $this->getStatus()->isOk();
+        return ! $this->getStatus() || $this->getStatus()->isOk();
     }
 
     public function getStatus()

@@ -48,19 +48,6 @@ class PepAgent
 //            Resource.newInstance(resourceId));
     }
 
-    /**
-     * Returns an authorization decision for the given collection of Domain Objects each with it's own
-     * ObjectMapper instance. Java Primitives/Wrappers or other Standard types (except Collections) are not
-     * supported out of the box. However, client applications may enforce their own rules as they see fit by
-     * providing Custom ObjectMapper(s) for these types.
-     *
-     * @param objects
-     *
-     * @return
-     * @throws PepException - if an appropriate ObjectMapper cannot be found. - if the underlying AzService
-     *             instance/PDP throws an exception - if the PepAgent is configured to throw PepException for
-     *             "Indeterminate" or "Not Applicable" decisions.
-     */
     public function decide($subject, $action, $resources): PepResponse
     {
         $request = $this->pepRequestFactory->newPepRequest($subject, $action, $resources);

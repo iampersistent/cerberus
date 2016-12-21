@@ -56,16 +56,6 @@ class PipResponse
         return $this->attributes;
     }
 
-    /**
-     * Determines if the given {@link org.apache.openaz.xacml.api.pip.PipRequest} matches the given
-     * {@link org.apache.openaz.xacml.api.Attribute} by comparing the category, $attribute id, and if not null
-     * in the <code>PipRequest</code>, the issuer.
-     *
-     * @param $pipRequest the <code>PipRequest</code> to compare against
-     * @param $attribute the <code>Attribute</code> to compare to
-     *
-     * @return true if the <code>Attribute</code> matches the <code>PipRequest</code> else false
-     */
     public static function matches(PipRequest $pipRequest, Attribute $attribute): bool
     {
         if (! $pipRequest->getCategory() === $attribute->getCategory()) {
@@ -81,20 +71,9 @@ class PipResponse
         return true;
     }
 
-    /**
-     * Gets the subset of the {@link org.apache.openaz.xacml.api.AttributeValue}s from the given
-     * <code>Collection</code> whose data type matches the data type in the given
-     * {@link org.apache.openaz.xacml.api.pip.PipRequest}.
-     *
-     * @param $pipRequest the <code>PipRequest</code> to compare against
-     * @param $attributeValues the <code>Collection</code> of <code>AttributeValue</code>s to select from
-     *
-     * @return a <code>Collection</code> of matching <code>AttributeValue</code>s or null if there are no
-     *         matches
-     */
-    public function matchingValues(PipRequest $pipRequest, $attributeValues)
+    public function matchingValues(PipRequest $pipRequest, Set $attributeValues)
     {
-        if ($attributeValues->size() === 0) {
+        if ($attributeValues->isEmpty()) {
             return $attributeValues;
         }
 
@@ -112,7 +91,7 @@ class PipResponse
         /*
          * If there was only one, return a null list
          */
-        if ($attributeValues->size() == 1) {
+        if ($attributeValues->count() === 1) {
             return null;
         }
 
@@ -126,31 +105,12 @@ class PipResponse
         return $attributeValuesMatching->isEmpty() ? null : $attributeValuesMatching;
     }
 
-    /**
-     * Returns a {@link org.apache.openaz.xacml.api.pip.PipResponse} that only contains the
-     * {@link org.apache.openaz.xacml.api.Attribute}s that match the given
-     * {@link org.apache.openaz.xacml.api.pip.PipRequest} with
-     * {@link org.apache.openaz.xacml.api.AttributeValue}s that match the requested data type.
-     *
-     * @param $pipRequest
-     * @param $pipResponse
-     *
-     * @return
-     * @throws org.apache.openaz.xacml.api.pip.PIPException
-     */
     public function getMatchingResponse(PipRequest $pipRequest, PipResponse $pipResponse): PipResponse
     {
-        /*
-         * Error responses should not contain any $attributes, so just return the error response as is.
-         * Likewise for empty responses
-         */
-        if (! $pipResponse->getStatus()->isOk() || $pipResponse->getAttributes()->size() == 0) {
+        if (! $pipResponse->getStatus()->isOk() || $pipResponse->getAttributes()->isEmpty()) {
             return $pipResponse;
         }
 
-        /*
-         * See if the response is simple
-         */
         if ($pipResponse->isSimple()) {
             /*
              * Get the one Attribute and verify that it matches the request, and that the data type of its
@@ -159,7 +119,7 @@ class PipResponse
             $attributeResponse = $pipResponse->getAttributes()->next();
             if (matches($pipRequest, $attributeResponse)) {
                 $attributeValues = $attributeResponse->getValues();
-                if (! $attributeValues || $attributeValues->size() === 0) {
+                if (! $attributeValues || $attributeValues->isEmpty()) {
                     return $pipResponse;
                 } else {
                     $attributeValueResponse = $attributeResponse->getValues()->next();
@@ -185,8 +145,8 @@ class PipResponse
                      */
                     $attributeValuesMatch = $this->matchingValues($pipRequest,
                         $attributeResponse->getValues());
-                    if ($attributeValuesMatch != null && $attributeValuesMatch->size() > 0) {
-                        if ($attributeMatch == null) {
+                    if ($attributeValuesMatch && ! $attributeValuesMatch->isEmpty()) {
+                        if (! $attributeMatch) {
                             $attributeMatch = new Attribute($pipRequest->getCategory(),
                                 $pipRequest->getAttributeId(),
                                 $attributeValuesMatch,
@@ -197,7 +157,7 @@ class PipResponse
                     }
                 }
             }
-            if ($attributeMatch == null) {
+            if (! $attributeMatch) {
                 return $this->generateOkResponse();
             } else {
                 return new PipResponse($attributeMatch);
@@ -221,17 +181,17 @@ class PipResponse
      * Takes a list of simple Attributes and collapses $attributes with the same category, id, value data type,
      * and issuer into a single Attribute and returns the list of collapsed Attributes.
      *
-     * @param $listAttributes
+     * @param $attributes
      *
      * @return
      */
-    protected function collapseAttributes($listAttributes)
+    protected function collapseAttributes(Set $attributes)
     {
-        if ($listAttributes->size() <= 0) {
-            return $listAttributes;
+        if ($attributes->isEmpty()) {
+            return $attributes;
         }
         $map = new Map();
-        foreach ($listAttributes as $attribute) {
+        foreach ($attributes as $attribute) {
             $pipRequest = new PipRequest($attribute);
             if ($map->hasKey($pipRequest)) {
                 $map->get($pipRequest)->addValues($attribute->getValues());
@@ -261,16 +221,16 @@ class PipResponse
         if (! $pipResponse->getStatus()->isOk() || $pipResponse->isSimple()) {
             $map->put(new PipRequest($pipResponse->getAttributes()->next()), $pipResponse);
         } else {
-            $listAllAttributesSimple = new Set();
+            $allAttributesSimple = new Set();
             foreach ($pipResponse->getAttributes() as $attribute) {
-                $listAttributesSplit = $this->simplifyAttribute($attribute);
-                if ($listAttributesSplit != null && $listAttributesSplit->size() > 0) {
-                    $listAllAttributesSimple->addAll($listAttributesSplit);
+                $attributesSplit = $this->simplifyAttribute($attribute);
+                if ($attributesSplit && ! $attributesSplit->isEmpty()) {
+                    $allAttributesSimple->addAll($attributesSplit);
                 }
             }
-            if ($listAllAttributesSimple->size() > 0) {
-                $listAttributesCollapsed = $this->collapseAttributes($listAllAttributesSimple);
-                foreach ($listAttributesCollapsed as $attributeCollapsed) {
+            if (! $allAttributesSimple->isEmpty()) {
+                $attributesCollapsed = $this->collapseAttributes($allAttributesSimple);
+                foreach ($attributesCollapsed as $attributeCollapsed) {
                     $map->put(new PipRequest($attributeCollapsed), new PipResponse($attributeCollapsed));
                 }
             }
@@ -283,7 +243,6 @@ class PipResponse
     {
         return new PipResponse(Status::createOk());
     }
-
 
     /**
      * Splits an Attribute that may contain multiple data types into a list of Attributes, each with only one

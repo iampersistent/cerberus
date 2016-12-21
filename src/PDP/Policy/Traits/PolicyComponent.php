@@ -33,7 +33,7 @@ trait PolicyComponent
 
     public function isOk(): bool
     {
-        return $this->getStatusCode() === StatusCode::STATUS_CODE_OK();
+        return $this->getStatusCode()->is(StatusCode::STATUS_CODE_OK());
     }
 
     public function validate(): bool
