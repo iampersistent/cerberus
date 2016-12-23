@@ -45,7 +45,7 @@ class AttributeDesignator extends AttributeRetrievalBase
         try {
             $pipResponse = $evaluationContext->getAttributes($pipRequest);
         } catch (PipException $e) {
-            throw new EvaluationException("PIPException getting Attributes", $e);
+            throw new EvaluationException('PIPException getting Attributes', $e);
         }
 
         $pipStatus = $pipResponse->getStatus();
@@ -63,7 +63,7 @@ class AttributeDesignator extends AttributeRetrievalBase
                 }
             }
         }
-        if ($this->getMustBePresent() && $bagAttributeValues->count() == 0) {
+        if ($this->getMustBePresent() && $bagAttributeValues->isEmpty()) {
             return new ExpressionResultError(Status::createMissingAttribute(
                 "Missing required attribute: $this->attributeId"));
         } else {

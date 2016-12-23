@@ -138,14 +138,12 @@ class CerberusEngine implements PdpEngine
                     case Decision::DENY:
                     case Decision::NOT_APPLICABLE:
                     case Decision::PERMIT:
-                        return new Result($this->defaultDecision,
-                            Status::createOk('No applicable policy'));
+                        return new Result($this->defaultDecision, Status::createOk('No applicable policy'));
                     case Decision::INDETERMINATE:
                     case Decision::INDETERMINATE_DENY:
                     case Decision::INDETERMINATE_DENY_PERMIT:
                     case Decision::INDETERMINATE_PERMIT:
-                        return new Result($this->defaultDecision,
-                            Status::createProcessingError('No applicable policy'));
+                        return new Result($this->defaultDecision, Status::createProcessingError('No applicable policy'));
                 }
             }
             /** @var Result $result */

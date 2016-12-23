@@ -8,23 +8,19 @@ use Cerberus\Core\Request;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PIP\Contract\PipEngine;
+use Cerberus\PIP\Permission\PermissionManager;
 use Cerberus\PIP\PipFinder;
 use Cerberus\PIP\PipRequest;
 use Cerberus\PIP\PipResponse;
 use Ds\Set;
 
-class RequestEngine implements PipEngine
+class PersistedResourceEngine implements PipEngine
 {
-    protected $request;
+    protected $permissionManager;
 
-    public function __construct(Request $request)
+    public function __construct(PermissionManager $permissionManager)
     {
-        $this->request = $request;
-    }
-
-    protected function getRequest(): Request
-    {
-        return $this->request;
+        $this->permissionManager = $permissionManager;
     }
 
     public function getName(): string
@@ -34,16 +30,12 @@ class RequestEngine implements PipEngine
 
     public function getDescription(): string
     {
-        return 'PipEngine for retrieving Attributes from the Request';
+        return 'PipEngine for retrieving persisted Attributes';
     }
 
     public function getAttributes(PipRequest $pipRequest, PipFinder $pipFinder = null): PipResponse
     {
-        if (! $this->request) {
-            return (new PipResponse())->setStatus(Status::createOk());
-        }
-
-        $requestAttributes = $this->request->getRequestAttributes($pipRequest->getCategory());
+        $requestAttributes = $this->permissionManager->getRequestAttributes($pipRequest->getCategory());
         if ($requestAttributes->isEmpty()) {
             return (new PipResponse())->setStatus(Status::createOk());
         }

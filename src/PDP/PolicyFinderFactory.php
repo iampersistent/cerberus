@@ -13,6 +13,7 @@ use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\Policy\Rule;
 use Cerberus\PDP\Policy\RuleEffect;
 use Cerberus\PDP\Policy\Target;
+use Cerberus\PDP\Policy\VariableDefinition;
 use Cerberus\PDP\Utility\Properties;
 use Ds\Set;
 use Exception;
@@ -112,5 +113,12 @@ class PolicyFinderFactory
         $combiner = new $combinerClass($identifier);
 
         $policy->setRuleCombiningAlgorithm($combiner);
+    }
+
+    protected function processVariableDefinition(PolicyDef $policy, $data)
+    {
+        $variableDefinition = new VariableDefinition();
+
+        $a = 0;
     }
 }

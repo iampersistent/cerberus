@@ -3,10 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Expressions;
 
+use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;
+use Cerberus\PDP\Policy\ExpressionResultError;
 use Cerberus\PDP\Policy\PolicyDefaults;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
@@ -41,20 +43,29 @@ abstract class AttributeRetrievalBase extends Expression
         return $this->mustBePresent;
     }
 
+    protected function getEmptyResult(string $statusMessage): ExpressionResult
+    {
+        if ($this->getMustBePresent()) {
+            return new ExpressionResultError(Status::createProcessingError($statusMessage));
+        }
+
+        return new ExpressionResult(Status::createOk());
+    }
+
     protected function validateComponent(): bool
     {
         if (null === $this->getCategory()) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing Category");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing Category');
 
             return false;
         }
         if (null === $this->getDataTypeId()) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing DataType");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing DataType');
 
             return false;
         }
         if (null === $this->getMustBePresent()) {
-            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), "Missing MustBePresent");
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing MustBePresent');
 
             return false;
         }

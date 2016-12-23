@@ -29,11 +29,10 @@ class CategoryContainer
         return $this->attributeMap;
     }
 
-    /**
-     * Add a new attribute with the given id and one or more values
-     */
-    public function addAttribute(string $id, $values)
+    public function addAttribute(string $id, $values): self
     {
         $this->attributeMap->put($id, $values);
+
+        return $this;
     }
 }
