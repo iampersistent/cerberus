@@ -4,11 +4,10 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Status;
-use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Exception\EvaluationException;
-use Cerberus\PDP\Policy\Expressions\PolicyFinderException;
+use Cerberus\PDP\Exception\PolicyFinderException;
 use Ds\Map;
 use Ds\Set;
 

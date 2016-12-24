@@ -26,11 +26,16 @@ class Apply extends Expression
     protected $functionDefinitionFactory;
     protected $functionId;
 
-    public function __construct($functionId, Set $arguments, $description = '')
+    public function __construct($functionId, $description = '')
     {
-        $this->arguments = $arguments;
+        $this->arguments = new Set();
         $this->description = $description;
         $this->functionId = $functionId;
+    }
+
+    public function addArgument()
+    {
+
     }
 
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult

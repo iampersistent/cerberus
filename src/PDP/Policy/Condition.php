@@ -19,21 +19,6 @@ class Condition
     /** @var Expression */
     protected $expression;
 
-    public function __construct(array $data)
-    {
-        $arguments = new Set();
-        foreach ($data['apply']['apply'] as $applyData) {
-            $attribute = new AttributeDesignator(
-                $applyData['attributeDesignator']['category'],
-                $applyData['attributeDesignator']['dataType'],
-                $applyData['attributeDesignator']['mustBePresent'],
-                $applyData['attributeDesignator']['attributeId']
-            );
-            $arguments->add(new Apply($applyData['functionId'], new Set([$attribute])));
-        }
-        $this->expression = new Apply($data['apply']['functionId'], $arguments);
-    }
-
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults)
     {
         if (! $this->validate()) {

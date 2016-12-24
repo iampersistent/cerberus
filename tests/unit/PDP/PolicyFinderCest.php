@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 use Cerberus\PDP\Policy\PolicyFinder;
-use Cerberus\PDP\Policy\Expressions\PolicyFinderException;
+use Cerberus\PDP\Exception\PolicyFinderException;
 use Ds\Set;
 
 class PolicyFinderCest

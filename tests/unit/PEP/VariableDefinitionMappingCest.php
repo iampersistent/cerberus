@@ -29,22 +29,22 @@ class VariableDefinitionMappingCest
     public function testDeny(UnitTester $I)
     {
         $subject = new Subject('subjectIdJSmith');
-
         $action = new Action('read');
-
         $resource = new PersistedResource('fileResolver', 'fileId12345');
         $response = $this->pepAgent->decide($subject, $action, $resource);
+
         $I->assertNotNull($response);
         $I->assertFalse($response->allowed());
     }
 
     public function testPermit(UnitTester $I)
     {
+        // grant permission
+
         $subject = new Subject('subjectIdJSmith');
-
         $action = new Action('read');
-
         $resource = new PersistedResource('fileResolver', 'fileId12345');
+
         $response = $this->pepAgent->decide($subject, $action, $resource);
         $I->assertNotNull($response);
         $I->assertTrue($response->allowed());

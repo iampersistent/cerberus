@@ -38,7 +38,7 @@ trait PolicyComponent
 
     public function validate(): bool
     {
-        if (null === $this->getStatusCode()) {
+        if (! $this->getStatusCode()) {
             return $this->validateComponent();
         } else {
             return $this->isOk();

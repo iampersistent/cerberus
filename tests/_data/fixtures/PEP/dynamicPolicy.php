@@ -10,19 +10,21 @@ $dynamicPolicy = [
                 'functionId' => 'function:string-equal',
                 'apply'      => [
                     [
-                        'functionId'                               => 'function:string-one-and-only',
-                        'attributeDesignator or attributeSelector' => [
+                        'functionId'        => 'function:string-one-and-only',
+                        'attributeSelector' => [
                             'category'      => '',
                             'dataType'      => 'string',
                             'mustBePresent' => false,
+                            'path'          => '',
                         ],
                     ],
                     [
-                        'functionId'                               => 'function:string-one-and-only',
-                        'attributeDesignator or attributeSelector' => [
+                        'functionId'        => 'function:string-one-and-only',
+                        'attributeSelector' => [
                             'category'      => '',
                             'dataType'      => 'string',
                             'mustBePresent' => false,
+                            'path'          => '',
                         ],
                     ],
                 ],

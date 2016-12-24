@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\PDP\Policy\Expressions;
+namespace Cerberus\PDP\Exception;
 
 use Exception;
 

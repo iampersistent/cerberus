@@ -19,11 +19,14 @@ class Policy extends PolicyDef
 
     /** @var TargetedCombinerParameterMap */
     protected $ruleCombinerParameters;
+    protected $variableMap;
 
     public function __construct()
     {
         parent::__construct();
         $this->ruleCombinerParameters = new TargetedCombinerParameterMap();
+        $this->variableMap = new VariableMap();
+
     }
 
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
@@ -82,6 +85,23 @@ class Policy extends PolicyDef
 //
 //        return $this;
 //    }
+
+    /**
+     * @param $variableId
+     *
+     * @return VariableDefinition|null
+     */
+    public function getVariableDefinition($variableId)
+    {
+        return $this->variableMap->getVariableDefinition($variableId);
+    }
+
+    public function addVariableDefinition(VariableDefinition $variableDefinition): self
+    {
+        $this->variableMap->add($variableDefinition);
+
+        return $this;
+    }
 
     protected function getCombiningRules(): Set
     {

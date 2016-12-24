@@ -23,6 +23,12 @@ class AttributeSelector extends AttributeRetrievalBase
 
     protected $path;
 
+    public function __construct($category, $dataTypeId, $mustBePresent, $path)
+    {
+        $this->path = $path;
+        parent::__construct($category, $dataTypeId, $mustBePresent);
+    }
+
     public function getContextSelectorId(): Identifier
     {
         return $this->contextSelectorId;
@@ -70,15 +76,16 @@ class AttributeSelector extends AttributeRetrievalBase
         if (! $contextSelectorId = $this->getContextSelectorId()) {
             return null;
         }
+
         $xPathExpressionsSet = null;
         $attribute = $requestAttributes->getAttributes($contextSelectorId);
         $xPathExpressions = $attribute->findValues(Identifier::DATATYPE_XPATHEXPRESSION);
-                if ($xPathExpressions && $xPathExpressions->hasNext()) {
-                    if (! $xPathExpressionsSet) {
-                        $xPathExpressionsSet = new Set();
-                    }
-                    $xPathExpressionsSet->add($xPathExpressions->next()->getValue());
-                }
+        if ($xPathExpressions && $xPathExpressions->hasNext()) {
+            if (! $xPathExpressionsSet) {
+                $xPathExpressionsSet = new Set();
+            }
+            $xPathExpressionsSet->add($xPathExpressions->next()->getValue());
+        }
 
         return $xPathExpressionsSet;
     }
@@ -146,24 +153,24 @@ class AttributeSelector extends AttributeRetrievalBase
             if (! $nodesToQuery->isEmpty()) {
                 foreach ($nodesToQuery as $nodeToQuery) {
                     $nodeList = null;
-                    try {
-                        $xPath = XPathFactory->newInstance()->newXPath();
-                        $xPath
-                            ->setNamespaceContext(new NodeNamespaceContext(nodeToQuery->getOwnerDocument()));
-                        $xPathExpression = $xPath->compile($this->getPath());
-                        $nodeToQueryDocumentRoot = null;
-                        try {
-                            $nodeToQueryDocumentRoot = DOMUtil->getDirectDocumentChild(nodeToQuery);
-                        } catch (StructureException $e) {
-                            return new ExpressionResultError(Status::createProcessingError("Exception processing context node: $e->getMessage()"));
-                        }
-                        $nodeList = $xPathExpression->evaluate($nodeToQueryDocumentRoot,
-                            XPathConstants->NODESET);
-                        } catch (XPathExpressionException $e) {
-                        if (! $statusFirstError == null) {
-                            $statusFirstError = Status::createProcessingError("XPathExpressionException: $e->getMessage()");
-                        }
-                    }
+//                    try {
+//                        $xPath = XPathFactory->newInstance()->newXPath();
+//                        $xPath
+//                            ->setNamespaceContext(new NodeNamespaceContext(nodeToQuery->getOwnerDocument()));
+//                        $xPathExpression = $xPath->compile($this->getPath());
+//                        $nodeToQueryDocumentRoot = null;
+//                        try {
+//                            $nodeToQueryDocumentRoot = DOMUtil->getDirectDocumentChild(nodeToQuery);
+//                        } catch (StructureException $e) {
+//                            return new ExpressionResultError(Status::createProcessingError("Exception processing context node: $e->getMessage()"));
+//                        }
+//                        $nodeList = $xPathExpression->evaluate($nodeToQueryDocumentRoot,
+//                            XPathConstants->NODESET);
+//                        } catch (XPathExpressionException $e) {
+//                        if (! $statusFirstError == null) {
+//                            $statusFirstError = Status::createProcessingError("XPathExpressionException: $e->getMessage()");
+//                        }
+//                    }
                     if ($nodeList && ! $nodeList->isEmpty()) {
                         foreach ($nodeList as $node) {
                             $attributeValueNode = null;

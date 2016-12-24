@@ -5,15 +5,15 @@ namespace Cerberus\PDP;
 
 use Cerberus\PDP\Policy\AnyOf;
 use Cerberus\PDP\Policy\CombiningAlgorithmFactory;
-use Cerberus\PDP\Policy\Condition;
-use Cerberus\PDP\Policy\Expressions\PolicyFinderException;
+use Cerberus\PDP\Exception\PolicyFinderException;
+use Cerberus\PDP\Policy\Factory\ConditionFactory;
+use Cerberus\PDP\Policy\Factory\VariableDefinitionFactory;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\Policy\Rule;
 use Cerberus\PDP\Policy\RuleEffect;
 use Cerberus\PDP\Policy\Target;
-use Cerberus\PDP\Policy\VariableDefinition;
 use Cerberus\PDP\Utility\Properties;
 use Ds\Set;
 use Exception;
@@ -83,17 +83,22 @@ class PolicyFinderFactory
     protected function processRules(PolicyDef $policy, $data)
     {
         foreach ($data as $ruleData) {
-            $target = new Target();
-            foreach ($ruleData['target']['anyOf'] as $anyOfData) {
-                $anyOf = new AnyOf($anyOfData);
-                $target->addAnyOf($anyOf);
-            }
             $rule = (new Rule($policy))
                 ->setRuleEffect(RuleEffect::getRuleEffect($ruleData['effect']))
-                ->setRuleId($ruleData['ruleId'])
-                ->setTarget($target);
+                ->setRuleId($ruleData['ruleId']);
+
+            if (isset($ruleData['target'])) {
+                $target = new Target();
+                foreach ($ruleData['target']['anyOf'] as $anyOfData) {
+                    $anyOf = new AnyOf($anyOfData);
+                    $target->addAnyOf($anyOf);
+                }
+                $rule->setTarget($target);
+            }
+
             if (isset($ruleData['condition'])) {
-                $rule->setCondition(new Condition($ruleData['condition']));
+                $condition = ConditionFactory::create($policy, $ruleData['condition']);
+                $rule->setCondition($condition);
             }
             $policy->addRule($rule);
         }
@@ -117,8 +122,8 @@ class PolicyFinderFactory
 
     protected function processVariableDefinition(PolicyDef $policy, $data)
     {
-        $variableDefinition = new VariableDefinition();
+        $variableDefinition = VariableDefinitionFactory::create($data);
 
-        $a = 0;
+        $policy->addVariableDefinition($variableDefinition);
     }
 }
