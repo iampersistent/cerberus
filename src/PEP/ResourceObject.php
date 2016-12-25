@@ -15,7 +15,7 @@ class ResourceObject extends CategoryContainer
         $this->id = $id;
         $this->type = $type;
         parent::__construct(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
-        $this->addAttribute('resource-id', $id);
-        $this->addAttribute('resource-type', $type);
+        $this->addAttribute('resource:resource-id', $id);
+        $this->addAttribute('resource:resource-type', $type);
     }
 }

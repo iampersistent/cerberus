@@ -11,11 +11,11 @@ $dynamicPolicy = [
                 'apply'      => [
                     [
                         'functionId'        => 'function:string-one-and-only',
-                        'attributeSelector' => [
-                            'category'      => '',
+                        'attributeDesignator' => [
+                            'attributeId'   => 'resource:resource-type',
+                            'category'      => 'attribute-category:resource',
                             'dataType'      => 'string',
                             'mustBePresent' => false,
-                            'path'          => '',
                         ],
                     ],
                     [

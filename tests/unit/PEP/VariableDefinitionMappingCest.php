@@ -4,7 +4,7 @@ declare(strict_types = 1);
 use AspectMock\Test as Mock;
 use Cerberus\Core\Identifier;
 use Cerberus\PEP\{
-    Action, MapperRegistry, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, PepRequestFactory, PepResponseFactory, PersistedResource, Subject
+    Action, MapperRegistry, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, PepRequestFactory, PepResponseFactory, PersistedResource, ResourceObject, Subject
 };
 use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\{
@@ -30,7 +30,7 @@ class VariableDefinitionMappingCest
     {
         $subject = new Subject('subjectIdJSmith');
         $action = new Action('read');
-        $resource = new PersistedResource('fileResolver', 'fileId12345');
+        $resource = new ResourceObject('fileResolver', 'fileId12345');
         $response = $this->pepAgent->decide($subject, $action, $resource);
 
         $I->assertNotNull($response);

@@ -88,7 +88,7 @@ class Rule implements Matchable
         if ($this->target) {
             return $this->target->match($evaluationContext);
         } else {
-            return MatchResult::MATCH();
+            return MatchResult::createMatch();
         }
     }
 

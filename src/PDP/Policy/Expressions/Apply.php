@@ -33,9 +33,11 @@ class Apply extends Expression
         $this->functionId = $functionId;
     }
 
-    public function addArgument()
+    public function addArgument($argument): self
     {
+        $this->arguments->add($argument);
 
+        return $this;
     }
 
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult

@@ -20,7 +20,8 @@ class MapperRegistry
         $this->registerMappers([
             new ActionMapper(),
             new CategoryContainerMapper(),
-            new ResourceMapper(),
+            new PersistedResourceMapper(),
+            new ResourceObjectMapper(),
             new SubjectMapper(),
         ]);
 
