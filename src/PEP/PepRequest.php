@@ -5,6 +5,7 @@ namespace Cerberus\PEP;
 
 use Cerberus\Core\Exception\IllegalArgumentException;
 use Cerberus\Core\Request;
+use Cerberus\PDP\Policy\Content;
 use Ds\Map;
 
 class PepRequest extends Request
@@ -52,6 +53,9 @@ class PepRequest extends Request
                 throw new IllegalArgumentException('No mappers found for class: ' . get_class($object));
             }
             $mapper->map($object, $this);
+        }
+        if ($mapper = $this->mapperRegistry->getMapper(Content::class)) {
+            $mapper->map(new PersistedResource($this->requestObjects), $this);
         }
     }
 }

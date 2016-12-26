@@ -17,8 +17,11 @@ class Identifier extends Enum
     const DATATYPE_BOOLEAN = 'boolean';
     const DATATYPE_DOUBLE = 'double';
     const DATATYPE_DATETIME = 'dateTime';
+    const DATATYPE_INDETERMINATE = 'indeterminate';
     const DATATYPE_INTEGER = 'integer';
     const DATATYPE_STRING = 'string';
+    const DATATYPE_XPATH_EXPRESSION = 'path';
 
+    const CONTENT_SELECTOR = 'content-selector';
     const MULTIPLE_CONTENT_SELECTOR = 'multiple:content-selector';
 }

@@ -5,7 +5,7 @@ namespace Cerberus\PEP;
 
 abstract class ObjectMapper
 {
-    protected $className = '';
+    protected $className;
     /** @var MapperRegistry */
     protected $mapperRegistry;
 

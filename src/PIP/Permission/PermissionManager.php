@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Cerberus\PIP\Permission;
 
-use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\Action;
 use Cerberus\PEP\Subject;
 use Cerberus\PIP\Contract\PermissionRepository;
@@ -13,7 +12,7 @@ class PermissionManager
 {
     protected $repository;
 
-    public function __construct(PermissionRepository $repository, ArrayProperties $properties)
+    public function __construct(PermissionRepository $repository)
     {
         $this->repository = $repository;
     }

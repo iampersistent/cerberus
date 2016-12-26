@@ -10,12 +10,10 @@ class PersistedResource extends CategoryContainer
     protected $id;
     protected $type;
 
-    public function __construct(string $type, string $id)
+    public function __construct(...$objects)
     {
-        $this->id = $id;
-        $this->type = $type;
-        parent::__construct(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
-        $this->addAttribute('resource-id', $id);
-        $this->addAttribute('resource-type', $type);
+        $this->id = 'persisted-resource';
+        $this->type = Identifier::DATATYPE_XPATH_EXPRESSION;
+        parent::__construct(Identifier::CONTENT_SELECTOR);
     }
 }

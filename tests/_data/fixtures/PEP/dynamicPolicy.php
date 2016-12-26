@@ -10,7 +10,7 @@ $dynamicPolicy = [
                 'functionId' => 'function:string-equal',
                 'apply'      => [
                     [
-                        'functionId'        => 'function:string-one-and-only',
+                        'functionId'          => 'function:string-one-and-only',
                         'attributeDesignator' => [
                             'attributeId'   => 'resource:resource-type',
                             'category'      => 'attribute-category:resource',
@@ -21,10 +21,11 @@ $dynamicPolicy = [
                     [
                         'functionId'        => 'function:string-one-and-only',
                         'attributeSelector' => [
-                            'category'      => '',
-                            'dataType'      => 'string',
-                            'mustBePresent' => false,
-                            'path'          => '',
+                            'category'          => 'attribute-category:resource',
+                            'contextSelectorId' => 'content-selector',
+                            'dataType'          => 'string',
+                            'mustBePresent'     => false,
+                            'path'              => '$.resource.type',
                         ],
                     ],
                 ],

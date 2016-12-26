@@ -6,7 +6,6 @@ namespace Cerberus\PEP;
 use Cerberus\Core\{
     AttributeValue, Exception\IllegalArgumentException, FindDataType, Attribute, RequestAttributes
 };
-use Ds\Map;
 
 class PepRequestAttributes extends RequestAttributes
 {

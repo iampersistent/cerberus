@@ -6,7 +6,8 @@
     "require": {
         "marc-mabe/php-enum": "2.2.*",
         "php": ">=7.0.0",
-        "php-ds/php-ds": "^1.1"
+        "php-ds/php-ds": "^1.1",
+        "flow/jsonpath": "^0.3.4"
     },
     "require-dev": {
         "codeception/codeception": "2.2.*",

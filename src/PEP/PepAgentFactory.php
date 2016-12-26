@@ -18,6 +18,8 @@ class PepAgentFactory
 
     public function __construct(Properties $properties)
     {
+        // set content with database information for attributeSelector
+
         $this->properties = $properties;
         $pdpEngineFactory = $properties->get('factory.pdpEngine');
         $this->pdpEngine = (new $pdpEngineFactory())

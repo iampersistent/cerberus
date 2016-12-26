@@ -35,7 +35,7 @@ abstract class FunctionArgument
         return $this->status;
     }
 
-    public function getValue()
+    public function getValue(): AttributeValue
     {
         return $this->attributeValue;
     }

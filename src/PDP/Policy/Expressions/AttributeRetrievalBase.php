@@ -3,14 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Expressions;
 
+use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
-use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;
 use Cerberus\PDP\Policy\ExpressionResultError;
-use Cerberus\PDP\Policy\PolicyDefaults;
-use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
 abstract class AttributeRetrievalBase extends Expression
 {
@@ -49,7 +47,7 @@ abstract class AttributeRetrievalBase extends Expression
             return new ExpressionResultError(Status::createProcessingError($statusMessage));
         }
 
-        return new ExpressionResult(Status::createOk());
+        return new ExpressionResult(Status::createOk(), new AttributeValue($this->dataTypeId, null));
     }
 
     protected function validateComponent(): bool

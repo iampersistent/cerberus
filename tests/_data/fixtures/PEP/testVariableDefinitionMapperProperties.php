@@ -2,7 +2,7 @@
 
 $testVariableDefinitionMapperProperties = [
 
-    'factories'    => [
+    'factories'       => [
 //xacml.dataTypeFactory=org.apache.openaz.xacml.std.StdDataTypeFactory
 //xacml.openaz.evaluationContextFactory=org.apache.openaz.xacml.pdp.std.StdEvaluationContextFactory
 
@@ -12,14 +12,29 @@ $testVariableDefinitionMapperProperties = [
         'pipFinder'          => \Cerberus\PIP\Factory\PipFinderFactory::class,
         'policyFinder'       => \Cerberus\PDP\ArrayPolicyFinderFactory::class,
     ],
-    'rootPolicies' => [
+    'rootPolicies'    => [
         __DIR__ . '/dynamicPolicy.php',
     ],
-    'pep'          => [
+    'pep'             => [
         'issuer'  => 'test',
         'mappers' => [
-            'classes' => [],
+            'classes'        => [],
             'configurations' => [
+            ],
+        ],
+    ],
+    'contentSelector' => [
+        'classes' => [
+            'mapper'     => \Cerberus\PEP\PersistedResourceMapper::class,
+            'manager' => \Cerberus\PIP\Permission\PermissionManager::class,
+            'repository' => \Cerberus\PIP\Permission\PermissionMySqlRepository::class,
+        ],
+        'config'  => [
+            'db' => [
+                'dsn' => '',
+                'username' => '',
+                'password' => '',
+                'options' => '',
             ],
         ],
     ],

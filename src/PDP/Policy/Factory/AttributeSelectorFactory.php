@@ -9,11 +9,17 @@ class AttributeSelectorFactory
 {
     public static function create($data): AttributeSelector
     {
-        return new AttributeSelector(
+        $attributeSelector = new AttributeSelector(
             $data['category'],
             $data['dataType'],
             $data['mustBePresent'],
             $data['path']
         );
+
+        if (isset($data['contextSelectorId'])) {
+            $attributeSelector->setContextSelectorId($data['contextSelectorId']);
+        }
+
+        return $attributeSelector;
     }
 }

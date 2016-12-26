@@ -43,7 +43,7 @@ class VariableDefinitionMappingCest
 
         $subject = new Subject('subjectIdJSmith');
         $action = new Action('read');
-        $resource = new PersistedResource('fileResolver', 'fileId12345');
+        $resource = new ResourceObject('fileResolver', 'fileId12345');
 
         $response = $this->pepAgent->decide($subject, $action, $resource);
         $I->assertNotNull($response);

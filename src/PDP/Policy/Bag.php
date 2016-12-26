@@ -14,7 +14,7 @@ class Bag
         $this->values = new Set();
     }
 
-    public function add(...$values)
+    public function add(...$values): self
     {
         foreach ($values as $value) {
             $this->values->add($value);
@@ -28,7 +28,12 @@ class Bag
         return $this->values;
     }
 
-    public function size()
+    public function isEmpty(): bool
+    {
+        return $this->values->isEmpty();
+    }
+
+    public function size(): int
     {
         return $this->values->count();
     }
