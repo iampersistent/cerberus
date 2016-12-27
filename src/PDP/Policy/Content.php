@@ -9,7 +9,6 @@ class Content
 {
     public function __construct($data)
     {
-        $data = [];
         $this->pathData = new JSONPath($data);
     }
 

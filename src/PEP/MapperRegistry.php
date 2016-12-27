@@ -20,7 +20,6 @@ class MapperRegistry
         $this->registerMappers([
             new ActionMapper(),
             new CategoryContainerMapper(),
-            new PersistedResourceMapper(),
             new ResourceObjectMapper(),
             new SubjectMapper(),
         ]);
@@ -36,6 +35,12 @@ class MapperRegistry
             $parts = pathinfo($configFile);
             $classConfig = $parts['filename'];
             $this->registerMapper(new ConfiguredMapper($$classConfig));
+        }
+        if ($contentSelectorMapper = $properties->get('contentSelector.classes.mapper')) {
+            $repositoryClass = $properties->get('contentSelector.classes.repository');
+            $repoConfig = $properties->get('contentSelector.config.repository');
+            $repository = new $repositoryClass($repoConfig);
+            $this->registerMapper(new $contentSelectorMapper($repository));
         }
     }
 

@@ -9,11 +9,12 @@ class Subject extends CategoryContainer
 {
     protected $subjectIdValue;
 
-    public function __construct(string $subjectIdValue)
+    public function __construct(string $subjectIdValue, string $subjectType = 'user')
     {
         $this->subjectIdValue = $subjectIdValue;
         parent::__construct(Identifier::SUBJECT_CATEGORY_ACCESS_SUBJECT);
         $this->addAttribute('subject:subject-id', $subjectIdValue);
+        $this->addAttribute('subject:subject-type', $subjectType);
     }
 
     /**

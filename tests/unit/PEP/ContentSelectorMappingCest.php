@@ -1,29 +1,30 @@
 <?php
 declare(strict_types = 1);
 
-use AspectMock\Test as Mock;
-use Cerberus\Core\Identifier;
 use Cerberus\PEP\{
-    Action, MapperRegistry, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, PepRequestFactory, PepResponseFactory, PersistedResource, ResourceObject, Subject
+    Action, PepAgent, PepAgentFactory, ResourceObject, Subject
 };
-use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\{
-    ArrayPolicyFinderFactory, CerberusEngine, Utility\ArrayProperties
+    Utility\ArrayProperties
 };
-use Cerberus\PIP\PipFinder;
-use Ds\Set;
-use Test\Document;
+use Cerberus\PIP\Contract\PermissionRepository;
 
-class VariableDefinitionMappingCest
+class ContentSelectorMappingCest
 {
     /** @var PepAgent */
     protected $pepAgent;
+    /** @var PermissionRepository */
+    protected $repository;
+
 
     public function _before(UnitTester $I)
     {
-        require __DIR__ . '/../../_data/fixtures/PEP/testVariableDefinitionMapperProperties.php';
-        $properties = new ArrayProperties($testVariableDefinitionMapperProperties);
+        require __DIR__ . '/../../_data/fixtures/PEP/testContentSelectorMapperProperties.php';
+        $properties = new ArrayProperties($testContentSelectorMapperProperties);
         $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
+        $repositoryClass = $properties->get('contentSelector.classes.repository');
+        $repoConfig = $properties->get('contentSelector.config.repository');
+        $this->repository = new $repositoryClass($repoConfig);
     }
 
     public function testDeny(UnitTester $I)
@@ -40,7 +41,21 @@ class VariableDefinitionMappingCest
     public function testPermit(UnitTester $I)
     {
         // grant permission
-
+        $record = [
+            'resource' => [
+                'type' => 'fileResolver',
+                'id'   => 'fileId12345',
+            ],
+            'subject'  => [
+                'type' => 'user',
+                'id'   => 'subjectIdJSmith',
+            ],
+            'actions'   => [
+                'read',
+                'write',
+            ],
+        ];
+        $this->repository->save($record);
         $subject = new Subject('subjectIdJSmith');
         $action = new Action('read');
         $resource = new ResourceObject('fileResolver', 'fileId12345');

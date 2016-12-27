@@ -5,6 +5,6 @@ namespace Cerberus\PIP\Contract;
 
 interface PermissionRepository
 {
-    public function read();
-    public function save();
+    public function find($inputs);
+    public function save($record);
 }

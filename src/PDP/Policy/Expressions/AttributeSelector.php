@@ -4,10 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\AttributeValue;
-use Cerberus\Core\Exception\DataTypeException;
-use Cerberus\Core\Identifier;
-use Cerberus\Core\RequestAttributes;
-use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Bag;

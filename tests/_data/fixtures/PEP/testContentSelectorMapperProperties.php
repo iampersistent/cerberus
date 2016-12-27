@@ -1,6 +1,6 @@
 <?php
 
-$testVariableDefinitionMapperProperties = [
+$testContentSelectorMapperProperties = [
 
     'factories'       => [
 //xacml.dataTypeFactory=org.apache.openaz.xacml.std.StdDataTypeFactory
@@ -26,16 +26,11 @@ $testVariableDefinitionMapperProperties = [
     'contentSelector' => [
         'classes' => [
             'mapper'     => \Cerberus\PEP\PersistedResourceMapper::class,
-            'manager' => \Cerberus\PIP\Permission\PermissionManager::class,
-            'repository' => \Cerberus\PIP\Permission\PermissionMySqlRepository::class,
+            'manager'    => \Cerberus\PIP\Permission\PermissionManager::class,
+            'repository' => \Cerberus\PIP\Permission\PermissionMemoryRepository::class,
         ],
         'config'  => [
-            'db' => [
-                'dsn' => '',
-                'username' => '',
-                'password' => '',
-                'options' => '',
-            ],
+            'repository' => [],
         ],
     ],
 

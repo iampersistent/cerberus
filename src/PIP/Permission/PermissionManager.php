@@ -17,14 +17,47 @@ class PermissionManager
         $this->repository = $repository;
     }
 
-    public function grant(Subject $subject, Action $action, $resource, $properties = [])
+    public function grant(Subject $subject, Action $action, Resource $resource, $properties = [])
     {
+        $requestData = PermissionManager::createRequestData($subject, $resource);
+        $record = $this->repository->find($requestData) ?? [
+            'resource' => [
+                'id' => $requestData['resourceId'],
+                'type' => $requestData['resourceType'],
+            ],
+                'subject' => [
+                    'id' => $requestData['subjectId'],
+                    'type' => $requestData['subjectType'],
+                ],
+                'actions' => [],
+            ];
+        $actions = $record['action'];
+        $newAction = self::getAttributeValue($action, 'action:action_id');
 
-        $this->repository->saveAttributes($attributes);
+        if (!in_array($newAction, $actions)) {
+            $actions[] = $newAction;
+        }
+        $record['action'] = $actions;
+
+        $this->repository->save($record);
     }
 
     public function getRequestAttributes(string $category = null): Set
     {
-        $this->
+    }
+
+    public static function createRequestData(Subject $subject, Resource $resource)
+    {
+        return [
+            'subjectId'    => self::getAttributeValue($subject, 'subject:subject-id'),
+            'subjectType'    => self::getAttributeValue($subject, 'subject:subject-type'),
+            'resourceId'    => self::getAttributeValue($resource, 'resource:resource-id'),
+            'resourceType'    => self::getAttributeValue($resource, 'resource:resource-type'),
+        ];
+    }
+    
+    protected static function getAttributeValue($attribute, $attributeId)
+    {
+        return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
     }
 }
