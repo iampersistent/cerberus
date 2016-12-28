@@ -16,10 +16,10 @@ class Content
     {
         $data = $this->pathData->find($path)->data();
         if (count($data) === 1) {
-            return $data[0];
+            $data = $data[0];
         }
 
-        return $data;
+        return empty($data) ? null : $data;
     }
 
     public function find($path)

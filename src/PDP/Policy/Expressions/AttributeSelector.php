@@ -64,7 +64,7 @@ class AttributeSelector extends AttributeRetrievalBase
         if (! $this->validate()) {
             return new ExpressionResultError($this->getStatus());
         }
-        
+
         $request = $evaluationContext->getRequest();
         $requestedAttributes = $request->getRequestAttributes($this->category);
         if (! $requestedAttributes || $requestedAttributes->isEmpty()) {
@@ -92,8 +92,16 @@ class AttributeSelector extends AttributeRetrievalBase
 
         foreach ($nodesToQuery as $nodeToQuery) {
             foreach ($nodeToQuery as $content) {
-                $attributeValue = new AttributeValue($dataType, $content->evaluate($this->getPath()));
-                $attributeValues->add($attributeValue);
+                $data = $content->evaluate($this->getPath());
+                if (is_array($data)) {
+                    foreach ($data as $datum) {
+                        $attributeValue = new AttributeValue($dataType, $datum);
+                        $attributeValues->add($attributeValue);
+                    }
+                } else {
+                    $attributeValue = new AttributeValue($dataType, $data);
+                    $attributeValues->add($attributeValue);
+                }
             }
         }
 

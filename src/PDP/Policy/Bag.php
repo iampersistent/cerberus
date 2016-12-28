@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Ds\Set;
+use Iterator;
 
 class Bag
 {
@@ -14,7 +15,14 @@ class Bag
         $this->values = new Set();
     }
 
-    public function add(...$values): self
+    public function add($value): self
+    {
+        $this->values->add($value);
+
+        return $this;
+    }
+
+    public function merge($values): self
     {
         foreach ($values as $value) {
             $this->values->add($value);

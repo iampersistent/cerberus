@@ -14,7 +14,7 @@ class ConvertedArgument
     protected $status;
     protected $value;
 
-    public function __construct(FunctionArgument $functionArgument, DataType $expectedDataType = null, bool $expectBag)
+    public function __construct(FunctionArgument $functionArgument, DataType $expectedDataType = null, bool $expectBag = false)
     {
         if (! $functionArgument->isOk()) {
             $this->status = $functionArgument->getStatus();
@@ -49,7 +49,7 @@ class ConvertedArgument
 
             return;
         }
-        if ($attributeValue->getDataTypeId() !== $expectedDataType->getId()) {
+        if ($expectedDataType && $attributeValue->getDataTypeId() !== $expectedDataType->getId()) {
             $this->status = Status::createProcessingError(
                 'Expected data type ' . $this->getShortDataTypeId($expectedDataType->getId()) .
                 ' saw ' . $this->getShortDataTypeId($attributeValue->getDataTypeId()));
@@ -58,7 +58,7 @@ class ConvertedArgument
         }
 
         try {
-            $this->value = $expectedDataType->convert($attributeValue->getValue());
+            $this->value = $expectedDataType ? $expectedDataType->convert($attributeValue->getValue()) : $attributeValue->getValue();
             $this->status = Status::createOk();
         } catch (Exception $e) {
             $message = $e->getMessage();

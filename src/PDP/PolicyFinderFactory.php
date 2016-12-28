@@ -120,10 +120,12 @@ class PolicyFinderFactory
         $policy->setRuleCombiningAlgorithm($combiner);
     }
 
-    protected function processVariableDefinition(PolicyDef $policy, $data)
+    protected function processVariableDefinitions(PolicyDef $policy, $data)
     {
-        $variableDefinition = VariableDefinitionFactory::create($data);
+        foreach ($data as $variableDefinitionData) {
+            $variableDefinition = VariableDefinitionFactory::create($variableDefinitionData);
 
-        $policy->addVariableDefinition($variableDefinition);
+            $policy->addVariableDefinition($variableDefinition);
+        }
     }
 }
