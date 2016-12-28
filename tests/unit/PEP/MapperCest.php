@@ -29,7 +29,7 @@ class MapperCest
     public function testPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "subject_ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
 
