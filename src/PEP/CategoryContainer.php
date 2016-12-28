@@ -35,4 +35,9 @@ class CategoryContainer
 
         return $this;
     }
+
+    public function getAttribute(string $id)
+    {
+        return $this->attributeMap->get($id, null);
+    }
 }

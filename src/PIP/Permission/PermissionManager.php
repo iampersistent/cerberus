@@ -4,9 +4,11 @@ declare(strict_types = 1);
 namespace Cerberus\PIP\Permission;
 
 use Cerberus\PEP\Action;
+use Cerberus\PEP\ResourceObject;
 use Cerberus\PEP\Subject;
 use Cerberus\PIP\Contract\PermissionRepository;
 use Ds\Set;
+use Exception;
 
 class PermissionManager
 {
@@ -17,47 +19,62 @@ class PermissionManager
         $this->repository = $repository;
     }
 
-    public function grant(Subject $subject, Action $action, Resource $resource, $properties = [])
+    public function find(Subject $subject, ResourceObject $resource)
     {
-        $requestData = PermissionManager::createRequestData($subject, $resource);
-        $record = $this->repository->find($requestData) ?? [
-            'resource' => [
-                'id' => $requestData['resourceId'],
-                'type' => $requestData['resourceType'],
-            ],
-                'subject' => [
-                    'id' => $requestData['subjectId'],
-                    'type' => $requestData['subjectType'],
-                ],
-                'actions' => [],
-            ];
-        $actions = $record['action'];
-        $newAction = self::getAttributeValue($action, 'action:action_id');
+        $inputs = $this->createRequestData($subject, $resource);
 
-        if (!in_array($newAction, $actions)) {
-            $actions[] = $newAction;
+        return $this->repository->find($inputs);
+    }
+
+    public function deny(Subject $subject, Action $action, ResourceObject $resource, $properties = [])
+    {
+        $requestData = $this->createRequestData($subject, $resource);
+        if (!$record = $this->repository->find($requestData)) {
+            return;
         }
-        $record['action'] = $actions;
+        $actions = $record['actions'];
+        $deniedAction = $action->getAttribute('action:action-id');
+        if (false === $key = array_search($deniedAction, $actions)) {
+            return;
+        }
+        unset($actions[$key]);
+        $record['actions'] = $actions;
 
         $this->repository->save($record);
     }
 
-    public function getRequestAttributes(string $category = null): Set
+    public function grant(Subject $subject, Action $action, ResourceObject $resource, $properties = [])
     {
+        $requestData = $this->createRequestData($subject, $resource);
+        $record = $this->repository->find($requestData) ?? [
+                'resource' => [
+                    'id'   => $requestData['resourceId'],
+                    'type' => $requestData['resourceType'],
+                ],
+                'subject'  => [
+                    'id'   => $requestData['subjectId'],
+                    'type' => $requestData['subjectType'],
+                ],
+                'actions'  => [],
+            ];
+        $actions = $record['actions'];
+        $grantedAction = $action->getAttribute('action:action-id');
+
+        if (! in_array($grantedAction, $actions)) {
+            $actions[] = $grantedAction;
+        }
+        $record['actions'] = $actions;
+
+        $this->repository->save($record);
     }
 
-    public static function createRequestData(Subject $subject, Resource $resource)
+    protected function createRequestData(Subject $subject, ResourceObject $resource)
     {
         return [
-            'subjectId'    => self::getAttributeValue($subject, 'subject:subject-id'),
-            'subjectType'    => self::getAttributeValue($subject, 'subject:subject-type'),
-            'resourceId'    => self::getAttributeValue($resource, 'resource:resource-id'),
-            'resourceType'    => self::getAttributeValue($resource, 'resource:resource-type'),
+            'subjectId'    => $subject->getAttribute('subject:subject-id'),
+            'subjectType'  => $subject->getAttribute('subject:subject-type'),
+            'resourceId'   => $resource->getAttribute('resource:resource-id'),
+            'resourceType' => $resource->getAttribute('resource:resource-type'),
         ];
-    }
-    
-    protected static function getAttributeValue($attribute, $attributeId)
-    {
-        return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
     }
 }

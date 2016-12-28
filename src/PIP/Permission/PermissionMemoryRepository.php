@@ -27,7 +27,7 @@ class PermissionMemoryRepository implements PermissionRepository
             }
         }
 
-        return [];
+        return null;
     }
 
     public function save($record)

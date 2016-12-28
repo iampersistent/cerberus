@@ -1,17 +1,45 @@
 <?php
 declare(strict_types = 1);
 
+use Cerberus\PEP\Action;
+use Cerberus\PEP\ResourceObject;
+use Cerberus\PEP\Subject;
 use Cerberus\PIP\Permission\PermissionManager;
+use Cerberus\PIP\Permission\PermissionMemoryRepository;
 
 class PermissionManagerCest
 {
-    public function testAddPermission(FunctionalTester $I)
+    protected $permissionManager;
+
+    public function _before(FunctionalTester $I)
     {
-        $permissionManager = new PermissionManager($repo);
+        $this->permissionManager = new PermissionManager(new PermissionMemoryRepository([]));
+    }
+
+    public function testGrantPermission(FunctionalTester $I)
+    {
+        $subject = new Subject('id101');
+        $resource = new ResourceObject('test', 'testId101');
 
         // set permission
-        $permissionManager->grant($user, $action, $resource, $properties);
+        $this->permissionManager->grant($subject, new Action('read'), $resource);
 
-        // look for permission
+        $record = $this->permissionManager->find($subject, $resource);
+
+        $I->assertTrue(in_array('read', $record['actions']));
+    }
+
+    public function testDenyPermission(FunctionalTester $I)
+    {
+        $subject = new Subject('id101');
+        $resource = new ResourceObject('test', 'testId101');
+
+        // set permission
+        $this->permissionManager->deny($subject, new Action('read'), $resource);
+
+        $record = $this->permissionManager->find($subject, $resource);
+
+        $I->assertFalse(in_array('read', $record['actions']));
+        $I->assertNotContains('read', $record['actions']);
     }
 }

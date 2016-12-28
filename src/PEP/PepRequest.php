@@ -49,12 +49,10 @@ class PepRequest extends Request
         }
         foreach ($this->requestObjects as $object) {
             $mapper = $this->mapperRegistry->getMapper(get_class($object));
-            if (! $mapper) {
-                throw new IllegalArgumentException('No mappers found for class: ' . get_class($object));
-            }
             $mapper->map($object, $this);
         }
-        if ($mapper = $this->mapperRegistry->getMapper(Content::class)) {
+        if ($this->mapperRegistry->hasMapper(Content::class)) {
+            $mapper = $this->mapperRegistry->getMapper(Content::class);
             $mapper->map(new PersistedResource($this->requestObjects), $this);
         }
     }

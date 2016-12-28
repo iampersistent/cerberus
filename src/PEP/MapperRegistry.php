@@ -53,6 +53,11 @@ class MapperRegistry
         }
     }
 
+    public function hasMapper($className): bool
+    {
+        return (bool) $mapper = $this->getClassMapper($className);
+    }
+
     public function registerMapper(ObjectMapper $mapper)
     {
         $mapper->setMapperRegistry($this);
