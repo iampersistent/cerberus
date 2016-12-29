@@ -16,19 +16,15 @@ class CerberusService
     public function __construct(ArrayProperties $properties)
     {
         $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
+        $managerClass = $properties->get('contentSelector.classes.manager');
+        $repositoryClass = $properties->get('contentSelector.classes.repository');
+        $repoConfig = $properties->get('contentSelector.config.repository');
+        $repository = new $repositoryClass($repoConfig);
+        $this->permissionManager = new $managerClass($repository));
     }
 
-    public function can(array $user, $action, array $resource, array $properties = []): bool
+    public function can(Subject $subject, Action $action, ResourceObject $resource, array $properties = []): bool
     {
-        $subject = new Subject($user['id']);
-        unset($user['id']);
-        foreach ($user as $id => $value) {
-            $subject->addAttribute($id, $value);
-        }
-
-        $action = new Action($action);
-
-        $resource = new ResourceObject((string) $resource['type'], (string) $resource['id']);
         if (!empty($properties)) {
             $resource->addAttribute('resource-properties', $properties['properties']);
         }
@@ -37,13 +33,19 @@ class CerberusService
         return $response->allowed();
     }
 
-    public function deny($user, $action, $resource, $properties = [])
+    public function deny(Subject $subject, Action $action, ResourceObject $resource, array $properties = [])
     {
-
+        if (!empty($properties)) {
+            $resource->addAttribute('resource-properties', $properties['properties']);
+        }
+        $this->permissionManager->deny($subject, $action, $resource);
     }
 
-    public function grant($user, $action, $resource, $properties = [])
+    public function grant(Subject $subject, Action $action, ResourceObject $resource, array $properties = [])
     {
-
+        if (!empty($properties)) {
+            $resource->addAttribute('resource-properties', $properties['properties']);
+        }
+        $this->permissionManager->grant($subject, new $action, $resource);
     }
 }

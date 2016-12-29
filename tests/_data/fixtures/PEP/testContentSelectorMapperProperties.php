@@ -33,5 +33,4 @@ $testContentSelectorMapperProperties = [
             'repository' => [],
         ],
     ],
-
 ];

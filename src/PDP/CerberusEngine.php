@@ -9,7 +9,6 @@ use Cerberus\Core\Request;
 use Cerberus\Core\Response;
 use Cerberus\Core\Result;
 use Cerberus\Core\Status;
-use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\PdpEngine;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\EvaluationContextFactory;
