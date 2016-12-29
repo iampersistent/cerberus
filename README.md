@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/finicprint/cerberus/tree/master.svg?style=shield)](https://circleci.com/gh/finicprint/cerberus/tree/master)
+
 ![](http://cerberus-global.com/wp-content/uploads/2015/06/cerberus_logo.png)
 
 # Cerberus
