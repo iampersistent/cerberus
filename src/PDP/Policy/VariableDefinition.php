@@ -4,9 +4,10 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\StatusCode;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class VariableDefinition
+class VariableDefinition implements PolicyElement
 {
     use PolicyComponent;
 

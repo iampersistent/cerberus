@@ -7,7 +7,6 @@ use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Exception\FactoryException;
-use Cerberus\PDP\Policy\Bag;
 use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;
 use Cerberus\PDP\Policy\ExpressionResultError;

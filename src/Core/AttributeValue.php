@@ -4,8 +4,9 @@ declare(strict_types = 1);
 namespace Cerberus\Core;
 
 use Cerberus\Core\Exception\IllegalArgumentException;
+use Cerberus\PDP\Contract\PolicyElement;
 
-class AttributeValue
+class AttributeValue implements PolicyElement
 {
     protected $dataTypeId;
     protected $value;

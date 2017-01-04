@@ -26,7 +26,6 @@ class Policy extends PolicyDef
         parent::__construct();
         $this->ruleCombinerParameters = new TargetedCombinerParameterMap();
         $this->variableMap = new VariableMap();
-
     }
 
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult

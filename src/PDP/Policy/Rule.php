@@ -7,18 +7,21 @@ use Cerberus\Core\Decision;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\EvaluationResult;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class Rule implements Matchable
+class Rule implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
     /** @var Condition */
     protected $condition;
+    /** @var string */
+    protected $description;
     /** @var Policy */
     protected $policy;
     /** @var RuleEffect */
@@ -31,6 +34,11 @@ class Rule implements Matchable
     public function __construct(PolicyDef $policy)
     {
         $this->policy = $policy;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
     }
 
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult

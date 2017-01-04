@@ -5,12 +5,13 @@ namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Status;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class Target implements Matchable
+class Target implements Matchable, PolicyElement
 {
     use PolicyComponent;
 

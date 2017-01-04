@@ -6,13 +6,14 @@ namespace Cerberus\PDP\Policy;
 use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Expressions\Apply;
 use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 use Ds\Set;
 
-class Condition
+class Condition implements PolicyElement
 {
     use PolicyComponent;
 

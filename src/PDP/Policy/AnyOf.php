@@ -6,12 +6,13 @@ namespace Cerberus\PDP\Policy;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class AnyOf implements Matchable
+class AnyOf implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
