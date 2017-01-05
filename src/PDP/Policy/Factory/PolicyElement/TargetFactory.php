@@ -18,16 +18,11 @@ class TargetFactory extends PolicyElementFactory
     public static function create(Policy $policy, array $data): PolicyElement
     {
         $target = new Target();
-        self::processIncomingData($policy, $target, $data);
-
-        return $target;
-    }
-
-    protected static function processAnyOf(Policy $policy, Target $target, $data)
-    {
         foreach ($data as $anyOfData) {
-            $anyOf = AnyOfFactory::create($policy, $anyOfData);
+            $anyOf = AnyOfFactory::create($policy, $anyOfData['anyOf']);
             $target->addAnyOf($anyOf);
         }
+
+        return $target;
     }
 }

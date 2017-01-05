@@ -6,3 +6,4 @@ machine:
 test:
   override:
     - php vendor/codeception/codeception/codecept run unit && echo 1 > $CIRCLE_ARTIFACTS/unit_success.txt
+    - php vendor/codeception/codeception/codecept run functional && echo 1 > $CIRCLE_ARTIFACTS/functional_success.txt

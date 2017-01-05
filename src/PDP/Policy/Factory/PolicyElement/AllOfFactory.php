@@ -18,12 +18,13 @@ class AllOfFactory extends PolicyElementFactory
     public static function create(Policy $policy, array $data): PolicyElement
     {
         $allOf = new AllOf();
-
         foreach ($data as $match) {
             $matchData = $match['match'];
 
             $match = MatchFactory::create($policy, $matchData);
             $allOf->addMatch($match);
         }
+
+        return $allOf;
     }
 }

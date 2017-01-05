@@ -47,11 +47,7 @@ class Rule implements Matchable, PolicyElement
             return new EvaluationResult(Decision::INDETERMINATE(), $this->getStatus());
         }
 
-        /*
-         * See if our target matches
-         */
         $matchResult = $this->match($evaluationContext);
-
         switch ($matchResult->getMatchCode()->getValue()) {
             case MatchCode::INDETERMINATE:
                 return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus());
@@ -61,9 +57,6 @@ class Rule implements Matchable, PolicyElement
                 return new EvaluationResult(Decision::NOT_APPLICABLE());
         }
 
-        /*
-         * See if our condition matches
-         */
         if ($condition = $this->getCondition()) {
             $expressionResultCondition = $condition->evaluate($evaluationContext, $this->policy->getPolicyDefaults());
 

@@ -4,11 +4,11 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Decision;
-use Cerberus\Core\Status;
 use Cerberus\PDP\Combiner\CombiningAlgorithm;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\EvaluationResult;
 use Cerberus\PDP\Evaluation\MatchCode;
+use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Exception\EvaluationException;
 use Ds\Set;
 
@@ -30,9 +30,6 @@ class Policy extends PolicyDef
 
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
     {
-        /*
-         * See if we match
-         */
         /** @var MatchResult $matchResult */
         $matchResult = $this->match($evaluationContext);
 

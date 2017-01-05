@@ -18,6 +18,7 @@ class MatchFactory extends PolicyElementFactory
     public static function create(Policy $policy, array $data): PolicyElement
     {
         $match = new Match($data['matchId']);
+        unset($data['matchId']);
         self::processIncomingData($policy, $match, $data);
 
         return $match;

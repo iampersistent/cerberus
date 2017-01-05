@@ -19,11 +19,9 @@ class AnyOf implements Matchable, PolicyElement
     /** @var AllOf[] */
     protected $allOfs = [];
 
-    public function __construct($allOfs = [])
+    public function addAllOf(AllOf $allOf)
     {
-        foreach ($allOfs as $allOf) {
-            $this->allOfs[] = new AllOf($allOf);
-        }
+        $this->allOfs[] = $allOf;
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult

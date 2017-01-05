@@ -26,7 +26,7 @@ class Target implements Matchable, PolicyElement
 
         foreach ($this->anyOfs as $anyOf) {
             $matchResult = $anyOf->match($evaluationContext);
-            if (!$matchResult->getMatchCode()->is(MatchCode::MATCH)) {
+            if (! $matchResult->getMatchCode()->is(MatchCode::MATCH)) {
                 return $matchResult;
             }
         }
@@ -39,9 +39,8 @@ class Target implements Matchable, PolicyElement
         $this->anyOfs[] = $anyOf;
     }
 
-    public function validate(): bool
+    public function validateComponent(): bool
     {
-        // todo: add real code
         return true;
     }
 }
