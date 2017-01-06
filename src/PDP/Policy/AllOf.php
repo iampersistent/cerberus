@@ -13,17 +13,23 @@ use Cerberus\PDP\Evaluation\{
 };
 use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
+use Ds\Set;
 
 class AllOf implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
-    /** @var Match[] */
+    /** @var Match[]|Set */
     protected $matches;
+
+    public function __construct()
+    {
+        $this->matches = new Set();
+    }
 
     public function addMatch(Match $match): self
     {
-        $this->matches[] = $match;
+        $this->matches->add($match);
 
         return $this;
     }
@@ -36,17 +42,17 @@ class AllOf implements Matchable, PolicyElement
 
         $matchResultFallThrough = MatchResult::createMatch();
         foreach ($this->matches as $match) {
-            $matchResultMatch = $match->match($evaluationContext);
-            switch ($matchResultMatch->getMatchCode()->getValue()) {
+            $matchResult = $match->match($evaluationContext);
+            switch ($matchResult->getMatchCode()->getValue()) {
                 case MatchCode::INDETERMINATE:
                     if (! $matchResultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE)) {
-                        $matchResultFallThrough = $matchResultMatch;
+                        $matchResultFallThrough = $matchResult;
                     }
                     break;
                 case MatchCode::MATCH:
                     break;
                 case MatchCode::NO_MATCH:
-                    return $matchResultMatch;
+                    return $matchResult;
             }
         }
 

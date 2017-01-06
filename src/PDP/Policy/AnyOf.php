@@ -30,7 +30,6 @@ class AnyOf implements Matchable, PolicyElement
             return MatchResult::createIndeterminate($this->getStatus());
         }
 
-        // Assume "No Match" until we find a match or an indeterminate result
         $resultFallThrough = MatchResult::createNoMatch();
         foreach ($this->allOfs as $allOf) {
             $matchResultAllOf = $allOf->match($evaluationContext);

@@ -54,7 +54,6 @@ class Match implements Matchable, PolicyElement
 
         /** @var ExpressionResult $expressionResult */
         $expressionResult = $this->attributeBase->evaluate($evaluationContext, $this->policyDefaults);
-
         if (! $expressionResult->isOk()) {
             return MatchResult::createIndeterminate($expressionResult->getStatus());
         }

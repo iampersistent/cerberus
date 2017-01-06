@@ -49,7 +49,7 @@ class ConvertedArgument
 
             return;
         }
-        if ($expectedDataType && $attributeValue->getDataTypeId() !== $expectedDataType->getId()) {
+        if ($expectedDataType && $attributeValue->getDataTypeId() !== $expectedDataType->getType()->getValue()) {
             $this->status = Status::createProcessingError(
                 'Expected data type ' . $this->getShortDataTypeId($expectedDataType->getId()) .
                 ' saw ' . $this->getShortDataTypeId($attributeValue->getDataTypeId()));

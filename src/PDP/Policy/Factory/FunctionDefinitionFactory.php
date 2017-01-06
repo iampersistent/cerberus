@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Factory;
 
+use Cerberus\Core\DataType\DataTypeString;
 use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\FunctionDefinition;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBag;
@@ -33,21 +34,21 @@ class FunctionDefinitionFactory
 
     protected function createStringBag($id)
     {
-        return new FunctionDefinitionBag($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBag($id, new DataTypeString());
     }
 
     protected function createStringEqual($id)
     {
-        return new FunctionDefinitionEquality($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionEquality($id, new DataTypeString());
     }
 
     protected function createStringIsIn($id)
     {
-        return new FunctionDefinitionBagIsIn($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBagIsIn($id, new DataTypeString());
     }
 
     protected function createStringOneAndOnly($id)
     {
-        return new FunctionDefinitionBagOneAndOnly($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBagOneAndOnly($id, new DataTypeString());
     }
 }

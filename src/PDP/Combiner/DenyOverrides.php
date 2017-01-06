@@ -33,10 +33,10 @@ class DenyOverrides extends CombiningAlgorithm
                 case Decision::INDETERMINATE:
                 case Decision::INDETERMINATE_DENY_PERMIT:
                     if (! $firstIndeterminateDP) {
-                        $firstIndeterminateDP = $evaluationResultElement;
-                    } else {
-                        $firstIndeterminateDP->merge($evaluationResultElement);
+                        $firstIndeterminateDP = new EvaluationResult(Decision::INDETERMINATE_DENY_PERMIT());
                     }
+                    $firstIndeterminateDP->merge($evaluationResultElement);
+
                     break;
                 case Decision::INDETERMINATE_DENY:
                     if (! $firstIndeterminateD) {
@@ -59,7 +59,9 @@ class DenyOverrides extends CombiningAlgorithm
                     $combinedResult->merge($evaluationResultElement);
                     break;
                 default:
-                    throw new EvaluationException('Illegal Decision: ' . (string)$evaluationResultElement->getDecision());
+                    throw new EvaluationException(
+                        'Illegal Decision: ' . (string)$evaluationResultElement->getDecision()
+                    );
             }
         }
 

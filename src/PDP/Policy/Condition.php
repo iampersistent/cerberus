@@ -27,7 +27,6 @@ class Condition implements PolicyElement
         }
 
         $expressionResult = $this->getExpression()->evaluate($evaluationContext, $policyDefaults);
-
         if (! $expressionResult->isOk()) {
             return new ExpressionResultBoolean(false, $expressionResult->getStatus());
         }

@@ -4,30 +4,53 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\DataType\DataType;
+use Cerberus\Core\Factory\DataTypeFactory;
+use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Ds\Set;
 
 abstract class FunctionDefinition
 {
-    protected $dataTypeId;
+    protected $argsDataType;
     protected $id;
+    protected $returnsBag;
+    protected $returnDataType;
 
-    public function __construct($id, $dataType)
+    public function __construct($identifier, DataType $returnDataType, DataType $argsDataType, bool $returnsBag)
     {
-        $this->dataTypeId = $dataType;
-        $this->id = $id;
+        $this->argsDataType = $argsDataType;
+        $this->id = $identifier;
+        $this->returnsBag = $returnsBag;
+        $this->returnDataType = $returnDataType;
     }
 
-    public function getDataTypeId()
+    public function getDataType(): DataType
     {
-        return $this->dataTypeId;
+        return $this->returnDataType;
+    }
+
+    public function getDataTypeId(): Identifier
+    {
+        return $this->returnDataType->getType();
+    }
+
+    public function getDataTypeArgs(): DataType
+    {
+        return $this->argsDataType;
+    }
+
+    public function returnsBag(): bool
+    {
+        return $this->returnsBag;
     }
 
     public function getFunctionStatus(Status $originalStatus): Status
     {
-        return new Status($originalStatus->getStatusCode(),
-            $this->getShortFunctionId() . ' ' . $originalStatus->getStatusMessage());
+        return new Status(
+            $originalStatus->getStatusCode(),
+            $this->getShortFunctionId() . ' ' . $originalStatus->getStatusMessage()
+        );
     }
 
     public function getId()
@@ -42,9 +65,9 @@ abstract class FunctionDefinition
         return $parts[1];
     }
 
-    public function returnsBag(): bool
+    public function getShortDataTypeId($identifier)
     {
-        return false;
+        return (string) $identifier;
     }
 
     abstract public function evaluate(

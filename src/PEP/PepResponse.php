@@ -11,6 +11,7 @@ use Ds\Map;
 
 class PepResponse
 {
+    protected $errorMessage = null;
     protected $obligationRouter;
     /** @var Map */
     protected $obligations;
@@ -42,9 +43,9 @@ class PepResponse
             case Decision::INDETERMINATE_DENY_PERMIT:
             case Decision::INDETERMINATE_PERMIT:
                 $status = $this->result->getStatus();
-                $message = sprintf('Decision: Indeterminate, Status Code: %s, Status Message: %s',
+                $this->errorMessage = sprintf('Decision: Indeterminate, Status Code: %s, Status Message: %s',
                     $status->getStatusCode(), $status->getStatusMessage());
-                throw new PepException($message);
+                return false;
             default:
                 throw new PepException('Invalid response from PDP');
         }
@@ -95,5 +96,15 @@ class PepResponse
     public function getAttributesByCategory(): array
     {
 
+    }
+
+    public function hasError(): bool
+    {
+        return (bool) $this->errorMessage;
+    }
+
+    public function getErrorMessage(): string
+    {
+        return (string) $this->errorMessage;
     }
 }

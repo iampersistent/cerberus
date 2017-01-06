@@ -56,8 +56,9 @@ class Apply extends Expression
             $functionArguments->add(new FunctionArgumentExpression($argument,
                 $evaluationContext, $policyDefaults));
         }
+        $results = $functionDefinition->evaluate($evaluationContext, $functionArguments);
 
-        return $functionDefinition->evaluate($evaluationContext, $functionArguments);
+        return $results;
     }
 
     /**
