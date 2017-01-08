@@ -29,7 +29,7 @@ class FunctionDefinitionBagIsIn extends FunctionDefinition
     {
         if (2 !== $arguments->count()) {
             return new ExpressionResultError(Status::createProcessingError(
-                $this->getShortFunctionId() . ' Expected 2 arguments, got ' . $arguments->count()));
+                $this->getShortFunctionId() . ' expected 2 arguments, got ' . $arguments->count()));
         }
 
         $argument = $arguments->get(0);

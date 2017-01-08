@@ -74,23 +74,29 @@ $testPolicy004 = [
                 'condition' => [
                     'apply' => [
                         'functionId' => 'function:string-equal',
-                        'apply'      => [
-                            [
-                                'functionId'          => 'function:string-one-and-only',
-                                'attributeDesignator' => [
-                                    'category'      => 'attribute-category:resource',
-                                    'attributeId'   => 'document:document-owner',
-                                    'dataType'      => 'string',
-                                    'mustBePresent' => false,
+                        [
+                            'apply' => [
+                                'functionId' => 'function:string-one-and-only',
+                                [
+                                    'attributeDesignator' => [
+                                        'category'      => 'attribute-category:resource',
+                                        'attributeId'   => 'document:document-owner',
+                                        'dataType'      => 'string',
+                                        'mustBePresent' => false,
+                                    ],
                                 ],
                             ],
-                            [
-                                'functionId'          => 'function:string-one-and-only',
-                                'attributeDesignator' => [
-                                    'category'      => 'subject-category:access-subject',
-                                    'attributeId'   => 'subject:subject-id',
-                                    'dataType'      => 'string',
-                                    'mustBePresent' => false,
+                        ],
+                        [
+                            'apply' => [
+                                'functionId' => 'function:string-one-and-only',
+                                [
+                                    'attributeDesignator' => [
+                                        'category'      => 'subject-category:access-subject',
+                                        'attributeId'   => 'subject:subject-id',
+                                        'dataType'      => 'string',
+                                        'mustBePresent' => false,
+                                    ],
                                 ],
                             ],
                         ],
@@ -166,23 +172,29 @@ $testPolicy004 = [
                 'condition' => [
                     'apply' => [
                         'functionId' => 'function:string-equal',
-                        'apply'      => [
-                            [
+                        [
+                            'apply' => [
                                 'functionId'          => 'function:string-one-and-only',
-                                'attributeDesignator' => [
-                                    'attributeId'   => 'client:country-of-domicile',
-                                    'category'      => 'attribute-category:resource',
-                                    'dataType'      => 'string',
-                                    'mustBePresent' => false,
+                                [
+                                    'attributeDesignator' => [
+                                        'attributeId'   => 'client:country-of-domicile',
+                                        'category'      => 'attribute-category:resource',
+                                        'dataType'      => 'string',
+                                        'mustBePresent' => false,
+                                    ],
                                 ],
                             ],
-                            [
+                        ],
+                        [
+                            'apply' => [
                                 'functionId'          => 'function:string-one-and-only',
-                                'attributeDesignator' => [
-                                    'attributeId'   => 'request-context:country',
-                                    'category'      => 'attribute-category:environment',
-                                    'dataType'      => 'string',
-                                    'mustBePresent' => false,
+                                [
+                                    'attributeDesignator' => [
+                                        'attributeId'   => 'request-context:country',
+                                        'category'      => 'attribute-category:environment',
+                                        'dataType'      => 'string',
+                                        'mustBePresent' => false,
+                                    ],
                                 ],
                             ],
                         ],

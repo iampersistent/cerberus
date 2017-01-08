@@ -7,7 +7,7 @@ use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\VariableDefinition;
 
-class VariableDefinitionFactory extends PolicyElementFactory
+class VariableDefinitionFactory extends ExpressionParentFactory
 {
     /**
      * @param Policy $policy
@@ -18,10 +18,8 @@ class VariableDefinitionFactory extends PolicyElementFactory
     public static function create(Policy $policy, array $data): PolicyElement
     {
         $variableDefinition = new VariableDefinition($data['variableId']);
-        if (isset($data['apply'])) {
-            $apply = ApplyFactory::create($policy, $data['apply']);
-            $variableDefinition->setExpression($apply);
-        }
+        unset($data['variableId']);
+        parent::processIncomingData($policy, $variableDefinition, $data);
 
         return $variableDefinition;
     }

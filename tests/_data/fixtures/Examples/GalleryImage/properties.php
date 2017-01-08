@@ -1,6 +1,6 @@
 <?php
 
-$galleryImageMapperProperties = [
+$properties = [
 
     'factories'       => [
         'combiningAlgorithm' => \Cerberus\PDP\Policy\CombiningAlgorithmFactory::class,
@@ -16,10 +16,10 @@ $galleryImageMapperProperties = [
         'issuer'  => 'test',
         'mappers' => [
             'classes'        => [
-                GalleryMapper::class,
+                ImageMapper::class,
             ],
             'configurations' => [
-                __DIR__ . '/imageMapper.php',
+                __DIR__ . '/galleryMapper.php',
             ],
         ],
     ],
