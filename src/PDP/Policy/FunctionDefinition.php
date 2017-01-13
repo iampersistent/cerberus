@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\Factory\DataTypeFactory;
 use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;

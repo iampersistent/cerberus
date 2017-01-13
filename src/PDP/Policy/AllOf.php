@@ -3,15 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\AttributeValue;
-use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
 use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
-use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 use Ds\Set;
 

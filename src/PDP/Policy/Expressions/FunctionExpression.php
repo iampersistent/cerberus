@@ -37,15 +37,18 @@ class FunctionExpression extends Expression
             return $this->getExpressionResultOk();
         }
     }
-public function getAttributeValue(): AttributeValue {
-if (! $this->attributeValue) {
 
-try {
-$this->attributeValue = ''; # evaluate through function definition through factory  DataTypes.DT_ANYURI.createAttributeValue(thisFunctionId);
-} catch (Exception $e) {
-    $this->attributeValue = null;
-}
+    public function getAttributeValue(): AttributeValue
+    {
+        if (! $this->attributeValue) {
+
+            try {
+                $this->attributeValue = ''; # evaluate through function definition through factory  DataTypes.DT_ANYURI.createAttributeValue(thisFunctionId);
+            } catch (Exception $e) {
+                $this->attributeValue = null;
+            }
         }
+
         return $this->attributeValue;
     }
 

@@ -4,9 +4,11 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy\Factory;
 
 use Cerberus\Core\DataType\DataTypeBoolean;
+use Cerberus\Core\DataType\DataTypeInteger;
 use Cerberus\Core\DataType\DataTypeString;
 use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAllOf;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAnyOfAny;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBag;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBagIsIn;
@@ -39,14 +41,24 @@ class FunctionDefinitionFactory
         return new FunctionDefinitionAnyOfAny($id, new DataTypeString());
     }
 
+    protected function createBooleanAllOf($id)
+    {
+        return new FunctionDefinitionAllOf($id, new DataTypeBoolean());
+    }
+
     protected function createBooleanEqual($id)
     {
         return new FunctionDefinitionEquality($id, new DataTypeBoolean());
     }
 
+    protected function createIntegerBag($id)
+    {
+        return new FunctionDefinitionBag($id, new DataTypeInteger());
+    }
+
     protected function createIntegerEqual($id)
     {
-        return new FunctionDefinitionEquality($id, new DataTypeBoolean());
+        return new FunctionDefinitionEquality($id, new DataTypeInteger());
     }
 
     protected function createStringBag($id)
