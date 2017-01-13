@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Ds\Set;
 
 class Attribute

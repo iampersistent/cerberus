@@ -4,8 +4,9 @@ declare(strict_types = 1);
 namespace Cerberus\PEP;
 
 use Cerberus\Core\{
-    AttributeValue, Exception\IllegalArgumentException, FindDataType, Attribute, RequestAttributes
+    Exception\IllegalArgumentException, FindDataType, Attribute, RequestAttributes
 };
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 
 class PepRequestAttributes extends RequestAttributes
 {

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Factory\PolicyElement;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Policy\Policy;
 

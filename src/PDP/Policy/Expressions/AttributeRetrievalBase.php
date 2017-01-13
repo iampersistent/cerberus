@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Expressions;
 
-use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Policy\Expression;

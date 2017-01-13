@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\Status;
 
 abstract class FunctionArgument

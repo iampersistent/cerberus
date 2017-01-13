@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\DataType\DataType;
 use Cerberus\Core\DataType\DataTypeBoolean;
 use Cerberus\Core\Identifier;
