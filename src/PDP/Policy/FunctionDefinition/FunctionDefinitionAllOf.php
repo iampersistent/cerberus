@@ -8,6 +8,7 @@ use Cerberus\Core\DataType\DataTypeBoolean;
 use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Exception\PDPException;
 use Cerberus\PDP\Policy\ConvertedArgument;
 use Cerberus\PDP\Policy\ExpressionResult;
 use Cerberus\PDP\Policy\ExpressionResultError;
@@ -28,6 +29,7 @@ class FunctionDefinitionAllOf extends FunctionDefinition
         EvaluationContext $evaluationContext,
         Set $arguments
     ): ExpressionResult {
+            throw new PDPException('function:all-of needs to be implemented');
         $attributeValue = null;
         $bag = null;
         $function = null;

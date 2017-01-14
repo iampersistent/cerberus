@@ -38,6 +38,9 @@ class GalleryImageCest
         $this->gallery3->addImage($this->image3);
     }
 
+    /**
+     * @skip
+     */
     public function testAccessImageThroughGallery(FunctionalTester $I)
     {
         $I->assertFalse($this->service->can(new Subject('1'), new Action('view'), $this->image1));
