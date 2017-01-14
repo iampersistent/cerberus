@@ -24,24 +24,10 @@ class AttributeDesignator extends AttributeRetrievalBase
 
     public function __construct($category, $dataTypeId, $mustBePresent, $attributeId)
     {
-//        echo "\nin AttributeDesignator construct: \n";
-//        echo "attributeId: $attributeId\n";
-//        echo "category: $category\n";
-//        echo "dataTypeId: $dataTypeId\n";
-//        echo "mustBePresent: $mustBePresent\n";
-
         $this->attributeId = $attributeId;
-        parent::__construct($category, $dataTypeId, $mustBePresent);
-
-//        echo "\nafter parent::__construct(): \n";
-//        echo "attributeId: $this->attributeId \n";
-//        echo "by method: " . $this->getAttributeId() . "\n";
-//        echo "category: $this->category \n";
-//        echo "by method: " . $this->getCategory() . "\n";
-//        echo "dataTypeId: $this->dataTypeId \n";
-//        echo "by method: " . $this->getDataTypeId() . "\n";
-//        echo "mustBePresent: $this->mustBePresent \n";
-//        echo "by method: " . $this->getMustBePresent() . "\n";
+        $this->category = $category;
+        $this->dataTypeId = $dataTypeId;
+        $this->mustBePresent = $mustBePresent;
     }
 
     public function getAttributeId()
