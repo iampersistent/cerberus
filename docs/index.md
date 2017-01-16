@@ -164,7 +164,7 @@ $service = CerberusService($config);
 
 $subject = new Subject('subjectId', 'subjectType'); // subjectType defaults to user
 $action = new Action('read'); // can be anything
-$resource = new Resource('resourceType', 'resourceId');
+$resource = new ResourceObject('resourceType', 'resourceId');
 
 $service->grant($subject, $action, $resource);
 
@@ -176,8 +176,8 @@ To deny access to a resource
 $service = CerberusService($config);
 
 $subject = new Subject('subjectId');
-$action = new Action('read'); 
-$resource = new Resource('resourceType', 'resourceId');
+$action = new ReadAction(); // alias for "new Action('read')" 
+$resource = new ResourceObject('resourceType', 'resourceId');
 
 $service->deny($subject, $action, $resource);
 
@@ -189,8 +189,8 @@ To check access to a resource
 $service = CerberusService($config);
 
 $subject = new Subject('subjectId', 'subjectType'); 
-$action = new Action('read'); 
-$resource = new Resource('resourceType', 'resourceId');
+$action = new ReadAction(); // alias for "new Action('read')" 
+$resource = new ResourceObject('resourceType', 'resourceId');
 
 $service->can($subject, $action, $resource);
 
