@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus;
 
 use Cerberus\PDP\Utility\ArrayProperties;
-use Cerberus\PEP\Action;
+use Cerberus\PEP\Action\Action;
 use Cerberus\PEP\PepAgent;
 use Cerberus\PEP\PepAgentFactory;
 use Cerberus\PEP\ResourceObject;
