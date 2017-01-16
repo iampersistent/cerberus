@@ -5,7 +5,7 @@ use Cerberus\CerberusService;
 use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\Content;
 use Cerberus\PDP\Utility\ArrayProperties;
-use Cerberus\PEP\Action;
+use Cerberus\PEP\Action\Action;
 use Cerberus\PEP\ObjectMapper;
 use Cerberus\PEP\PepRequest;
 use Cerberus\PEP\Subject;

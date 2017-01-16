@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\PEP\Action;
+use Cerberus\PEP\Action\ReadAction;
 use Cerberus\PEP\ResourceObject;
 use Cerberus\PEP\Subject;
 use Cerberus\PIP\Permission\PermissionManager;
@@ -22,7 +22,7 @@ class PermissionManagerCest
         $resource = new ResourceObject('test', 'testId101');
 
         // set permission
-        $this->permissionManager->grant($subject, new Action('read'), $resource);
+        $this->permissionManager->grant($subject, new ReadAction(), $resource);
 
         $record = $this->permissionManager->find($subject, $resource);
 
@@ -35,7 +35,7 @@ class PermissionManagerCest
         $resource = new ResourceObject('test', 'testId101');
 
         // set permission
-        $this->permissionManager->deny($subject, new Action('read'), $resource);
+        $this->permissionManager->deny($subject, new ReadAction(), $resource);
 
         $record = $this->permissionManager->find($subject, $resource);
 

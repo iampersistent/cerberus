@@ -1,9 +1,10 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\PEP;
+namespace Cerberus\PEP\Action;
 
 use Cerberus\Core\Identifier;
+use Cerberus\PEP\CategoryContainer;
 
 class Action extends CategoryContainer
 {

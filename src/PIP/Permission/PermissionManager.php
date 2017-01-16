@@ -3,12 +3,10 @@ declare(strict_types = 1);
 
 namespace Cerberus\PIP\Permission;
 
-use Cerberus\PEP\Action;
+use Cerberus\PEP\Action\Action;
 use Cerberus\PEP\ResourceObject;
 use Cerberus\PEP\Subject;
 use Cerberus\PIP\Contract\PermissionRepository;
-use Ds\Set;
-use Exception;
 
 class PermissionManager
 {

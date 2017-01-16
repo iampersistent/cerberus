@@ -5,6 +5,7 @@ namespace Cerberus\PEP;
 
 use Cerberus\PDP\Utility\NullProperties;
 use Cerberus\PDP\Utility\Properties;
+use Cerberus\PEP\Action\ActionMapper;
 use Cerberus\PEP\Exception\PepException;
 use Ds\Map;
 

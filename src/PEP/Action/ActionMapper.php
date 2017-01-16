@@ -1,7 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\PEP;
+namespace Cerberus\PEP\Action;
+
+use Cerberus\PEP\CategoryContainerMapper;
 
 class ActionMapper extends CategoryContainerMapper
 {

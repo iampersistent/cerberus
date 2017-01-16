@@ -2,7 +2,7 @@
 declare(strict_types = 1);
 
 use Cerberus\PEP\{
-    Action, PepAgent, PepAgentFactory, ResourceObject, Subject
+    Action\Action, PepAgent, PepAgentFactory, ResourceObject, Subject
 };
 use Cerberus\PDP\{
     Utility\ArrayProperties

@@ -1,16 +1,13 @@
 <?php
 declare(strict_types = 1);
 
-use AspectMock\Test as Mock;
 use Cerberus\Core\Identifier;
-use Cerberus\PEP\{
-    Action, MapperRegistry, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, PepRequestFactory, PepResponseFactory, Subject
-};
-use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\{
-    ArrayPolicyFinderFactory, CerberusEngine, Utility\ArrayProperties
+    Utility\ArrayProperties
 };
-use Cerberus\PIP\PipFinder;
+use Cerberus\PEP\{
+    Action\Action, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, Subject
+};
 use Ds\Set;
 use Test\Document;
 

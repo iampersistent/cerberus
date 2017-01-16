@@ -9,7 +9,9 @@ class CerberusServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-
+        $this->publishes([
+            __DIR__.'/config/cerberus.php' => config_path('cerberus.php'),
+        ]);
     }
 
     public function register()
@@ -20,9 +22,7 @@ class CerberusServiceProvider extends ServiceProvider
     protected function registerAuthorize()
     {
         $this->app->singleton('cerberus', function ($app) {
-            return new CerberusService();
+            return new CerberusService(config('cerberus'));
         });
     }
-
-
 }
