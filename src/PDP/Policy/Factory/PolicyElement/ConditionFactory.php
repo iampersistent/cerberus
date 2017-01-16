@@ -1,18 +1,25 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\PDP\Policy\Factory;
+namespace Cerberus\PDP\Policy\Factory\PolicyElement;
 
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Policy\Condition;
 use Cerberus\PDP\Policy\Policy;
 
-class ConditionFactory
+class ConditionFactory extends PolicyElementFactory
 {
-    public static function create(Policy $policy, $data): Condition
+    /**
+     * @param Policy $policy
+     * @param array  $data
+     *
+     * @return PolicyElement|Condition
+     */
+    public static function create(Policy $policy, array $data): PolicyElement
     {
         $condition = new Condition();
         if (isset($data['apply'])) {
-            $apply = ApplyFactory::create($data['apply']);
+            $apply = ApplyFactory::create($policy, $data['apply']);
             $condition->setExpression($apply);
         }
         if (isset($data['variableReference'])) {

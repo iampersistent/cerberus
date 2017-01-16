@@ -3,8 +3,13 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Factory;
 
+use Cerberus\Core\DataType\DataTypeBoolean;
+use Cerberus\Core\DataType\DataTypeInteger;
+use Cerberus\Core\DataType\DataTypeString;
 use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAllOf;
+use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAnyOfAny;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBag;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBagIsIn;
 use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBagOneAndOnly;
@@ -31,23 +36,48 @@ class FunctionDefinitionFactory
         return $this->$method($id);
     }
 
+    protected function createAnyOfAny($id)
+    {
+        return new FunctionDefinitionAnyOfAny($id, new DataTypeString());
+    }
+
+    protected function createBooleanAllOf($id)
+    {
+        return new FunctionDefinitionAllOf($id, new DataTypeBoolean());
+    }
+
+    protected function createBooleanEqual($id)
+    {
+        return new FunctionDefinitionEquality($id, new DataTypeBoolean());
+    }
+
+    protected function createIntegerBag($id)
+    {
+        return new FunctionDefinitionBag($id, new DataTypeInteger());
+    }
+
+    protected function createIntegerEqual($id)
+    {
+        return new FunctionDefinitionEquality($id, new DataTypeInteger());
+    }
+
     protected function createStringBag($id)
     {
-        return new FunctionDefinitionBag($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBag($id, new DataTypeString());
     }
 
     protected function createStringEqual($id)
     {
-        return new FunctionDefinitionEquality($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionEquality($id, new DataTypeString());
     }
 
     protected function createStringIsIn($id)
     {
-        return new FunctionDefinitionBagIsIn($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBagIsIn($id, new DataTypeString());
     }
 
     protected function createStringOneAndOnly($id)
     {
-        return new FunctionDefinitionBagOneAndOnly($id, Identifier::DATATYPE_STRING);
+        return new FunctionDefinitionBagOneAndOnly($id, new DataTypeString());
     }
 }

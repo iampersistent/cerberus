@@ -11,4 +11,22 @@ abstract class DataType
     {
         $this->type = $type;
     }
+
+    public function equals(DataType $dataType): bool
+    {
+        return $this->type->is($dataType->getType());
+    }
+
+    public function getType(): Identifier
+    {
+        return $this->type;
+    }
+
+    abstract public function convert($source = null);
+
+    protected function convertToString($source): string
+    {
+        // todo: check for more options, such as toString() method
+        return (string)$source;
+    }
 }

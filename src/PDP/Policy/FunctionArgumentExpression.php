@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
@@ -34,6 +34,11 @@ class FunctionArgumentExpression extends FunctionArgument
     public function getBag()
     {
         return $this->getExpressionResult()->getBag();
+    }
+
+    public function getExpression()
+    {
+        return $this->expression;
     }
 
     public function getValue(): AttributeValue

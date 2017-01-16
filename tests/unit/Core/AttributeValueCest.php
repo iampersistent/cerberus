@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\Exception\IllegalArgumentException;
 use Cerberus\Core\Identifier;
 

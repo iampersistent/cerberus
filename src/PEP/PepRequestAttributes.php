@@ -4,8 +4,9 @@ declare(strict_types = 1);
 namespace Cerberus\PEP;
 
 use Cerberus\Core\{
-    AttributeValue, Exception\IllegalArgumentException, FindDataType, Attribute, RequestAttributes
+    Exception\IllegalArgumentException, FindDataType, Attribute, RequestAttributes
 };
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 
 class PepRequestAttributes extends RequestAttributes
 {
@@ -14,7 +15,7 @@ class PepRequestAttributes extends RequestAttributes
         parent::__construct($id, $categoryIdentifier);
     }
 
-    public function addAttribute(string $name, ...$values)
+    public function addAttribute(string $name, ...$values): self
     {
         if (empty($values)) {
             throw new IllegalArgumentException("Null attribute value provided for attribute: $name");
@@ -30,5 +31,7 @@ class PepRequestAttributes extends RequestAttributes
             $dataTypeId = FindDataType::handle($value);
             $attribute->addValue(new AttributeValue($dataTypeId, $value)); // passed through if needed
         }
+
+        return $this;
     }
 }

@@ -3,8 +3,8 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
+use Cerberus\Core\DataType\DataType;
 use Cerberus\Core\Status;
-use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\ConvertedArgument;
 use Cerberus\PDP\Policy\ExpressionResult;
@@ -16,13 +16,17 @@ use Ds\Set;
 
 class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
 {
+    public function __construct($identifier, DataType $argsDataType)
+    {
+        parent::__construct($identifier, $argsDataType, $argsDataType, false);
+    }
+
     public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
-        if (! $arguments || $arguments->count() !== 1) {
+        if ($arguments->count() !== 1) {
             return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId()
-                . ' Expected 1 argument, got '
-                . (! $arguments ? 'null' : $arguments->count())));
+                . ' expected 1 argument, got ' . $arguments->count()));
         }
 
         /** @var FunctionArgument $argument */
@@ -37,17 +41,17 @@ class FunctionDefinitionBagOneAndOnly extends FunctionDefinition
 
         if ($bag->size() !== 1) {
             return new ExpressionResultError(Status::createProcessingError(
-                $this->getShortFunctionId() . ' Expected 1 but Bag has ' . $bag->size() . ' elements'));
+                $this->getShortFunctionId() . ' expected 1 but Bag has ' . $bag->size() . ' elements'));
         }
 
         // get the single value from the bag
         $attributeValueOneAndOnly = $bag->getAttributeValues()->first();
 
-        if ($this->getDataTypeId() !== $attributeValueOneAndOnly->getDataTypeId()) {
+        if (! $this->getDataTypeId()->is($attributeValueOneAndOnly->getDataTypeId())) {
             return new ExpressionResultError(Status::createProcessingError(
                 $this->getShortFunctionId()
-                . ' Element in bag of wrong type-> Expected '
-                . $this->getShortDataType($this->getDataTypeId())
+                . ' Element in bag of wrong type. Expected '
+                . $this->getShortDataTypeId($this->getDataTypeId())
                 . ' got '
                 . $this->getShortDataTypeId($attributeValueOneAndOnly->getDataTypeId())));
         }

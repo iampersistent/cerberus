@@ -3,11 +3,12 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\Exception\DataTypeException;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
@@ -16,7 +17,7 @@ use Cerberus\PDP\Policy\Expressions\AttributeRetrievalBase;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 use Ds\Set;
 
-class Match implements Matchable
+class Match implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
@@ -28,16 +29,20 @@ class Match implements Matchable
     protected $matchId;
     protected $policyDefaults;
 
-    public function __construct(
-        $matchId,
-        AttributeValue $attributeValue,
-        AttributeRetrievalBase $attributeBase,
-        PolicyDefaults $policyDefaults
-    ) {
-        $this->attributeBase = $attributeBase;
-        $this->attributeValue = $attributeValue;
+    public function __construct($matchId)
+    {
         $this->matchId = $matchId;
-        $this->policyDefaults = $policyDefaults;
+        $this->policyDefaults = new PolicyDefaults();
+    }
+
+    public function setAttributeBase(AttributeRetrievalBase $attributeBase)
+    {
+        $this->attributeBase = $attributeBase;
+    }
+
+    public function setAttributeValue(AttributeValue $attributeValue)
+    {
+        $this->attributeValue = $attributeValue;
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
@@ -49,7 +54,6 @@ class Match implements Matchable
 
         /** @var ExpressionResult $expressionResult */
         $expressionResult = $this->attributeBase->evaluate($evaluationContext, $this->policyDefaults);
-
         if (! $expressionResult->isOk()) {
             return MatchResult::createIndeterminate($expressionResult->getStatus());
         }

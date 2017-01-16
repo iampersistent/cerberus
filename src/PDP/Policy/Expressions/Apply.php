@@ -7,7 +7,6 @@ use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Exception\FactoryException;
-use Cerberus\PDP\Policy\Bag;
 use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;
 use Cerberus\PDP\Policy\ExpressionResultError;
@@ -20,16 +19,15 @@ use Ds\Set;
 class Apply extends Expression
 {
     protected $arguments;
-    protected $description;
+    protected $description = '';
     protected $functionDefinition;
     /** @var FunctionDefinitionFactory */
     protected $functionDefinitionFactory;
     protected $functionId;
 
-    public function __construct($functionId, $description = '')
+    public function __construct($functionId)
     {
         $this->arguments = new Set();
-        $this->description = $description;
         $this->functionId = $functionId;
     }
 
@@ -38,6 +36,11 @@ class Apply extends Expression
         $this->arguments->add($argument);
 
         return $this;
+    }
+
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
     }
 
     public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult
@@ -57,8 +60,9 @@ class Apply extends Expression
             $functionArguments->add(new FunctionArgumentExpression($argument,
                 $evaluationContext, $policyDefaults));
         }
+        $results = $functionDefinition->evaluate($evaluationContext, $functionArguments);
 
-        return $functionDefinition->evaluate($evaluationContext, $functionArguments);
+        return $results;
     }
 
     /**

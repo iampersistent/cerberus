@@ -5,12 +5,13 @@ namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\Status;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class Target implements Matchable
+class Target implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
@@ -25,7 +26,7 @@ class Target implements Matchable
 
         foreach ($this->anyOfs as $anyOf) {
             $matchResult = $anyOf->match($evaluationContext);
-            if (!$matchResult->getMatchCode()->is(MatchCode::MATCH)) {
+            if (! $matchResult->getMatchCode()->is(MatchCode::MATCH)) {
                 return $matchResult;
             }
         }
@@ -38,9 +39,8 @@ class Target implements Matchable
         $this->anyOfs[] = $anyOf;
     }
 
-    public function validate(): bool
+    public function validateComponent(): bool
     {
-        // todo: add real code
         return true;
     }
 }

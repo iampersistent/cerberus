@@ -5,6 +5,8 @@ namespace Cerberus\PDP\Combiner;
 
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\EvaluationResult;
+use Cerberus\PDP\Policy\CombiningElement;
+use Ds\Set;
 
 abstract class CombiningAlgorithm
 {
@@ -15,5 +17,16 @@ abstract class CombiningAlgorithm
         $this->identifier = $identifier;
     }
 
-    abstract public function combine(EvaluationContext $evaluationContext, $elements, $combinerParameters): EvaluationResult;
+    /**
+     * @param EvaluationContext      $evaluationContext
+     * @param CombiningElement[]|Set $elements
+     * @param                        $combinerParameters
+     *
+     * @return EvaluationResult
+     */
+    abstract public function combine(
+        EvaluationContext $evaluationContext,
+        $elements,
+        $combinerParameters
+    ): EvaluationResult;
 }

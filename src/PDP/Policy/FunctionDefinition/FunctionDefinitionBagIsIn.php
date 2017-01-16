@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
-use Cerberus\Core\AttributeValue;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
+use Cerberus\Core\DataType\DataType;
+use Cerberus\Core\DataType\DataTypeBoolean;
 use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
@@ -15,6 +17,11 @@ use Ds\Set;
 
 class FunctionDefinitionBagIsIn extends FunctionDefinition
 {
+    public function __construct($id, DataType $argDataType)
+    {
+        parent::__construct($id, new DataTypeBoolean(), $argDataType, false);
+    }
+
     public function evaluate(
         EvaluationContext $evaluationContext,
         Set $arguments
@@ -22,13 +29,12 @@ class FunctionDefinitionBagIsIn extends FunctionDefinition
     {
         if (2 !== $arguments->count()) {
             return new ExpressionResultError(Status::createProcessingError(
-                $this->getShortFunctionId() . ' Expected 2 arguments, got ' . $arguments->count()));
+                $this->getShortFunctionId() . ' expected 2 arguments, got ' . $arguments->count()));
         }
 
         $argument = $arguments->get(0);
 
-        // $convertedTargetArgument = new ConvertedArgument($argument, $this->getDataTypeArgs(), false);
-        $convertedTargetArgument = new ConvertedArgument($argument, null, false);
+        $convertedTargetArgument = new ConvertedArgument($argument, $this->getDataTypeArgs(), false);
         if (! $convertedTargetArgument->isOk()) {
             return new ExpressionResultError($this->getFunctionStatus($convertedTargetArgument->getStatus()));
         }

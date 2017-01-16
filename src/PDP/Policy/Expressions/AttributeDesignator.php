@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\Attribute;
-use Cerberus\Core\AttributeValue;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Evaluation\EvaluationContext;
@@ -26,7 +25,9 @@ class AttributeDesignator extends AttributeRetrievalBase
     public function __construct($category, $dataTypeId, $mustBePresent, $attributeId)
     {
         $this->attributeId = $attributeId;
-        parent::__construct($category, $dataTypeId, $mustBePresent);
+        $this->category = $category;
+        $this->dataTypeId = $dataTypeId;
+        $this->mustBePresent = $mustBePresent;
     }
 
     public function getAttributeId()
@@ -41,7 +42,6 @@ class AttributeDesignator extends AttributeRetrievalBase
         }
 
         $pipRequest = $this->getPipRequest();
-
         try {
             $pipResponse = $evaluationContext->getAttributes($pipRequest);
         } catch (PipException $e) {
@@ -52,7 +52,6 @@ class AttributeDesignator extends AttributeRetrievalBase
         if ($pipStatus && ! $pipStatus->getStatusCode()->is(StatusCode::STATUS_CODE_OK)) {
             return new ExpressionResult($pipStatus);
         }
-
         $bagAttributeValues = new Bag();
         foreach ($pipResponse->getAttributes() as $attribute) {
             if ($this->matchAttribute($attribute)) {

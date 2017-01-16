@@ -7,18 +7,21 @@ use Cerberus\Core\Decision;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\EvaluationResult;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class Rule implements Matchable
+class Rule implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
     /** @var Condition */
     protected $condition;
+    /** @var string */
+    protected $description;
     /** @var Policy */
     protected $policy;
     /** @var RuleEffect */
@@ -33,17 +36,18 @@ class Rule implements Matchable
         $this->policy = $policy;
     }
 
+    public function setDescription(string $description)
+    {
+        $this->description = $description;
+    }
+
     public function evaluate(EvaluationContext $evaluationContext): EvaluationResult
     {
         if (! $this->validate()) {
             return new EvaluationResult(Decision::INDETERMINATE(), $this->getStatus());
         }
 
-        /*
-         * See if our target matches
-         */
         $matchResult = $this->match($evaluationContext);
-
         switch ($matchResult->getMatchCode()->getValue()) {
             case MatchCode::INDETERMINATE:
                 return new EvaluationResult(Decision::INDETERMINATE(), $matchResult->getStatus());
@@ -53,16 +57,20 @@ class Rule implements Matchable
                 return new EvaluationResult(Decision::NOT_APPLICABLE());
         }
 
-        /*
-         * See if our condition matches
-         */
         if ($condition = $this->getCondition()) {
-            $expressionResultCondition = $condition->evaluate($evaluationContext, $this->policy->getPolicyDefaults());
-
-            if (! $expressionResultCondition->isOk()) {
-                return new EvaluationResult(Decision::INDETERMINATE(), $expressionResultCondition->getStatus());
+            $conditionResults = $condition->evaluate($evaluationContext, $this->policy->getPolicyDefaults());
+            if (! $conditionResults->isOk()) {
+                if ($matchResult->getMatchCode()->is(MatchCode::MATCH) || ! $this->target) {
+                    if ($this->getRuleEffect()->getDecision()->is(Decision::PERMIT)) {
+                        return new EvaluationResult(Decision::INDETERMINATE_PERMIT(), $conditionResults->getStatus());
+                    }
+                    if ($this->getRuleEffect()->getDecision()->is(Decision::DENY)) {
+                        return new EvaluationResult(Decision::INDETERMINATE_DENY(), $conditionResults->getStatus());
+                    }
+                }
+                return new EvaluationResult(Decision::INDETERMINATE(), $conditionResults->getStatus());
             } else {
-                if (! $expressionResultCondition->isTrue()) {
+                if (! $conditionResults->isTrue()) {
                     return new EvaluationResult(Decision::NOT_APPLICABLE());
                 }
             }
@@ -84,7 +92,6 @@ class Rule implements Matchable
         if (! $this->validate()) {
             return MatchResult::createIndeterminate($this->getStatus());
         }
-
         if ($this->target) {
             return $this->target->match($evaluationContext);
         } else {

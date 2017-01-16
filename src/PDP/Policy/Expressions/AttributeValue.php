@@ -1,11 +1,15 @@
 <?php
 declare(strict_types = 1);
 
-namespace Cerberus\Core;
+namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\Exception\IllegalArgumentException;
+use Cerberus\PDP\Evaluation\EvaluationContext;
+use Cerberus\PDP\Policy\Expression;
+use Cerberus\PDP\Policy\ExpressionResult;
+use Cerberus\PDP\Policy\PolicyDefaults;
 
-class AttributeValue
+class AttributeValue extends Expression
 {
     protected $dataTypeId;
     protected $value;
@@ -31,5 +35,10 @@ class AttributeValue
     public function getValue()
     {
         return $this->value;
+    }
+
+    public function evaluate(EvaluationContext $evaluationContext, PolicyDefaults $policyDefaults): ExpressionResult
+    {
+        // TODO: Implement evaluate() method.
     }
 }

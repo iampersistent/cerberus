@@ -6,23 +6,22 @@ namespace Cerberus\PDP\Policy;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Evaluation\MatchCode;
 use Cerberus\PDP\Evaluation\MatchResult;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
 
-class AnyOf implements Matchable
+class AnyOf implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
     /** @var AllOf[] */
     protected $allOfs = [];
 
-    public function __construct($allOfs = [])
+    public function addAllOf(AllOf $allOf)
     {
-        foreach ($allOfs as $allOf) {
-            $this->allOfs[] = new AllOf($allOf);
-        }
+        $this->allOfs[] = $allOf;
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
@@ -31,7 +30,6 @@ class AnyOf implements Matchable
             return MatchResult::createIndeterminate($this->getStatus());
         }
 
-        // Assume "No Match" until we find a match or an indeterminate result
         $resultFallThrough = MatchResult::createNoMatch();
         foreach ($this->allOfs as $allOf) {
             $matchResultAllOf = $allOf->match($evaluationContext);

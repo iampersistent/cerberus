@@ -11,4 +11,13 @@ class DataTypeString extends DataType
     {
         parent::__construct(Identifier::DATATYPE_STRING());
     }
+
+    public function convert($source = null)
+    {
+        if (! $source || is_string($source)) {
+            return (string) $source;
+        } else {
+            return $this->convertToString($source);
+        }
+    }
 }

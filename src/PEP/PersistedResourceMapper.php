@@ -33,9 +33,9 @@ class PersistedResourceMapper extends ObjectMapper
         };
         $requestData = [
             'subjectId'    => $getAttributeValue($subject, 'subject:subject-id'),
-            'subjectType'    => $getAttributeValue($subject, 'subject:subject-type'),
-            'resourceId'    => $getAttributeValue($resource, 'resource:resource-id'),
-            'resourceType'    => $getAttributeValue($resource, 'resource:resource-type'),
+            'subjectType'  => $getAttributeValue($subject, 'subject:subject-type'),
+            'resourceId'   => $getAttributeValue($resource, 'resource:resource-id'),
+            'resourceType' => $getAttributeValue($resource, 'resource:resource-type'),
         ];
 
         $retrievedData = $this->repository->find($requestData);

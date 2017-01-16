@@ -5,6 +5,7 @@ namespace Cerberus\PDP\Policy\Expressions;
 
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Policy\Expression;
 use Cerberus\PDP\Policy\ExpressionResult;

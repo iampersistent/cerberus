@@ -3,45 +3,32 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\AttributeValue;
-use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\Matchable;
+use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Evaluation\{
     EvaluationContext, MatchCode, MatchResult
 };
-use Cerberus\PDP\Policy\Expressions\AttributeDesignator;
 use Cerberus\PDP\Policy\Traits\PolicyComponent;
+use Ds\Set;
 
-class AllOf implements Matchable
+class AllOf implements Matchable, PolicyElement
 {
     use PolicyComponent;
 
-    /** @var Match[] */
+    /** @var Match[]|Set */
     protected $matches;
 
-    public function __construct($matches)
+    public function __construct()
     {
-        foreach ($matches as $match) {
-            $matchData = $match['match'];
-            $attributeValue = new AttributeValue(
-                $matchData['attributeValue']['dataType'],
-                $matchData['attributeValue']['text']
-            );
-            $attributeBase = new AttributeDesignator(
-                $matchData['attributeDesignator']['category'],
-                $matchData['attributeDesignator']['dataType'],
-                $matchData['attributeDesignator']['mustBePresent'],
-                $matchData['attributeDesignator']['attributeId']
-            );
-            $policyDefaults = new PolicyDefaults();
-            $this->matches[] = new Match(
-                $matchData['matchId'],
-                $attributeValue,
-                $attributeBase,
-                $policyDefaults
-            );
-        }
+        $this->matches = new Set();
+    }
+
+    public function addMatch(Match $match): self
+    {
+        $this->matches->add($match);
+
+        return $this;
     }
 
     public function match(EvaluationContext $evaluationContext): MatchResult
@@ -52,17 +39,17 @@ class AllOf implements Matchable
 
         $matchResultFallThrough = MatchResult::createMatch();
         foreach ($this->matches as $match) {
-            $matchResultMatch = $match->match($evaluationContext);
-            switch ($matchResultMatch->getMatchCode()->getValue()) {
+            $matchResult = $match->match($evaluationContext);
+            switch ($matchResult->getMatchCode()->getValue()) {
                 case MatchCode::INDETERMINATE:
                     if (! $matchResultFallThrough->getMatchCode()->is(MatchCode::INDETERMINATE)) {
-                        $matchResultFallThrough = $matchResultMatch;
+                        $matchResultFallThrough = $matchResult;
                     }
                     break;
                 case MatchCode::MATCH:
                     break;
                 case MatchCode::NO_MATCH:
-                    return $matchResultMatch;
+                    return $matchResult;
             }
         }
 
