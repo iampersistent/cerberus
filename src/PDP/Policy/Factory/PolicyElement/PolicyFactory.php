@@ -44,7 +44,7 @@ class PolicyFactory
         return $policy;
     }
 
-    protected function processRules(Policy $policy, $data)
+    protected static function processRules(Policy $policy, $data)
     {
         foreach ($data as $ruleData) {
             $rule = RuleFactory::create($policy, $ruleData);
@@ -52,18 +52,18 @@ class PolicyFactory
         }
     }
 
-    protected function processPolicyId(Policy $policy, $data)
+    protected static function processPolicyId(Policy $policy, $data)
     {
         $policy->setIdentifier($data);
     }
 
-    protected function processRuleCombiningAlgorithmId(Policy $policy, $data)
+    protected static function processRuleCombiningAlgorithmId(Policy $policy, $data)
     {
         $combiner = CombinerFactory::create($data);
         $policy->setRuleCombiningAlgorithm($combiner);
     }
 
-    protected function processVariableDefinitions(Policy $policy, $data)
+    protected static function processVariableDefinitions(Policy $policy, $data)
     {
         foreach ($data as $variableDefinitionData) {
             $variableDefinition = VariableDefinitionFactory::create($policy, $variableDefinitionData);
