@@ -9,8 +9,8 @@ class PepAgentFactoryCest
 {
     public function testConstruct(UnitTester $I)
     {
-        require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
-        $properties = new ArrayProperties($testMapperProperties);
+        $properties = require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
+        $properties = new ArrayProperties($properties);
         $factory = new PepAgentFactory($properties);
 
         $pepAgent = $factory->getPepAgent();

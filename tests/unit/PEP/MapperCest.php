@@ -18,8 +18,8 @@ class MapperCest
 
     public function _before(UnitTester $I)
     {
-        require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
-        $properties = new ArrayProperties($testMapperProperties);
+        $properties = require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
+        $properties = new ArrayProperties($properties);
         $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
     }
 

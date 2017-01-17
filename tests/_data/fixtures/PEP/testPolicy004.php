@@ -1,6 +1,6 @@
 <?php
 
-$testPolicy004 = [
+return [
     'policy' => [
         'policyId'                 => 'test004:policy',
         'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',

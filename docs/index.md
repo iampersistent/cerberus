@@ -29,7 +29,9 @@ The various engines and mappers need to be configured. Currently, the only allow
 array. 
 
 ```php
-$config = [
+[config.php]
+
+return [
     'factories'       => [
         'combiningAlgorithm' => \Cerberus\PDP\Policy\CombiningAlgorithmFactory::class,
         'functionDefinition' => \Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory::class,
@@ -69,7 +71,9 @@ $config = [
 The policy is also defined with a PHP array
 
 ```php
-$policy = [
+[policy.php]
+
+return [
     'policy' => [
         'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
         'policyId'                 => 'dynamic:policy',
