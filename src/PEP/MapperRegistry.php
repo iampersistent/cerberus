@@ -32,10 +32,8 @@ class MapperRegistry
 
         $mapperConfigs = $properties->get('pep.mappers.configurations', []);
         foreach ($mapperConfigs as $configFile) {
-            include $configFile;
-            $parts = pathinfo($configFile);
-            $classConfig = $parts['filename'];
-            $this->registerMapper(new ConfiguredMapper($$classConfig));
+            // config files must return a php array
+            $this->registerMapper(new ConfiguredMapper(require $configFile));
         }
         if ($contentSelectorMapper = $properties->get('contentSelector.classes.mapper')) {
             $repositoryClass = $properties->get('contentSelector.classes.repository');

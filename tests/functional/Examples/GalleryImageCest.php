@@ -23,7 +23,7 @@ class GalleryImageCest
 
     public function _before(FunctionalTester $I)
     {
-        require __DIR__ . '/../../_data/fixtures/Examples/GalleryImage/properties.php';
+        $properties = require __DIR__ . '/../../_data/fixtures/Examples/GalleryImage/properties.php';
         $this->service = new CerberusService(new ArrayProperties($properties));
         // create gallery
         $this->gallery1 = new Gallery(1);

@@ -11,11 +11,8 @@ class ArrayPolicyFinderFactory extends PolicyFinderFactory
     {
         $policies = $properties->get('rootPolicies', []);
         foreach ($policies as $policy) {
-            include $policy;
-            $parts = pathinfo($policy);
-            $policyProperty = $parts['filename'];
-
-            $this->rootPolicies = $this->handlePolicies($$policyProperty);
+            // policy files must return a php array
+            $this->rootPolicies = $this->handlePolicies(require $policy);
         }
         $this->needsInit = false;
     }

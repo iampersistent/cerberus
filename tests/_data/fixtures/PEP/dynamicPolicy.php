@@ -1,6 +1,6 @@
 <?php
 
-$dynamicPolicy = [
+return [
     'policy' => [
         'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
         'policyId'                 => 'dynamic:policy',

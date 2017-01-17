@@ -1,6 +1,6 @@
 <?php
 
-$galleryPolicy = [
+return [
     'policy' => [
         'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-unless-permit',
         'policyId'                 => 'gallery-images:policy',
