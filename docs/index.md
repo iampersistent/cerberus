@@ -33,11 +33,11 @@ array.
 
 return [
     'factories'       => [
-        'combiningAlgorithm' => \Cerberus\PDP\Policy\CombiningAlgorithmFactory::class,
-        'functionDefinition' => \Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory::class,
-        'pdpEngine'          => \Cerberus\PDP\CerberusEngineFactory::class,
-        'pipFinder'          => \Cerberus\PIP\Factory\PipFinderFactory::class,
-        'policyFinder'       => \Cerberus\PDP\ArrayPolicyFinderFactory::class,
+        'combiningAlgorithm' => Cerberus\PDP\Policy\CombiningAlgorithmFactory::class,
+        'functionDefinition' => Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory::class,
+        'pdpEngine'          => Cerberus\PDP\CerberusEngineFactory::class,
+        'pipFinder'          => Cerberus\PIP\Factory\PipFinderFactory::class,
+        'policyFinder'       => Cerberus\PDP\ArrayPolicyFinderFactory::class,
     ],
     'rootPolicies'    => [
         __DIR__ . '/policy.php',
@@ -52,9 +52,9 @@ return [
     ],
     'contentSelector' => [
         'classes' => [
-            'mapper'     => \Cerberus\PEP\PersistedResourceMapper::class,
-            'manager'    => \Cerberus\PIP\Permission\PermissionManager::class,
-            'repository' => \Cerberus\PIP\Permission\PermissionMemoryRepository::class,
+            'mapper'     => Cerberus\PEP\PersistedResourceMapper::class,
+            'manager'    => Cerberus\PIP\Permission\PermissionManager::class,
+            'repository' => Cerberus\PIP\Permission\PermissionMemoryRepository::class,
         ],
         'config'  => [
             'repository' => [
@@ -81,23 +81,23 @@ return [
             [
                 'variableId' => 'resourceMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
+                    'functionId' => FunctionDefinition::STRING_EQUAL,
                     'apply'      => [
                         [
-                            'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId'          => FunctionDefinition::STRING_ONE_AND_ONLY,
                             'attributeDesignator' => [
-                                'attributeId'   => 'resource:resource-type',
-                                'category'      => 'attribute-category:resource',
-                                'dataType'      => 'string',
+                                'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
+                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                'dataType'      => DataTypeIdentifier::STRING,
                                 'mustBePresent' => false,
                             ],
                         ],
                         [
-                            'functionId'        => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId'        => FunctionDefinition::STRING_ONE_AND_ONLY,
                             'attributeSelector' => [
-                                'category'          => 'attribute-category:resource',
-                                'contextSelectorId' => 'content-selector',
-                                'dataType'          => 'string',
+                                'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                'dataType'          => DataTypeIdentifier::STRING,
                                 'mustBePresent'     => false,
                                 'path'              => '$.resource.type',
                             ],
@@ -108,23 +108,23 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinitionFactory::STRING_IS_IN,
+                    'functionId' => FunctionDefinition::STRING_IS_IN,
                     'apply'      => [
                         [
-                            'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId'          => FunctionDefinition::STRING_ONE_AND_ONLY,
                             'attributeDesignator' => [
-                                'attributeId'   => 'action:action-id',
-                                'category'      => 'attribute-category:action',
-                                'dataType'      => 'string',
+                                'attributeId'   => ActionIdentifier::ACTION_ID,
+                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                'dataType'      => DataTypeIdentifier::STRING,
                                 'mustBePresent' => false,
                             ],
                         ],
                         [
-                            'functionId'        => FunctionDefinitionFactory::STRING_BAG,
+                            'functionId'        => FunctionDefinition::STRING_BAG,
                             'attributeSelector' => [
-                                'category'          => 'attribute-category:action',
-                                'contextSelectorId' => 'content-selector',
-                                'dataType'          => 'string',
+                                'category'          => AttributeCategoryIdentifier::ACTION,
+                                'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                'dataType'          => DataTypeIdentifier::STRING,
                                 'mustBePresent'     => false,
                                 'path'              => '$.actions',
                             ],
@@ -136,7 +136,7 @@ return [
         'rules'                    => [
             [
                 'ruleId'      => 'permission:access',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => 'Subject can access resource',
                 'condition'   => [
                     'variableReference' => [
@@ -146,7 +146,7 @@ return [
             ],
             [
                 'ruleId'      => 'permission:action',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => 'Subject can perform action',
                 'condition'   => [
                     'variableReference' => [

@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\Enums\AttributeCategoryIdentifier;
-use Cerberus\Core\Enums\ContextSelectorIdentifier;
-use Cerberus\Core\Enums\SubjectCategoryIdentifier;
+use Cerberus\Core\Enums\{
+    AttributeCategoryIdentifier, ContextSelectorIdentifier, ResourceIdentifier, SubjectIdentifier, SubjectCategoryIdentifier
+};
 use Cerberus\Core\Exception\IllegalArgumentException;
 use Cerberus\PDP\Policy\Content;
 use Cerberus\PIP\Contract\PermissionRepository;
@@ -34,10 +34,10 @@ class PersistedResourceMapper extends ObjectMapper
             return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
         };
         $requestData = [
-            'subjectId'    => $getAttributeValue($subject, 'subject:subject-id'),
-            'subjectType'  => $getAttributeValue($subject, 'subject:subject-type'),
-            'resourceId'   => $getAttributeValue($resource, 'resource:resource-id'),
-            'resourceType' => $getAttributeValue($resource, 'resource:resource-type'),
+            'subjectId'    => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_ID),
+            'subjectType'  => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_TYPE),
+            'resourceId'   => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_ID),
+            'resourceType' => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_TYPE),
         ];
 
         $retrievedData = $this->repository->find($requestData);
@@ -45,7 +45,7 @@ class PersistedResourceMapper extends ObjectMapper
             if ($requestAttribute->getCategory() === ContextSelectorIdentifier::CONTENT_SELECTOR) {
                 continue;
             }
-            $requestAttribute->addContent('content-selector', new Content($retrievedData));
+            $requestAttribute->addContent(ContextSelectorIdentifier::CONTENT_SELECTOR, new Content($retrievedData));
         }
     }
 }

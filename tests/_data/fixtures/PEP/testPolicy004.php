@@ -1,7 +1,11 @@
 <?php
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\Enums\{
+    ActionIdentifier, AttributeCategoryIdentifier, DataTypeIdentifier, ResourceIdentifier, SubjectCategoryIdentifier, SubjectIdentifier
+};
 use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+use Cerberus\PDP\Policy\FunctionDefinition;
 
 return [
     'policy' => [
@@ -10,7 +14,7 @@ return [
         'rules'                    => [
             [
                 'ruleId'    => 'mapper-test:rule1',
-                'effect'    => 'Permit',
+                'effect'    => Decision::PERMIT,
                 'target'    => [
                     [
                         'anyOf' => [
@@ -18,15 +22,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_WRITER',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'subject-category:access-subject',
-                                                'attributeId'   => 'subject:role-id',
-                                                'dataType'      => 'string',
+                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'attributeId'   => 'SubjectIdentifier::ROLE_ID',
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -37,15 +41,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Test\Document',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:resource',
-                                                'attributeId'   => 'resource:resource-type',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -56,15 +60,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:action',
-                                                'attributeId'   => 'action:action-id',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'attributeId'   => ActionIdentifier::ACTION_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -76,15 +80,15 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
+                        'functionId' => FunctionDefinition::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
-                                        'category'      => 'attribute-category:resource',
+                                        'category'      => AttributeCategoryIdentifier::RESOURCE,
                                         'attributeId'   => 'document:document-owner',
-                                        'dataType'      => 'string',
+                                        'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],
                                 ],
@@ -92,12 +96,12 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
-                                        'category'      => 'subject-category:access-subject',
-                                        'attributeId'   => 'subject:subject-id',
-                                        'dataType'      => 'string',
+                                        'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                        'attributeId'   => SubjectIdentifier::SUBJECT_ID,
+                                        'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],
                                 ],
@@ -108,7 +112,7 @@ return [
             ],
             [
                 'ruleId'    => 'mapper-test:rule2',
-                'effect'    => 'Permit',
+                'effect'    => Decision::PERMIT,
                 'target'    => [
                     [
                         'anyOf' => [
@@ -116,15 +120,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_READER',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'subject-category:access-subject',
-                                                'attributeId'   => 'subject:role-id',
-                                                'dataType'      => 'string',
+                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'attributeId'   => 'SubjectIdentifier::ROLE_ID',
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -135,15 +139,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Test\Document',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:resource',
-                                                'attributeId'   => 'resource:resource-type',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -154,15 +158,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
+                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:action',
-                                                'attributeId'   => 'action:action-id',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'attributeId'   => ActionIdentifier::ACTION_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -174,15 +178,15 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
+                        'functionId' => FunctionDefinition::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'client:country-of-domicile',
-                                        'category'      => 'attribute-category:resource',
-                                        'dataType'      => 'string',
+                                        'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                        'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],
                                 ],
@@ -190,12 +194,12 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'request-context:country',
-                                        'category'      => 'attribute-category:environment',
-                                        'dataType'      => 'string',
+                                        'category'      => AttributeCategoryIdentifier::CATEGORY('environment'),
+                                        'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],
                                 ],

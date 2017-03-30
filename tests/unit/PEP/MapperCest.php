@@ -1,7 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\Core\Enums\AttributeCategoryIdentifier;
+use Cerberus\Core\Enums\{
+    AttributeCategoryIdentifier, ResourceIdentifier
+};
 use Cerberus\PDP\{
     Utility\ArrayProperties
 };
@@ -26,7 +28,7 @@ class MapperCest
     public function testPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
 
@@ -39,7 +41,7 @@ class MapperCest
     public function testNotApplicable(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
         $doc = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
@@ -56,7 +58,7 @@ class MapperCest
 //        @Test(expected = PepException.class)
 
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_WRITER");
+        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
 
         $action = new Action("write");
 
@@ -78,7 +80,7 @@ class MapperCest
     public function testVarArgsPermit(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_READER");
+        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("USA", "05:00 EST");
 
         $action = new Action("read");
@@ -98,7 +100,7 @@ class MapperCest
     public function testVarArgsDeny(UnitTester $I)
     {
         $subject = new Subject("John Smith");
-        $subject->addAttribute("subject:role-id", "ROLE_DOCUMENT_READER");
+        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("INDIA", "05:00 IST");
 
         $resources = new Set();
@@ -122,8 +124,8 @@ class DocumentMapper extends ObjectMapper
     public function map($document, PepRequest $pepRequest)
     {
         $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
-        $resourceAttributes->addAttribute("resource:resource-id", $document->getDocumentId());
-        $resourceAttributes->addAttribute("resource:resource-type", Document::class);
+        $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_ID, $document->getDocumentId());
+        $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_TYPE, Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());
         $resourceAttributes->addAttribute("jpmc:document:client-name", $document->getClientName());
         $resourceAttributes->addAttribute("jpmc:document:document-owner", $document->getDocumentOwner());

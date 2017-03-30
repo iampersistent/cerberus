@@ -11,4 +11,16 @@ class AttributeCategoryIdentifier extends Enum
 
     const ACTION = 'attribute-category:action';
     const RESOURCE = 'attribute-category:resource';
+
+    /**
+     * Allow for dynamic attribute-category "identifiers" on the ENUM
+     *
+     * @param $category
+     *
+     * @return string
+     */
+    public static function CATEGORY($category)
+    {
+        return "attribute-category:$category";
+    }
 }

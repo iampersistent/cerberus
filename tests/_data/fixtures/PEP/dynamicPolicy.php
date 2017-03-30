@@ -1,7 +1,11 @@
 <?php
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\Enums\{
+    ActionIdentifier, AttributeCategoryIdentifier, ContextSelectorIdentifier, DataTypeIdentifier, ResourceIdentifier
+};
 use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+use Cerberus\PDP\Policy\FunctionDefinition;
 
 return [
     'policy' => [
@@ -11,15 +15,15 @@ return [
             [
                 'variableId' => 'resourceMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
+                    'functionId' => FunctionDefinition::STRING_EQUAL,
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
-                                    'attributeId'   => 'resource:resource-type',
-                                    'category'      => 'attribute-category:resource',
-                                    'dataType'      => 'string',
+                                    'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
+                                    'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                    'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
                             ],
@@ -27,12 +31,12 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                             [
                                 'attributeSelector' => [
-                                    'category'          => 'attribute-category:resource',
-                                    'contextSelectorId' => 'content-selector',
-                                    'dataType'          => 'string',
+                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                    'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                    'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,
                                     'path'              => '$.resource.type',
                                 ],
@@ -44,15 +48,15 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinitionFactory::STRING_IS_IN,
+                    'functionId' => FunctionDefinition::STRING_IS_IN,
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
-                                    'attributeId'   => 'action:action-id',
-                                    'category'      => 'attribute-category:action',
-                                    'dataType'      => 'string',
+                                    'attributeId'   => ActionIdentifier::ACTION_ID,
+                                    'category'      => AttributeCategoryIdentifier::ACTION,
+                                    'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
                             ],
@@ -60,12 +64,12 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinitionFactory::STRING_BAG,
+                            'functionId' => FunctionDefinition::STRING_BAG,
                             [
                                 'attributeSelector' => [
-                                    'category'          => 'attribute-category:action',
-                                    'contextSelectorId' => 'content-selector',
-                                    'dataType'          => 'string',
+                                    'category'          => AttributeCategoryIdentifier::ACTION,
+                                    'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                    'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,
                                     'path'              => '$.actions',
                                 ],
@@ -78,7 +82,7 @@ return [
         'rules'                    => [
             [
                 'ruleId'      => 'permission:access',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => 'Subject can access resource',
                 'condition'   => [
                     'variableReference' => [
@@ -88,7 +92,7 @@ return [
             ],
             [
                 'ruleId'      => 'permission:action',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => 'Subject can perform action',
                 'condition'   => [
                     'variableReference' => [

@@ -1,5 +1,10 @@
 <?php
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\Enums\DataTypeIdentifier;
+use Cerberus\PDP\Combiner\CombiningAlgorithm;
+use Cerberus\PDP\Policy\FunctionDefinition;
+
 return [
     'policy' => [
         'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
@@ -7,21 +12,21 @@ return [
         'variableDefinition'       => [
             'variableId' => 'resourceMatch',
             'apply'      => [
-                'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
+                'functionId' => FunctionDefinition::STRING_EQUAL,
                 'apply'      => [
                     [
-                        'functionId'                               => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                        'functionId'                               => FunctionDefinition::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
-                            'dataType'      => 'string',
+                            'dataType'      => DataTypeIdentifier::STRING,
                             'mustBePresent' => false,
                         ],
                     ],
                     [
-                        'functionId'                               => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
+                        'functionId'                               => FunctionDefinition::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
-                            'dataType'      => 'string',
+                            'dataType'      => DataTypeIdentifier::STRING,
                             'mustBePresent' => false,
                         ],
                     ],
@@ -31,7 +36,7 @@ return [
         'rules'                    => [
             [
                 'ruleId'      => 'dynamic:read',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => 'Subject can read resource',
                 'condition'   => [
                     'variableReference' => [

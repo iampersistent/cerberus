@@ -1,10 +1,12 @@
 <?php
 
+use Cerberus\Core\Enums\ResourceIdentifier;
+
 return [
-    'className'               => Test\Document::class,
-    'resource:resource-id'    => 'getDocumentId',
-    'resource:resource-type'  => Test\Document::class,
-    'document:document-name'  => 'getDocumentName',
-    'document:client-name'    => 'getClientName',
-    'document:document-owner' => 'getDocumentOwner',
+    ResourceIdentifier::CLASS_NAME    => Test\Document::class,
+    ResourceIdentifier::RESOURCE_ID   => 'getDocumentId',
+    ResourceIdentifier::RESOURCE_TYPE => Test\Document::class,
+    'document:document-name'          => 'getDocumentName',
+    'document:client-name'            => 'getClientName',
+    'document:document-owner'         => 'getDocumentOwner',
 ];
