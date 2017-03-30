@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\{
+    AttributeCategoryIdentifier, ResourceIdentifier
+};
 
 class ConfiguredMapper extends ObjectMapper
 {
@@ -18,9 +20,9 @@ class ConfiguredMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
         foreach ($this->config as $name => $lookup) {
-            if ('resource:resource-type' === $name) {
+            if (ResourceIdentifier::RESOURCE_TYPE === $name) {
                 $pepRequestAttributes->addAttribute($name, $lookup);
 
                 continue;

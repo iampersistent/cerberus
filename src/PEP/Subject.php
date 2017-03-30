@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\{
+    SubjectCategoryIdentifier, SubjectIdentifier
+};
 
 class Subject extends CategoryContainer
 {
@@ -12,9 +14,9 @@ class Subject extends CategoryContainer
     public function __construct(string $subjectIdValue, string $subjectType = 'user')
     {
         $this->subjectIdValue = $subjectIdValue;
-        parent::__construct(Identifier::SUBJECT_CATEGORY_ACCESS_SUBJECT);
-        $this->addAttribute('subject:subject-id', $subjectIdValue);
-        $this->addAttribute('subject:subject-type', $subjectType);
+        parent::__construct(SubjectCategoryIdentifier::ACCESS_SUBJECT);
+        $this->addAttribute(SubjectIdentifier::SUBJECT_ID, $subjectIdValue);
+        $this->addAttribute(SubjectIdentifier::SUBJECT_TYPE, $subjectType);
     }
 
     /**

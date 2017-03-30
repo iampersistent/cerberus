@@ -3,19 +3,22 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
-use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\DataType\DataTypeBoolean;
-use Cerberus\Core\Identifier;
+use Cerberus\Core\DataType\{
+    DataType, DataTypeBoolean
+};
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Cerberus\PDP\Exception\PDPException;
-use Cerberus\PDP\Policy\ConvertedArgument;
-use Cerberus\PDP\Policy\ExpressionResult;
-use Cerberus\PDP\Policy\ExpressionResultError;
-use Cerberus\PDP\Policy\Expressions\Apply;
-use Cerberus\PDP\Policy\Expressions\AttributeValue;
-use Cerberus\PDP\Policy\Expressions\FunctionExpression;
-use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\PDP\Policy\{
+    ConvertedArgument,
+    ExpressionResult,
+    ExpressionResultError,
+    Expressions\Apply,
+    Expressions\AttributeValue,
+    Expressions\FunctionExpression,
+    FunctionDefinition
+};
 use Ds\Set;
 
 class FunctionDefinitionAllOf extends FunctionDefinition
@@ -25,11 +28,9 @@ class FunctionDefinitionAllOf extends FunctionDefinition
         parent::__construct($identifier, new DataTypeBoolean(), $argsDataType, true);
     }
 
-    public function evaluate(
-        EvaluationContext $evaluationContext,
-        Set $arguments
-    ): ExpressionResult {
-            throw new PDPException('function:all-of needs to be implemented');
+    public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
+    {
+        throw new PDPException('function:all-of needs to be implemented');
         $attributeValue = null;
         $bag = null;
         $function = null;
@@ -71,10 +72,8 @@ class FunctionDefinitionAllOf extends FunctionDefinition
         $bag = $convertedBag->getBag();
         foreach ($bag->getAttributeValues() as $bagValue) {
             if ($attributeValue->getValue() === $bagValue->getValue()) {
-                return new ExpressionResult(Status::createOk(), new AttributeValue(Identifier::DATATYPE_BOOLEAN, false));
+                return new ExpressionResult(Status::createOk(), new AttributeValue(DataTypeIdentifier::BOOLEAN, false));
             }
         }
     }
-
-
 }

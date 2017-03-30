@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\Core\Status;
 use Cerberus\Core\StatusCode;
 use Cerberus\PDP\Contract\PolicyElement;
@@ -39,7 +39,7 @@ class Condition implements PolicyElement
             return new ExpressionResultBoolean(false, Status::createProcessingError('Null value from Condition Expression'));
         }
 
-        if ($attributeValueResult->getDataTypeId() !== Identifier::DATATYPE_BOOLEAN) {
+        if ($attributeValueResult->getDataTypeId() !== DataTypeIdentifier::BOOLEAN) {
             return new ExpressionResultBoolean(false, Status::createProcessingError('Non-boolean value from Condition Expression'));
         }
 

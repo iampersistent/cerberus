@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PDP\Policy;
 
 use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
 use Ds\Set;
@@ -29,7 +29,7 @@ abstract class FunctionDefinition
         return $this->returnDataType;
     }
 
-    public function getDataTypeId(): Identifier
+    public function getDataTypeId(): DataTypeIdentifier
     {
         return $this->returnDataType->getType();
     }

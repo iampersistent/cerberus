@@ -1,7 +1,9 @@
 <?php
 
+use Cerberus\Core\Enums\ResourceIdentifier;
+
 return [
-    'className'              => Gallery::class,
-    'resource:resource-id'   => 'getId',
-    'resource:resource-type' => Gallery::class,
+    ResourceIdentifier::CLASS_NAME    => Gallery::class,
+    ResourceIdentifier::RESOURCE_ID   => 'getId',
+    ResourceIdentifier::RESOURCE_TYPE => Gallery::class,
 ];

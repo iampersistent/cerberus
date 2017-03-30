@@ -3,12 +3,11 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core\Factory;
 
-use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\DataType\DataTypeBoolean;
-use Cerberus\Core\DataType\DataTypeString;
-use Cerberus\Core\Exception\DataTypeException;
-use Cerberus\Core\Identifier;
 use DateTime;
+use Cerberus\Core\DataType\{
+    DataType, DataTypeBoolean, DataTypeDateTime, DataTypeDouble, DataTypeInteger, DataTypeString
+};
+use Cerberus\Core\Exception\DataTypeException;
 
 class DataTypeFactory
 {
@@ -21,14 +20,14 @@ class DataTypeFactory
             case 'boolean':
                 return new DataTypeBoolean();
             case 'double':
-                return Identifier::DATATYPE_DOUBLE;
+                return new DataTypeDouble();
             case 'integer':
-                return Identifier::DATATYPE_INTEGER;
+                return new DataTypeInteger();
             case 'string':
                 return new DataTypeString();
         }
         if ($data instanceof DateTime) {
-            return Identifier::DATATYPE_DATETIME;
+            return new DataTypeDateTime();
         }
 
         if ('object' === $type) {

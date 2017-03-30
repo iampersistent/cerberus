@@ -1,41 +1,52 @@
 <?php
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\Enums\{
+    ActionIdentifier,
+    AttributeCategoryIdentifier,
+    CombiningAlgorithmIdentifier,
+    ContextSelectorIdentifier,
+    DataTypeIdentifier,
+    FunctionIdentifier,
+    ResourceIdentifier
+};
+
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-unless-permit',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'gallery-images:policy',
         'variableDefinitions'      => [
             [
                 'variableId' => 'imageGalleryIdAndActionMatch',
                 'apply'      => [
                     'description' => 'make sure all of the checks evaluate to true',
-                    'functionId'  => 'function:boolean-all-of',
+                    'functionId'  => FunctionIdentifier::BOOLEAN_ALL_OF,
                     [
                         'function' => [
-                            'functionId' => 'function:boolean-equal',
+                            'functionId' => FunctionIdentifier::BOOLEAN_EQUAL,
                         ],
                     ],
                     [
                         'attributeValue' => [
-                            'dataType' => 'boolean',
+                            'dataType' => DataTypeIdentifier::BOOLEAN,
                             'text'     => true,
                         ],
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:integer-bag',
+                            'functionId' => FunctionIdentifier::INTEGER_BAG,
                             [
                                 'apply' => [
-                                    'functionId'  => 'function:any-of-any',
+                                    'functionId'  => FunctionIdentifier::ANY_OF_ANY,
                                     'description' => 'check to make sure the user has access to one of the galleries in the image',
                                     [
                                         'apply' => [
-                                            'functionId' => 'function:string-bag',
+                                            'functionId' => FunctionIdentifier::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
-                                                    'category'          => 'attribute-category:resource',
+                                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
                                                     'contextSelectorId' => 'image',
-                                                    'dataType'          => 'string',
+                                                    'dataType'          => DataTypeIdentifier::STRING,
                                                     'mustBePresent'     => false,
                                                     'path'              => '$.resource.galleryIds',
                                                 ],
@@ -44,12 +55,12 @@ return [
                                     ],
                                     [
                                         'apply' => [
-                                            'functionId' => 'function:string-bag',
+                                            'functionId' => FunctionIdentifier::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
-                                                    'category'          => 'attribute-category:resource',
-                                                    'contextSelectorId' => 'content-selector',
-                                                    'dataType'          => 'string',
+                                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                                    'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                                    'dataType'          => DataTypeIdentifier::STRING,
                                                     'mustBePresent'     => false,
                                                     'path'              => '$.resource.type',
                                                 ],
@@ -58,16 +69,16 @@ return [
                                     ],
                                     [
                                         'apply' => [
-                                            'functionId'  => 'function:string-is-in',
+                                            'functionId'  => FunctionIdentifier::STRING_IS_IN,
                                             'description' => 'make sure the action has been permitted',
                                             [
                                                 'apply' => [
-                                                    'functionId' => 'function:string-one-and-only',
+                                                    'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                                     [
                                                         'attributeDesignator' => [
-                                                            'attributeId'   => 'action:action-id',
-                                                            'category'      => 'attribute-category:action',
-                                                            'dataType'      => 'string',
+                                                            'attributeId'   => ActionIdentifier::ACTION_ID,
+                                                            'category'      => AttributeCategoryIdentifier::ACTION,
+                                                            'dataType'      => DataTypeIdentifier::STRING,
                                                             'mustBePresent' => false,
                                                         ],
                                                     ],
@@ -75,12 +86,12 @@ return [
                                             ],
                                             [
                                                 'apply' => [
-                                                    'functionId' => 'function:string-bag',
+                                                    'functionId' => FunctionIdentifier::STRING_BAG,
                                                     [
                                                         'attributeSelector' => [
-                                                            'category'          => 'attribute-category:action',
-                                                            'contextSelectorId' => 'content-selector',
-                                                            'dataType'          => 'string',
+                                                            'category'          => AttributeCategoryIdentifier::ACTION,
+                                                            'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                                            'dataType'          => DataTypeIdentifier::STRING,
                                                             'mustBePresent'     => false,
                                                             'path'              => '$.actions',
                                                         ],
@@ -98,15 +109,15 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => 'function:string-is-in',
+                    'functionId' => FunctionIdentifier::STRING_IS_IN,
                     [
                         'apply' => [
-                            'functionId' => 'function:string-one-and-only',
+                            'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
-                                    'attributeId'   => 'action:action-id',
-                                    'category'      => 'attribute-category:action',
-                                    'dataType'      => 'string',
+                                    'attributeId'   => ActionIdentifier::ACTION_ID,
+                                    'category'      => AttributeCategoryIdentifier::ACTION,
+                                    'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
                             ],
@@ -114,12 +125,12 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:string-bag',
+                            'functionId' => FunctionIdentifier::STRING_BAG,
                             [
                                 'attributeSelector' => [
-                                    'category'          => 'attribute-category:action',
-                                    'contextSelectorId' => 'content-selector',
-                                    'dataType'          => 'string',
+                                    'category'          => AttributeCategoryIdentifier::ACTION,
+                                    'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                    'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,
                                     'path'              => '$.actions',
                                 ],
@@ -132,7 +143,7 @@ return [
         'rules'                    => [
             [
                 'ruleId'    => 'gallery-image-access',
-                'effect'    => 'Permit',
+                'effect'    => Decision::PERMIT,
                 'target'    => [
                     [
                         'anyOf' => [
@@ -140,15 +151,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => Image::class,
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:resource',
-                                                'attributeId'   => 'resource:resource-type',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -159,15 +170,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'           => 'function:string-equal',
+                                            'matchId'           => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'    => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => Gallery::class,
                                             ],
                                             'attributeSelector' => [
-                                                'category'          => 'attribute-category:resource',
-                                                'contextSelectorId' => 'content-selector',
-                                                'dataType'          => 'string',
+                                                'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                                'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
+                                                'dataType'          => DataTypeIdentifier::STRING,
                                                 'mustBePresent'     => false,
                                                 'path'              => '$.resource.type',
                                             ],

@@ -1,13 +1,25 @@
 <?php
 
+use Cerberus\Core\Decision;
+use Cerberus\Core\Enums\{
+    ActionIdentifier,
+    AttributeCategoryIdentifier,
+    CombiningAlgorithmIdentifier,
+    DataTypeIdentifier,
+    FunctionIdentifier,
+    ResourceIdentifier,
+    SubjectCategoryIdentifier,
+    SubjectIdentifier
+};
+
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'test001:policy',
         'rules'                    => [
             [
                 'ruleId'      => 'test001:rule-1',
-                'effect'      => 'Permit',
+                'effect'      => Decision::PERMIT,
                 'description' => "Julius Hibbert can read or write Bart Simpson's medical record.",
                 'target'      => [
                     [
@@ -16,15 +28,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Julius Hibbert',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'subject-category:access-subject',
-                                                'attributeId'   => 'subject:subject-id',
-                                                'dataType'      => 'string',
+                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'attributeId'   => SubjectIdentifier::SUBJECT_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -35,15 +47,15 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:resource',
-                                                'attributeId'   => 'resource:resource-id',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'attributeId'   => ResourceIdentifier::RESOURCE_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
@@ -54,30 +66,30 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:action',
-                                                'attributeId'   => 'action:action-id',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'attributeId'   => ActionIdentifier::ACTION_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],
                                     ],
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
-                                                'dataType' => 'string',
+                                                'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => 'attribute-category:action',
-                                                'attributeId'   => 'action:action-id',
-                                                'dataType'      => 'string',
+                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'attributeId'   => ActionIdentifier::ACTION_ID,
+                                                'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
                                             ],
                                         ],

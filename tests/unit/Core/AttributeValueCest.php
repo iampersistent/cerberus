@@ -1,15 +1,15 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\PDP\Policy\Expressions\AttributeValue;
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\Core\Exception\IllegalArgumentException;
-use Cerberus\Core\Identifier;
+use Cerberus\PDP\Policy\Expressions\AttributeValue;
 
 class AttributeValueCest
 {
     public function testNullValue(UnitTester $I)
     {
-        $attributeValue = new AttributeValue(Identifier::DATATYPE_STRING, null);
+        $attributeValue = new AttributeValue(DataTypeIdentifier::STRING, null);
 
         $I->assertNull($attributeValue->getValue());
     }
@@ -18,7 +18,7 @@ class AttributeValueCest
     {
         $exception = new IllegalArgumentException('If you need a null attribute value, it must be explicitly set');
         $I->expectException($exception, function() {
-            new AttributeValue(Identifier::DATATYPE_STRING);
+            new AttributeValue(DataTypeIdentifier::STRING);
         });
     }
 }

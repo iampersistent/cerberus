@@ -3,10 +3,10 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy;
 
-use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\Identifier;
-use Cerberus\Core\Status;
 use Exception;
+use Cerberus\Core\DataType\DataType;
+use Cerberus\Core\Enums\DataTypeIdentifier;
+use Cerberus\Core\Status;
 
 class ConvertedArgument
 {
@@ -87,7 +87,7 @@ class ConvertedArgument
         return $this->value;
     }
 
-    public function getShortDataTypeId(Identifier $identifier): string
+    public function getShortDataTypeId(DataTypeIdentifier $identifier): string
     {
         return $identifier->getValue();
     }

@@ -2,13 +2,15 @@
 declare(strict_types = 1);
 
 use Cerberus\CerberusService;
-use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\Content;
 use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\Action\Action;
 use Cerberus\PEP\ObjectMapper;
 use Cerberus\PEP\PepRequest;
 use Cerberus\PEP\Subject;
+use Cerberus\Core\Enums\{
+    AttributeCategoryIdentifier, ResourceIdentifier
+};
 
 class GalleryImageCest
 {
@@ -110,7 +112,7 @@ class ImageMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
 
         $galleryIds = [];
         foreach ($object->getGalleries() as $gallery) {
@@ -123,9 +125,9 @@ class ImageMapper extends ObjectMapper
         ];
         $pepRequestAttributes
             ->addContent('image', new Content($imageData))
-            ->addAttribute('resource:resource-id', $object->getId())
-            ->addAttribute('resource:resource-type', Image::class);
- //           ->addAttribute('resource:gallery-ids', $galleryIds);
+            ->addAttribute(ResourceIdentifier::RESOURCE_ID, $object->getId())
+            ->addAttribute(ResourceIdentifier::RESOURCE_TYPE, Image::class);
+//            ->addAttribute('resource:gallery-ids', $galleryIds);
     }
 
 }

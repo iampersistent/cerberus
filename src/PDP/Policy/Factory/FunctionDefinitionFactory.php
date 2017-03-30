@@ -6,14 +6,15 @@ namespace Cerberus\PDP\Policy\Factory;
 use Cerberus\Core\DataType\DataTypeBoolean;
 use Cerberus\Core\DataType\DataTypeInteger;
 use Cerberus\Core\DataType\DataTypeString;
-use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\FunctionDefinition;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAllOf;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionAnyOfAny;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBag;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBagIsIn;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionBagOneAndOnly;
-use Cerberus\PDP\Policy\FunctionDefinition\FunctionDefinitionEquality;
+use Cerberus\PDP\Policy\FunctionDefinition\{
+    FunctionDefinitionAllOf,
+    FunctionDefinitionAnyOfAny,
+    FunctionDefinitionBag,
+    FunctionDefinitionBagIsIn,
+    FunctionDefinitionBagOneAndOnly,
+    FunctionDefinitionEquality
+};
 
 class FunctionDefinitionFactory
 {
