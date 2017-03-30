@@ -11,7 +11,8 @@ class ArrayPolicyFinderFactoryCest
     {
         $data = [
             'rootPolicies' => [
-                __DIR__ . '/../../_data/fixtures/testPolicy.php'
+                __DIR__ . '/../../_data/fixtures/testPolicy.php',
+                __DIR__ . '/../../_data/fixtures/Examples/GalleryImage/galleryPolicy.php',
             ],
         ];
         $properties = new ArrayProperties($data);
@@ -19,5 +20,10 @@ class ArrayPolicyFinderFactoryCest
         $finder = $factory->getPolicyFinder($properties);
         $policyDef = $finder->getPolicy('test001:policy');
         $I->assertInstanceOf(Policy::class, $policyDef);
+        $I->assertEquals('test001:policy', $policyDef->getIdentifier());
+
+        $policyDef = $finder->getPolicy('gallery-images:policy');
+        $I->assertInstanceOf(Policy::class, $policyDef);
+        $I->assertEquals('gallery-images:policy', $policyDef->getIdentifier());
     }
 }

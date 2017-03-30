@@ -4,15 +4,12 @@ declare(strict_types = 1);
 namespace Cerberus\PIP\Permission;
 
 use Cerberus\PIP\Contract\PermissionRepository;
-use PDO;
 
 class PermissionMemoryRepository implements PermissionRepository
 {
     protected static $store = [];
 
-    public function __construct(array $config)
-    {
-    }
+    public function __construct(array $config) {}
 
     public function find($inputs)
     {

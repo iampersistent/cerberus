@@ -5,9 +5,7 @@ namespace Cerberus\PDP;
 
 use Cerberus\PDP\Policy\CombiningAlgorithmFactory;
 use Cerberus\PDP\Exception\PolicyFinderException;
-use Cerberus\PDP\Policy\Factory\ConditionFactory;
 use Cerberus\PDP\Policy\Factory\PolicyElement\PolicyFactory;
-use Cerberus\PDP\Policy\Factory\VariableDefinitionFactory;
 use Cerberus\PDP\Policy\PolicyDef;
 use Cerberus\PDP\Policy\PolicyFinder;
 use Cerberus\PDP\Utility\Properties;

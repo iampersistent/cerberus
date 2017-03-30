@@ -3,11 +3,11 @@ declare(strict_types = 1);
 
 use Codeception\Util\Stub;
 use Cerberus\Core\{
-    Decision, Request, Status, StatusCode
+    Decision, Request
 };
 use Cerberus\PDP\Combiner\DenyOverrides;
 use Cerberus\PDP\Evaluation\{
-    EvaluationContext, EvaluationResult, MatchCode, MatchResult
+    EvaluationContext, EvaluationResult, MatchResult
 };
 
 use Cerberus\PDP\Policy\{
@@ -20,17 +20,11 @@ class PolicyCest
     {
         $policy = $this->createPolicy();
 
-        $evaluationContext = Stub::make(
-            EvaluationContext::class,
-            [
-                'getRequest' => Stub::make(
-                    Request::class,
-                    [
-                        'shouldReturnPolicyIdList' => true,
-                    ]
-                ),
-            ]
-        );
+        $evaluationContext = Stub::make(EvaluationContext::class, [
+            'getRequest' => Stub::make(Request::class, [
+                'shouldReturnPolicyIdList' => true,
+            ]),
+        ]);
         $evaluationResult = $policy->evaluate($evaluationContext);
 
         $I->assertEquals(Decision::INDETERMINATE(), $evaluationResult->getDecision());
@@ -42,17 +36,13 @@ class PolicyCest
 
     protected function createPolicy(): Policy
     {
-        $policy = new Policy(Status::createOk());
-        $combiningAlgorithm = Stub::make(
-            DenyOverrides::class, [
+        $policy = new Policy();
+        $combiningAlgorithm = Stub::make(DenyOverrides::class, [
             'combine' => new EvaluationResult(Decision::INDETERMINATE()),
         ]);
-        $target = Stub::make(
-            Target::class,
-            [
-                'match' => MatchResult::createMatch(),
-            ]
-        );
+        $target = Stub::make(Target::class, [
+            'match' => MatchResult::createMatch(),
+        ]);
 
         $policy
             ->setIdentifier(42)
@@ -61,6 +51,4 @@ class PolicyCest
 
         return $policy;
     }
-
-
 }
