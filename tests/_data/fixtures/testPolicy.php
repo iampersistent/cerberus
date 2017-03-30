@@ -2,14 +2,19 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    ActionIdentifier, AttributeCategoryIdentifier, DataTypeIdentifier, ResourceIdentifier, SubjectCategoryIdentifier, SubjectIdentifier
+    ActionIdentifier,
+    AttributeCategoryIdentifier,
+    CombiningAlgorithmIdentifier,
+    DataTypeIdentifier,
+    FunctionIdentifier,
+    ResourceIdentifier,
+    SubjectCategoryIdentifier,
+    SubjectIdentifier
 };
-use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\FunctionDefinition;
 
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'test001:policy',
         'rules'                    => [
             [
@@ -23,7 +28,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Julius Hibbert',
@@ -42,7 +47,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
@@ -61,7 +66,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
@@ -76,7 +81,7 @@ return [
                                     ],
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',

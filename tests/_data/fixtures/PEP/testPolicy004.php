@@ -2,15 +2,20 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    ActionIdentifier, AttributeCategoryIdentifier, DataTypeIdentifier, ResourceIdentifier, SubjectCategoryIdentifier, SubjectIdentifier
+    ActionIdentifier,
+    AttributeCategoryIdentifier,
+    CombiningAlgorithmIdentifier,
+    DataTypeIdentifier,
+    FunctionIdentifier,
+    ResourceIdentifier,
+    SubjectCategoryIdentifier,
+    SubjectIdentifier
 };
-use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\FunctionDefinition;
 
 return [
     'policy' => [
         'policyId'                 => 'test004:policy',
-        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'rules'                    => [
             [
                 'ruleId'    => 'mapper-test:rule1',
@@ -22,7 +27,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_WRITER',
@@ -41,7 +46,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Test\Document',
@@ -60,7 +65,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
@@ -80,10 +85,10 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => FunctionDefinition::STRING_EQUAL,
+                        'functionId' => FunctionIdentifier::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'category'      => AttributeCategoryIdentifier::RESOURCE,
@@ -96,7 +101,7 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
@@ -120,7 +125,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_READER',
@@ -139,7 +144,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Test\Document',
@@ -158,7 +163,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionDefinition::STRING_EQUAL,
+                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
@@ -178,10 +183,10 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => FunctionDefinition::STRING_EQUAL,
+                        'functionId' => FunctionIdentifier::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'client:country-of-domicile',
@@ -194,11 +199,11 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'request-context:country',
-                                        'category'      => AttributeCategoryIdentifier::CATEGORY('environment'),
+                                        'category'      => 'attribute-category:environment',
                                         'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],

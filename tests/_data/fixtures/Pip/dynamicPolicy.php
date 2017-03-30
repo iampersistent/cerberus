@@ -1,21 +1,21 @@
 <?php
 
 use Cerberus\Core\Decision;
-use Cerberus\Core\Enums\DataTypeIdentifier;
-use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\Core\Enums\{
+    CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier
+};
 
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'dynamic:policy',
         'variableDefinition'       => [
             'variableId' => 'resourceMatch',
             'apply'      => [
-                'functionId' => FunctionDefinition::STRING_EQUAL,
+                'functionId' => FunctionIdentifier::STRING_EQUAL,
                 'apply'      => [
                     [
-                        'functionId'                               => FunctionDefinition::STRING_ONE_AND_ONLY,
+                        'functionId'                               => FunctionIdentifier::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
                             'dataType'      => DataTypeIdentifier::STRING,
@@ -23,7 +23,7 @@ return [
                         ],
                     ],
                     [
-                        'functionId'                               => FunctionDefinition::STRING_ONE_AND_ONLY,
+                        'functionId'                               => FunctionIdentifier::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
                             'dataType'      => DataTypeIdentifier::STRING,

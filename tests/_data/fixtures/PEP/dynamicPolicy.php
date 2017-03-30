@@ -2,23 +2,27 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    ActionIdentifier, AttributeCategoryIdentifier, ContextSelectorIdentifier, DataTypeIdentifier, ResourceIdentifier
+    ActionIdentifier,
+    AttributeCategoryIdentifier,
+    CombiningAlgorithmIdentifier,
+    ContextSelectorIdentifier,
+    DataTypeIdentifier,
+    FunctionIdentifier,
+    ResourceIdentifier
 };
-use Cerberus\PDP\Combiner\CombiningAlgorithm;
-use Cerberus\PDP\Policy\FunctionDefinition;
 
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
+        'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'dynamic:policy',
         'variableDefinitions'      => [
             [
                 'variableId' => 'resourceMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinition::STRING_EQUAL,
+                    'functionId' => FunctionIdentifier::STRING_EQUAL,
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
@@ -31,7 +35,7 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
                                 'attributeSelector' => [
                                     'category'          => AttributeCategoryIdentifier::RESOURCE,
@@ -48,10 +52,10 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => FunctionDefinition::STRING_IS_IN,
+                    'functionId' => FunctionIdentifier::STRING_IS_IN,
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinition::STRING_ONE_AND_ONLY,
+                            'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => ActionIdentifier::ACTION_ID,
@@ -64,7 +68,7 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => FunctionDefinition::STRING_BAG,
+                            'functionId' => FunctionIdentifier::STRING_BAG,
                             [
                                 'attributeSelector' => [
                                     'category'          => AttributeCategoryIdentifier::ACTION,
