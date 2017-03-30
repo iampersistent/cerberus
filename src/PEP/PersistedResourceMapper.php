@@ -3,8 +3,10 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
+use Cerberus\Core\Enums\AttributeCategoryIdentifier;
+use Cerberus\Core\Enums\ContextSelectorIdentifier;
+use Cerberus\Core\Enums\SubjectCategoryIdentifier;
 use Cerberus\Core\Exception\IllegalArgumentException;
-use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\Content;
 use Cerberus\PIP\Contract\PermissionRepository;
 
@@ -26,8 +28,8 @@ class PersistedResourceMapper extends ObjectMapper
      */
     public function map($object, PepRequest $pepRequest)
     {
-        $subject = $pepRequest->getPepRequestAttributes(Identifier::SUBJECT_CATEGORY_ACCESS_SUBJECT);
-        $resource = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $subject = $pepRequest->getPepRequestAttributes(SubjectCategoryIdentifier::ACCESS_SUBJECT);
+        $resource = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
         $getAttributeValue = function($attribute, $attributeId) {
             return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
         };
@@ -40,7 +42,7 @@ class PersistedResourceMapper extends ObjectMapper
 
         $retrievedData = $this->repository->find($requestData);
         foreach ($pepRequest->getRequestAttributes() as $requestAttribute) {
-            if ($requestAttribute->getCategory() === Identifier::CONTENT_SELECTOR) {
+            if ($requestAttribute->getCategory() === ContextSelectorIdentifier::CONTENT_SELECTOR) {
                 continue;
             }
             $requestAttribute->addContent('content-selector', new Content($retrievedData));

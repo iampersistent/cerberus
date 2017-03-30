@@ -10,6 +10,9 @@ use Ds\Set;
 
 abstract class CombiningAlgorithm
 {
+    const DENY_OVERRIDES = 'rule-combining-algorithm:deny-overrides';
+    const DENY_UNLESS_PERMIT = 'rule-combining-algorithm:deny-unless-permit';
+
     protected $identifier;
 
     public function __construct($identifier)

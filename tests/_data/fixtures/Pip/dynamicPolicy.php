@@ -2,15 +2,15 @@
 
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
         'policyId'                 => 'dynamic:policy',
         'variableDefinition'       => [
             'variableId' => 'resourceMatch',
             'apply'      => [
-                'functionId' => 'function:string-equal',
+                'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
                 'apply'      => [
                     [
-                        'functionId'                               => 'function:string-one-and-only',
+                        'functionId'                               => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
                             'dataType'      => 'string',
@@ -18,7 +18,7 @@ return [
                         ],
                     ],
                     [
-                        'functionId'                               => 'function:string-one-and-only',
+                        'functionId'                               => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                         'attributeDesignator or attributeSelector' => [
                             'category'      => '',
                             'dataType'      => 'string',

@@ -1,9 +1,12 @@
 <?php
 
+use Cerberus\PDP\Combiner\CombiningAlgorithm;
+use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+
 return [
     'policy' => [
         'policyId'                 => 'test004:policy',
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
         'rules'                    => [
             [
                 'ruleId'    => 'mapper-test:rule1',
@@ -15,7 +18,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'ROLE_DOCUMENT_WRITER',
@@ -34,7 +37,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'Test\Document',
@@ -53,7 +56,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'write',
@@ -73,10 +76,10 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => 'function:string-equal',
+                        'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId' => 'function:string-one-and-only',
+                                'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'category'      => 'attribute-category:resource',
@@ -89,7 +92,7 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId' => 'function:string-one-and-only',
+                                'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'category'      => 'subject-category:access-subject',
@@ -113,7 +116,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'ROLE_DOCUMENT_READER',
@@ -132,7 +135,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'Test\Document',
@@ -151,7 +154,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'read',
@@ -171,10 +174,10 @@ return [
                 ],
                 'condition' => [
                     'apply' => [
-                        'functionId' => 'function:string-equal',
+                        'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
                         [
                             'apply' => [
-                                'functionId'          => 'function:string-one-and-only',
+                                'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'client:country-of-domicile',
@@ -187,7 +190,7 @@ return [
                         ],
                         [
                             'apply' => [
-                                'functionId'          => 'function:string-one-and-only',
+                                'functionId'          => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'request-context:country',

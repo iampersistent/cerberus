@@ -3,11 +3,13 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
-use Cerberus\Core\Exception\ScopeResolverException;
-use Cerberus\PDP\ScopeResolver;
+use Exception;
 use Ds\Map;
 use Ds\Set;
-use Exception;
+use Cerberus\Core\Enums\AttributeCategoryIdentifier;
+use Cerberus\Core\Enums\MultipleIdentifier;
+use Cerberus\Core\Exception\ScopeResolverException;
+use Cerberus\PDP\ScopeResolver;
 
 class IndividualDecisionRequestGenerator
 {
@@ -161,7 +163,7 @@ class IndividualDecisionRequestGenerator
          * Scope only applies to the resource category, so just get the RequestAttributes for that. At this
          * point there should be at most one.
          */
-        $requestAttributesResource = $request->getRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $requestAttributesResource = $request->getRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
         if (! $requestAttributesResource) {
             $this->processContentSelectors($request);
 
@@ -262,7 +264,7 @@ class IndividualDecisionRequestGenerator
          */
         $hasMultipleContentSelectors = false;
         foreach ($requestAttributes as $attribute) {
-            if ($hasMultipleContentSelectors = $attribute->hasAttribute(Identifier::MULTIPLE_CONTENT_SELECTOR)) {
+            if ($hasMultipleContentSelectors = $attribute->hasAttribute(MultipleIdentifier::CONTENT_SELECTOR)) {
                 $hasMultipleContentSelectors = true;
 
                 break;

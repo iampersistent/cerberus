@@ -3,13 +3,13 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core\DataType;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\DataTypeIdentifier;
 
 class DataTypeInteger extends DataType
 {
     public function __construct()
     {
-        parent::__construct(Identifier::DATATYPE_INTEGER());
+        parent::__construct(DataTypeIdentifier::INTEGER());
     }
 
     public function convert($source = null)

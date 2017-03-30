@@ -3,16 +3,18 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\PDP\Policy\Expressions\AttributeValue;
 use Cerberus\Core\DataType\DataType;
 use Cerberus\Core\DataType\DataTypeBoolean;
-use Cerberus\Core\Identifier;
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
-use Cerberus\PDP\Policy\ConvertedArgument;
-use Cerberus\PDP\Policy\ExpressionResult;
-use Cerberus\PDP\Policy\ExpressionResultError;
-use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\PDP\Policy\{
+    ConvertedArgument,
+    ExpressionResult,
+    ExpressionResultError,
+    FunctionDefinition
+};
 use Ds\Set;
 
 class FunctionDefinitionBagIsIn extends FunctionDefinition
@@ -22,10 +24,7 @@ class FunctionDefinitionBagIsIn extends FunctionDefinition
         parent::__construct($id, new DataTypeBoolean(), $argDataType, false);
     }
 
-    public function evaluate(
-        EvaluationContext $evaluationContext,
-        Set $arguments
-    ): ExpressionResult
+    public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
         if (2 !== $arguments->count()) {
             return new ExpressionResultError(Status::createProcessingError(
@@ -64,11 +63,10 @@ class FunctionDefinitionBagIsIn extends FunctionDefinition
              * if needed
             */
             if ($attributeValue->getValue() === $bagValue->getValue()) {
-                return new ExpressionResult(Status::createOk(), new AttributeValue(Identifier::DATATYPE_BOOLEAN, true));
+                return new ExpressionResult(Status::createOk(), new AttributeValue(DataTypeIdentifier::BOOLEAN, true));
             }
         }
 
-        return new ExpressionResult(Status::createOk(), new AttributeValue(Identifier::DATATYPE_BOOLEAN, false));
+        return new ExpressionResult(Status::createOk(), new AttributeValue(DataTypeIdentifier::BOOLEAN, false));
     }
-
 }

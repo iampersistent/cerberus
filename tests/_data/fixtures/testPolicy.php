@@ -1,8 +1,11 @@
 <?php
 
+use Cerberus\PDP\Combiner\CombiningAlgorithm;
+use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
         'policyId'                 => 'test001:policy',
         'rules'                    => [
             [
@@ -16,7 +19,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'Julius Hibbert',
@@ -35,7 +38,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
@@ -54,7 +57,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'read',
@@ -69,7 +72,7 @@ return [
                                     ],
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => 'write',

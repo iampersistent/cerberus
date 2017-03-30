@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\AttributeCategoryIdentifier;
 
 class ResourceObject extends CategoryContainer
 {
@@ -14,7 +14,7 @@ class ResourceObject extends CategoryContainer
     {
         $this->id = $id;
         $this->type = $type;
-        parent::__construct(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        parent::__construct(AttributeCategoryIdentifier::RESOURCE);
         $this->addAttribute('resource:resource-id', $id);
         $this->addAttribute('resource:resource-type', $type);
     }

@@ -1,17 +1,20 @@
 <?php
 
+use Cerberus\PDP\Combiner\CombiningAlgorithm;
+use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-overrides',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_OVERRIDES,
         'policyId'                 => 'dynamic:policy',
         'variableDefinitions'      => [
             [
                 'variableId' => 'resourceMatch',
                 'apply'      => [
-                    'functionId' => 'function:string-equal',
+                    'functionId' => FunctionDefinitionFactory::STRING_EQUAL,
                     [
                         'apply' => [
-                            'functionId' => 'function:string-one-and-only',
+                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => 'resource:resource-type',
@@ -24,7 +27,7 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:string-one-and-only',
+                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                             [
                                 'attributeSelector' => [
                                     'category'          => 'attribute-category:resource',
@@ -41,10 +44,10 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => 'function:string-is-in',
+                    'functionId' => FunctionDefinitionFactory::STRING_IS_IN,
                     [
                         'apply' => [
-                            'functionId' => 'function:string-one-and-only',
+                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => 'action:action-id',
@@ -57,7 +60,7 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:string-bag',
+                            'functionId' => FunctionDefinitionFactory::STRING_BAG,
                             [
                                 'attributeSelector' => [
                                     'category'          => 'attribute-category:action',

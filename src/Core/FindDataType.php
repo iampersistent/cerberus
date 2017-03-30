@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core;
 
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\Core\Exception\DataTypeException;
 use DateTime;
 
@@ -15,16 +16,16 @@ class FindDataType
             case 'array':
                 throw new DataTypeException('There is no defined array data type');
             case 'boolean':
-                return Identifier::DATATYPE_BOOLEAN;
+                return DataTypeIdentifier::BOOLEAN;
             case 'double':
-                return Identifier::DATATYPE_DOUBLE;
+                return DataTypeIdentifier::DOUBLE;
             case 'integer':
-                return Identifier::DATATYPE_INTEGER;
+                return DataTypeIdentifier::INTEGER;
             case 'string':
-                return Identifier::DATATYPE_STRING;
+                return DataTypeIdentifier::STRING;
         }
         if ($data instanceof DateTime) {
-            return Identifier::DATATYPE_DATETIME;
+            return DataTypeIdentifier::DATETIME;
         }
 
         if ('object' === $type) {

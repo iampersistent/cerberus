@@ -1,18 +1,21 @@
 <?php
 
+use Cerberus\PDP\Combiner\CombiningAlgorithm;
+use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+
 return [
     'policy' => [
-        'ruleCombiningAlgorithmId' => 'rule-combining-algorithm:deny-unless-permit',
+        'ruleCombiningAlgorithmId' => CombiningAlgorithm::DENY_UNLESS_PERMIT,
         'policyId'                 => 'gallery-images:policy',
         'variableDefinitions'      => [
             [
                 'variableId' => 'imageGalleryIdAndActionMatch',
                 'apply'      => [
                     'description' => 'make sure all of the checks evaluate to true',
-                    'functionId'  => 'function:boolean-all-of',
+                    'functionId'  => FunctionDefinitionFactory::BOOLEAN_ALL_OF,
                     [
                         'function' => [
-                            'functionId' => 'function:boolean-equal',
+                            'functionId' => FunctionDefinitionFactory::BOOLEAN_EQUAL,
                         ],
                     ],
                     [
@@ -23,14 +26,14 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:integer-bag',
+                            'functionId' => FunctionDefinitionFactory::INTEGER_BAG,
                             [
                                 'apply' => [
-                                    'functionId'  => 'function:any-of-any',
+                                    'functionId'  => FunctionDefinitionFactory::ANY_OF_ANY,
                                     'description' => 'check to make sure the user has access to one of the galleries in the image',
                                     [
                                         'apply' => [
-                                            'functionId' => 'function:string-bag',
+                                            'functionId' => FunctionDefinitionFactory::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
                                                     'category'          => 'attribute-category:resource',
@@ -44,7 +47,7 @@ return [
                                     ],
                                     [
                                         'apply' => [
-                                            'functionId' => 'function:string-bag',
+                                            'functionId' => FunctionDefinitionFactory::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
                                                     'category'          => 'attribute-category:resource',
@@ -58,11 +61,11 @@ return [
                                     ],
                                     [
                                         'apply' => [
-                                            'functionId'  => 'function:string-is-in',
+                                            'functionId'  => FunctionDefinitionFactory::STRING_IS_IN,
                                             'description' => 'make sure the action has been permitted',
                                             [
                                                 'apply' => [
-                                                    'functionId' => 'function:string-one-and-only',
+                                                    'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                                                     [
                                                         'attributeDesignator' => [
                                                             'attributeId'   => 'action:action-id',
@@ -75,7 +78,7 @@ return [
                                             ],
                                             [
                                                 'apply' => [
-                                                    'functionId' => 'function:string-bag',
+                                                    'functionId' => FunctionDefinitionFactory::STRING_BAG,
                                                     [
                                                         'attributeSelector' => [
                                                             'category'          => 'attribute-category:action',
@@ -98,10 +101,10 @@ return [
             [
                 'variableId' => 'actionMatch',
                 'apply'      => [
-                    'functionId' => 'function:string-is-in',
+                    'functionId' => FunctionDefinitionFactory::STRING_IS_IN,
                     [
                         'apply' => [
-                            'functionId' => 'function:string-one-and-only',
+                            'functionId' => FunctionDefinitionFactory::STRING_ONE_AND_ONLY,
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => 'action:action-id',
@@ -114,7 +117,7 @@ return [
                     ],
                     [
                         'apply' => [
-                            'functionId' => 'function:string-bag',
+                            'functionId' => FunctionDefinitionFactory::STRING_BAG,
                             [
                                 'attributeSelector' => [
                                     'category'          => 'attribute-category:action',
@@ -140,7 +143,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => 'function:string-equal',
+                                            'matchId'             => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => 'string',
                                                 'text'     => Image::class,
@@ -159,7 +162,7 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'           => 'function:string-equal',
+                                            'matchId'           => FunctionDefinitionFactory::STRING_EQUAL,
                                             'attributeValue'    => [
                                                 'dataType' => 'string',
                                                 'text'     => Gallery::class,

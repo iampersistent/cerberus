@@ -3,7 +3,9 @@ declare(strict_types = 1);
 
 namespace Cerberus\PEP;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\{
+    ContextSelectorIdentifier, DataTypeIdentifier
+};
 
 class PersistedResource extends CategoryContainer
 {
@@ -13,7 +15,7 @@ class PersistedResource extends CategoryContainer
     public function __construct(...$objects)
     {
         $this->id = 'persisted-resource';
-        $this->type = Identifier::DATATYPE_XPATH_EXPRESSION;
-        parent::__construct(Identifier::CONTENT_SELECTOR);
+        $this->type = DataTypeIdentifier::XPATH_EXPRESSION;
+        parent::__construct(ContextSelectorIdentifier::CONTENT_SELECTOR);
     }
 }

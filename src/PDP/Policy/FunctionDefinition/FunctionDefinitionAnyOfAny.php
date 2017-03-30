@@ -3,16 +3,19 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\FunctionDefinition;
 
+use Cerberus\Core\Enums\DataTypeIdentifier;
 use Cerberus\PDP\Policy\Expressions\AttributeValue;
-use Cerberus\Core\DataType\DataType;
-use Cerberus\Core\DataType\DataTypeBoolean;
-use Cerberus\Core\Identifier;
+use Cerberus\Core\DataType\{
+    DataType, DataTypeBoolean
+};
 use Cerberus\Core\Status;
 use Cerberus\PDP\Evaluation\EvaluationContext;
-use Cerberus\PDP\Policy\ConvertedArgument;
-use Cerberus\PDP\Policy\ExpressionResult;
-use Cerberus\PDP\Policy\ExpressionResultError;
-use Cerberus\PDP\Policy\FunctionDefinition;
+use Cerberus\PDP\Policy\{
+    ConvertedArgument,
+    ExpressionResult,
+    ExpressionResultError,
+    FunctionDefinition
+};
 use Ds\Set;
 
 class FunctionDefinitionAnyOfAny extends FunctionDefinition
@@ -22,10 +25,7 @@ class FunctionDefinitionAnyOfAny extends FunctionDefinition
         parent::__construct($identifier, new DataTypeBoolean(), $argsDataType, true);
     }
 
-    public function evaluate(
-        EvaluationContext $evaluationContext,
-        Set $arguments
-    ): ExpressionResult
+    public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
         if (2 !== $arguments->count()) {
             return new ExpressionResultError(Status::createProcessingError(
@@ -49,12 +49,12 @@ class FunctionDefinitionAnyOfAny extends FunctionDefinition
                 if ($bag0Value->getValue()) {
                     return new ExpressionResult(
                         Status::createOk(),
-                        new AttributeValue(Identifier::DATATYPE_BOOLEAN, true)
+                        new AttributeValue(DataTypeIdentifier::BOOLEAN, true)
                     );
                 }
             }
         }
 
-        return new ExpressionResult(Status::createOk(), new AttributeValue(Identifier::DATATYPE_BOOLEAN, false));
+        return new ExpressionResult(Status::createOk(), new AttributeValue(DataTypeIdentifier::BOOLEAN, false));
     }
 }

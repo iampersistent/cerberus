@@ -3,11 +3,11 @@ declare(strict_types = 1);
 
 namespace Cerberus\Core\DataType;
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\DataTypeIdentifier;
 
 abstract class DataType
 {
-    protected function __construct(Identifier $type)
+    protected function __construct(DataTypeIdentifier $type)
     {
         $this->type = $type;
     }
@@ -17,7 +17,7 @@ abstract class DataType
         return $this->type->is($dataType->getType());
     }
 
-    public function getType(): Identifier
+    public function getType(): DataTypeIdentifier
     {
         return $this->type;
     }

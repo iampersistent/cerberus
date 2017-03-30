@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\Core\Identifier;
+use Cerberus\Core\Enums\AttributeCategoryIdentifier;
 use Cerberus\PDP\{
     Utility\ArrayProperties
 };
@@ -121,7 +121,7 @@ class DocumentMapper extends ObjectMapper
      */
     public function map($document, PepRequest $pepRequest)
     {
-        $resourceAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
         $resourceAttributes->addAttribute("resource:resource-id", $document->getDocumentId());
         $resourceAttributes->addAttribute("resource:resource-type", Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());

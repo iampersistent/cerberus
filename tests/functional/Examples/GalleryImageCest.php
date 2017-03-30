@@ -2,7 +2,6 @@
 declare(strict_types = 1);
 
 use Cerberus\CerberusService;
-use Cerberus\Core\Identifier;
 use Cerberus\PDP\Policy\Content;
 use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\Action\Action;
@@ -110,7 +109,7 @@ class ImageMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(Identifier::ATTRIBUTE_CATEGORY_RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(\Cerberus\Core\Enums\AttributeCategoryIdentifier::RESOURCE);
 
         $galleryIds = [];
         foreach ($object->getGalleries() as $gallery) {
