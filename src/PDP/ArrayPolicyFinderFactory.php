@@ -12,7 +12,7 @@ class ArrayPolicyFinderFactory extends PolicyFinderFactory
         $policies = $properties->get('rootPolicies', []);
         foreach ($policies as $policy) {
             // policy files must return a php array
-            $this->rootPolicies = $this->handlePolicies(require $policy);
+            $this->rootPolicies = $this->rootPolicies->merge($this->handlePolicies(require $policy));
         }
         $this->needsInit = false;
     }
