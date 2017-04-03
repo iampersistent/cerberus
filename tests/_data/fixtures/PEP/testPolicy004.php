@@ -49,7 +49,7 @@ return [
                                             'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
-                                                'text'     => 'Test\Document',
+                                                'text'     => 'TestData\Document',
                                             ],
                                             'attributeDesignator' => [
                                                 'category'      => AttributeCategoryIdentifier::RESOURCE,
@@ -147,7 +147,7 @@ return [
                                             'matchId'             => FunctionIdentifier::STRING_EQUAL,
                                             'attributeValue'      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
-                                                'text'     => 'Test\Document',
+                                                'text'     => 'TestData\Document',
                                             ],
                                             'attributeDesignator' => [
                                                 'category'      => AttributeCategoryIdentifier::RESOURCE,

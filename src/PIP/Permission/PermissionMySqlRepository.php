@@ -23,7 +23,23 @@ class PermissionMySqlRepository implements PermissionRepository
         $this->connection = new PDO($config['dsn'], $config['username'], $config['password'], $options);
     }
 
-    public function find($inputs)
+    public function find($id)
+    {
+        $sql = <<<SQL
+SELECT * FROM cerberus_mapped_object 
+WHERE id = :id
+SQL;
+        $parameters = [
+            ':id' => $id,
+        ];
+        $statement = $this->connection->prepare($sql);
+        $statement->execute($parameters);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $data ? new MappedObject($data) : null;
+    }
+
+    public function findByIdentifiers(array $inputs)
     {
         $sql = <<<SQL
 SELECT * FROM cerberus_mapped_object 
@@ -40,29 +56,22 @@ SQL;
         ];
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($record = $statement->fetch(PDO::FETCH_ASSOC)) {
-            $data = $this->convertDataFromDB($record);
-        } else {
-            $data = [];
-        }
-
-        return $data;
+        return $data ? new MappedObject($data) : null;
     }
 
-    public function save($record)
+    public function save(MappedObject $object)
     {
-        $record['actions'] = json_encode($record['actions']);
-
-        if (isset($record['id'])) {
+        if ($object->getId()) {
             $sql = <<<SQL
 UPDATE cerberus_mapped_object
 SET allowed_actions = :actions 
 WHERE id = :id
 SQL;
             $parameters = [
-                ':actions'  => $record['actions'],
-                ':id'  => $record['id'],
+                ':id'      => $object->getId(),
+                ':actions' => json_encode($object->getActions()),
             ];
         } else {
             $sql = <<<SQL
@@ -71,30 +80,15 @@ INSERT INTO cerberus_mapped_object
 VALUES(:subjectType, :subjectId, :resourceType, :resourceId, :actions) 
 SQL;
             $parameters = [
-                ':subjectType'  => $record['subject']['type'],
-                ':subjectId'  => $record['subject']['id'],
-                ':resourceType'  => $record['resource']['type'],
-                ':resourceId'  => $record['resource']['id'],
-                ':actions'  => $record['actions'],
+                ':subjectId'    => $object->getSubjectId(),
+                ':subjectType'  => $object->getSubjectType(),
+                ':resourceId'   => $object->getResourceId(),
+                ':resourceType' => $object->getResourceType(),
+                ':actions'      => json_encode($object->getActions()),
             ];
         }
 
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
-    }
-
-    protected function convertDataFromDB(array $data)
-    {
-        return [
-            'resource' => [
-                'id' => $data['resource_id'],
-                'type' => $data['resource_type'],
-            ],
-            'subject' => [
-                'id' => $data['subject_id'],
-                'type' => $data['subject_type'],
-            ],
-            'actions' => json_decode($data['allowed_actions']),
-        ];
     }
 }

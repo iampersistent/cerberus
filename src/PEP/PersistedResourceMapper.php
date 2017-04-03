@@ -33,19 +33,21 @@ class PersistedResourceMapper extends ObjectMapper
         $getAttributeValue = function($attribute, $attributeId) {
             return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
         };
-        $requestData = [
+
+        $retrievedData = $this->repository->findByIdentifiers([
             'subjectId'    => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_ID),
             'subjectType'  => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_TYPE),
             'resourceId'   => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_ID),
             'resourceType' => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_TYPE),
-        ];
-
-        $retrievedData = $this->repository->find($requestData);
+        ]);
         foreach ($pepRequest->getRequestAttributes() as $requestAttribute) {
             if ($requestAttribute->getCategory() === ContextSelectorIdentifier::CONTENT_SELECTOR) {
                 continue;
             }
-            $requestAttribute->addContent(ContextSelectorIdentifier::CONTENT_SELECTOR, new Content($retrievedData));
+
+            $content = $retrievedData ? new Content($retrievedData->toPathArray()) : new Content([]);
+
+            $requestAttribute->addContent(ContextSelectorIdentifier::CONTENT_SELECTOR, $content);
         }
     }
 }

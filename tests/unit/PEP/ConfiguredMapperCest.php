@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 use Cerberus\Core\Enums\AttributeCategoryIdentifier;
 use Cerberus\PEP\{ConfiguredMapper, MapperRegistry, PepRequest};
-use Test\Document;
+use TestData\Document;
 
 class ConfiguredMapperCest
 {

@@ -14,4 +14,14 @@ class ArrayProperties extends Properties
 
         $this->properties = array_merge($this->properties, $properties);
     }
+
+    public function all(): array
+    {
+        return $this->properties;
+    }
+
+    public function merge(ArrayProperties $properties)
+    {
+        return new ArrayProperties(array_replace_recursive($this->properties, $properties->all()));
+    }
 }

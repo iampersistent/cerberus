@@ -3,12 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PIP\Permission;
 
-use Cerberus\Core\Enums\{
-    ActionIdentifier, ResourceIdentifier, SubjectIdentifier
-};
-use Cerberus\PEP\Action\Action;
-use Cerberus\PEP\ResourceObject;
-use Cerberus\PEP\Subject;
+use Cerberus\PEP\{Action\Action, ResourceObject, Subject};
 use Cerberus\PIP\Contract\PermissionRepository;
 
 class PermissionManager
@@ -20,62 +15,50 @@ class PermissionManager
         $this->repository = $repository;
     }
 
+    /**
+     * Find mapped object by subject-resource mapping
+     *
+     * @param Subject        $subject
+     * @param ResourceObject $resource
+     *
+     * @return MappedObject
+     */
     public function find(Subject $subject, ResourceObject $resource)
     {
-        $inputs = $this->createRequestData($subject, $resource);
+        $object = MappedObject::fromSubjectResource($subject, $resource);
 
-        return $this->repository->find($inputs);
+        return $this->repository->findByIdentifiers($object->getIdentifiers());
     }
 
+    /**
+     * Remove action from subject-resource mapping
+     *
+     * @param Subject        $subject
+     * @param Action         $action
+     * @param ResourceObject $resource
+     * @param array          $properties
+     */
     public function deny(Subject $subject, Action $action, ResourceObject $resource, $properties = [])
     {
-        $requestData = $this->createRequestData($subject, $resource);
-        if (! $record = $this->repository->find($requestData)) {
+        if (! $record = $this->find($subject, $resource)) {
             return;
         }
-        $actions = $record['actions'];
-        $deniedAction = $action->getAttribute(ActionIdentifier::ACTION_ID);
-        if (false === $key = array_search($deniedAction, $actions)) {
-            return;
-        }
-        unset($actions[$key]);
-        $record['actions'] = $actions;
 
-        $this->repository->save($record);
+        $this->repository->save($record->removeAction($action));
     }
 
+    /**
+     * Add action to subject-resource mapping
+     *
+     * @param Subject        $subject
+     * @param Action         $action
+     * @param ResourceObject $resource
+     * @param array          $properties
+     */
     public function grant(Subject $subject, Action $action, ResourceObject $resource, $properties = [])
     {
-        $requestData = $this->createRequestData($subject, $resource);
-        $record = $this->repository->find($requestData) ?? [
-                'resource' => [
-                    'id'   => $requestData['resourceId'],
-                    'type' => $requestData['resourceType'],
-                ],
-                'subject'  => [
-                    'id'   => $requestData['subjectId'],
-                    'type' => $requestData['subjectType'],
-                ],
-                'actions'  => [],
-            ];
-        $actions = $record['actions'];
-        $grantedAction = $action->getAttribute(ActionIdentifier::ACTION_ID);
+        $record = $this->find($subject, $resource) ?? MappedObject::fromSubjectResource($subject, $resource);;
 
-        if (! in_array($grantedAction, $actions)) {
-            $actions[] = $grantedAction;
-        }
-        $record['actions'] = $actions;
-
-        $this->repository->save($record);
-    }
-
-    protected function createRequestData(Subject $subject, ResourceObject $resource)
-    {
-        return [
-            'subjectId'    => $subject->getAttribute(SubjectIdentifier::SUBJECT_ID),
-            'subjectType'  => $subject->getAttribute(SubjectIdentifier::SUBJECT_TYPE),
-            'resourceId'   => $resource->getAttribute(ResourceIdentifier::RESOURCE_ID),
-            'resourceType' => $resource->getAttribute(ResourceIdentifier::RESOURCE_TYPE),
-        ];
+        $this->repository->save($record->addAction($action));
     }
 }

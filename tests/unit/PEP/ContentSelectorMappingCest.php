@@ -1,13 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\PEP\{
-    Action\Action, PepAgent, PepAgentFactory, ResourceObject, Subject
-};
 use Cerberus\PDP\{
     Utility\ArrayProperties
 };
+use Cerberus\PEP\{
+    Action\Action, PepAgent, PepAgentFactory, ResourceObject, Subject
+};
 use Cerberus\PIP\Contract\PermissionRepository;
+use Cerberus\PIP\Permission\MappedObject;
 
 class ContentSelectorMappingCest
 {
@@ -40,20 +41,13 @@ class ContentSelectorMappingCest
     public function testPermit(UnitTester $I)
     {
         // grant permission
-        $record = [
-            'resource' => [
-                'type' => 'fileResolver',
-                'id'   => 'fileId12345',
-            ],
-            'subject'  => [
-                'type' => 'user',
-                'id'   => 'subjectIdJSmith',
-            ],
-            'actions'   => [
-                'read',
-                'write',
-            ],
-        ];
+        $record = new MappedObject([
+            'resourceId'   => 'fileId12345',
+            'resourceType' => 'fileResolver',
+            'subjectType'  => 'user',
+            'subjectId'    => 'subjectIdJSmith',
+            'actions'      => ['read', 'write'],
+        ]);
         $this->repository->save($record);
         $subject = new Subject('subjectIdJSmith');
         $action = new Action('read');
