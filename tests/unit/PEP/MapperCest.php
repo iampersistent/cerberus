@@ -5,7 +5,7 @@ namespace Test\Unit\PEP;
 
 use UnitTester;
 use Cerberus\Core\Enums\{
-    AttributeCategoryIdentifier, ResourceIdentifier
+    AttributeIdentifier, ResourceIdentifier
 };
 use Cerberus\PEP\{
     Action\Action, Action\WriteAction, ObjectMapper, PepRequest
@@ -112,7 +112,7 @@ class DocumentMapper extends ObjectMapper
      */
     public function map($document, PepRequest $pepRequest)
     {
-        $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
         $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_ID, $document->getDocumentId());
         $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_TYPE, Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());

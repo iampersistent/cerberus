@@ -9,11 +9,13 @@ class PepAgentFactoryCest
 {
     public function testConstruct(UnitTester $I)
     {
-        $properties = require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
-        $properties = new ArrayProperties($properties);
-        $factory = new PepAgentFactory($properties);
+        $pepPath = codecept_data_dir('fixtures/PEP');
+        $defaultPath = "$pepPath/defaultProperties.php";
+        $defaults = require $defaultPath;
+        $defaults['rootPolicies'][] = "$pepPath/testPolicy004.php";
+        $defaults['pep']['mappers']['configurations'][] = "$pepPath/Mappers/documentMapper.php";
 
-        $pepAgent = $factory->getPepAgent();
+        $pepAgent = (new PepAgentFactory(new ArrayProperties($defaults)))->getPepAgent();
 
         $I->assertInstanceOf(CerberusEngine::class, $pepAgent->getPdpEngine());
         $I->assertInstanceOf(PepConfig::class, $pepAgent->getPepConfig());

@@ -2,10 +2,10 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier, SubjectCategoryIdentifier, SubjectIdentifier
+    AttributeIdentifier, CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier, SubjectIdentifier
 };
 
-$policyId = 'subject-type-user';
+$policyId = 'subject-type-equals-user';
 
 return [
     'policy' => [
@@ -23,12 +23,12 @@ return [
                                     [
                                         'match' => [
                                             'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'user',
                                             ],
-                                            'attributeDesignator' => [
-                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                            AttributeIdentifier::DESIGNATOR => [
+                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => SubjectIdentifier::SUBJECT_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => true,

@@ -3,12 +3,11 @@
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
     ActionIdentifier,
-    AttributeCategoryIdentifier,
+    AttributeIdentifier,
     CombiningAlgorithmIdentifier,
     DataTypeIdentifier,
     FunctionIdentifier,
     ResourceIdentifier,
-    SubjectCategoryIdentifier,
     SubjectIdentifier
 };
 
@@ -33,7 +32,7 @@ return [
                                                 'text'     => 'ROLE_DOCUMENT_WRITER',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => 'SubjectIdentifier::ROLE_ID',
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -52,7 +51,7 @@ return [
                                                 'text'     => 'TestData\Document',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -71,7 +70,7 @@ return [
                                                 'text'     => 'write',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -91,7 +90,7 @@ return [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
-                                        'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                        'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                         'attributeId'   => 'document:document-owner',
                                         'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
@@ -104,7 +103,7 @@ return [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     'attributeDesignator' => [
-                                        'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                        'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                         'attributeId'   => SubjectIdentifier::SUBJECT_ID,
                                         'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
@@ -131,7 +130,7 @@ return [
                                                 'text'     => 'ROLE_DOCUMENT_READER',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => 'SubjectIdentifier::ROLE_ID',
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -150,7 +149,7 @@ return [
                                                 'text'     => 'TestData\Document',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -169,7 +168,7 @@ return [
                                                 'text'     => 'read',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -190,7 +189,7 @@ return [
                                 [
                                     'attributeDesignator' => [
                                         'attributeId'   => 'client:country-of-domicile',
-                                        'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                        'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                         'dataType'      => DataTypeIdentifier::STRING,
                                         'mustBePresent' => false,
                                     ],

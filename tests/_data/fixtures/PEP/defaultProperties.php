@@ -16,4 +16,14 @@ return [
             'configurations' => [],
         ],
     ],
+    'contentSelector' => [
+        'classes' => [
+            'mapper'     => Cerberus\PEP\PersistedResourceMapper::class,
+            'manager'    => Cerberus\PIP\Permission\PermissionManager::class,
+            'repository' => Cerberus\PIP\Permission\PermissionMemoryRepository::class,
+        ],
+        'config'  => [
+            'repository' => [],
+        ],
+    ],
 ];

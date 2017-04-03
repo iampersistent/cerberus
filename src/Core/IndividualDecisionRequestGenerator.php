@@ -6,7 +6,7 @@ namespace Cerberus\Core;
 use Exception;
 use Ds\Map;
 use Ds\Set;
-use Cerberus\Core\Enums\AttributeCategoryIdentifier;
+use Cerberus\Core\Enums\AttributeIdentifier;
 use Cerberus\Core\Enums\MultipleIdentifier;
 use Cerberus\Core\Exception\ScopeResolverException;
 use Cerberus\PDP\ScopeResolver;
@@ -163,7 +163,7 @@ class IndividualDecisionRequestGenerator
          * Scope only applies to the resource category, so just get the RequestAttributes for that. At this
          * point there should be at most one.
          */
-        $requestAttributesResource = $request->getRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $requestAttributesResource = $request->getRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
         if (! $requestAttributesResource) {
             $this->processContentSelectors($request);
 

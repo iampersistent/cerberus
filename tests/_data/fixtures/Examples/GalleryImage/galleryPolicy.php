@@ -3,7 +3,7 @@
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
     ActionIdentifier,
-    AttributeCategoryIdentifier,
+    AttributeIdentifier,
     CombiningAlgorithmIdentifier,
     ContextSelectorIdentifier,
     DataTypeIdentifier,
@@ -44,7 +44,7 @@ return [
                                             'functionId' => FunctionIdentifier::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
-                                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                                    'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
                                                     'contextSelectorId' => 'image',
                                                     'dataType'          => DataTypeIdentifier::STRING,
                                                     'mustBePresent'     => false,
@@ -58,7 +58,7 @@ return [
                                             'functionId' => FunctionIdentifier::STRING_BAG,
                                             [
                                                 'attributeSelector' => [
-                                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                                    'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
                                                     'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                                     'dataType'          => DataTypeIdentifier::STRING,
                                                     'mustBePresent'     => false,
@@ -77,7 +77,7 @@ return [
                                                     [
                                                         'attributeDesignator' => [
                                                             'attributeId'   => ActionIdentifier::ACTION_ID,
-                                                            'category'      => AttributeCategoryIdentifier::ACTION,
+                                                            'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                             'dataType'      => DataTypeIdentifier::STRING,
                                                             'mustBePresent' => false,
                                                         ],
@@ -89,7 +89,7 @@ return [
                                                     'functionId' => FunctionIdentifier::STRING_BAG,
                                                     [
                                                         'attributeSelector' => [
-                                                            'category'          => AttributeCategoryIdentifier::ACTION,
+                                                            'category'          => AttributeIdentifier::ACTION_CATEGORY,
                                                             'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                                             'dataType'          => DataTypeIdentifier::STRING,
                                                             'mustBePresent'     => false,
@@ -116,7 +116,7 @@ return [
                             [
                                 'attributeDesignator' => [
                                     'attributeId'   => ActionIdentifier::ACTION_ID,
-                                    'category'      => AttributeCategoryIdentifier::ACTION,
+                                    'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                     'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
@@ -128,7 +128,7 @@ return [
                             'functionId' => FunctionIdentifier::STRING_BAG,
                             [
                                 'attributeSelector' => [
-                                    'category'          => AttributeCategoryIdentifier::ACTION,
+                                    'category'          => AttributeIdentifier::ACTION_CATEGORY,
                                     'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                     'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,
@@ -157,7 +157,7 @@ return [
                                                 'text'     => Image::class,
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -176,7 +176,7 @@ return [
                                                 'text'     => Gallery::class,
                                             ],
                                             'attributeSelector' => [
-                                                'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                                'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                                 'dataType'          => DataTypeIdentifier::STRING,
                                                 'mustBePresent'     => false,

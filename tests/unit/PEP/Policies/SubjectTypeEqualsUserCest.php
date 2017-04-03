@@ -7,9 +7,9 @@ use UnitTester;
 use Cerberus\PEP\Action\WriteAction;
 use Cerberus\PEP\Subject;
 
-class SubjectTypeUserCest extends MatchBaseCest
+class SubjectTypeEqualsUserCest extends MatchBaseCest
 {
-    protected $policyPath = 'subject-type-user-policy';
+    protected $policyPath = 'subject-type-equals-user-policy';
 
     public function testSubjectTypeMatch(UnitTester $I)
     {

@@ -3,12 +3,11 @@
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
     ActionIdentifier,
-    AttributeCategoryIdentifier,
+    AttributeIdentifier,
     CombiningAlgorithmIdentifier,
     DataTypeIdentifier,
     FunctionIdentifier,
     ResourceIdentifier,
-    SubjectCategoryIdentifier,
     SubjectIdentifier
 };
 
@@ -34,7 +33,7 @@ return [
                                                 'text'     => 'Julius Hibbert',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => SubjectIdentifier::SUBJECT_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -53,7 +52,7 @@ return [
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -72,7 +71,7 @@ return [
                                                 'text'     => 'read',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -87,7 +86,7 @@ return [
                                                 'text'     => 'write',
                                             ],
                                             'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 namespace Cerberus\PEP\Action;
 
 use Cerberus\Core\Enums\{
-    ActionIdentifier, AttributeCategoryIdentifier
+    ActionIdentifier, AttributeIdentifier
 };
 use Cerberus\PEP\CategoryContainer;
 
@@ -15,7 +15,7 @@ class Action extends CategoryContainer
     public function __construct(string $actionIdValue)
     {
         $this->actionIdValue = $actionIdValue;
-        parent::__construct(AttributeCategoryIdentifier::ACTION);
+        parent::__construct(AttributeIdentifier::ACTION_CATEGORY);
         $this->addAttribute(ActionIdentifier::ACTION_ID, $actionIdValue);
     }
 

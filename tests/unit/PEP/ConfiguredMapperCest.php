@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-use Cerberus\Core\Enums\AttributeCategoryIdentifier;
+use Cerberus\Core\Enums\AttributeIdentifier;
 use Cerberus\PEP\{ConfiguredMapper, MapperRegistry, PepRequest};
 use TestData\Document;
 
@@ -31,7 +31,7 @@ class ConfiguredMapperCest
         $registry = new MapperRegistry();
         $registry->registerMapper($mapper);
         $pepRequest = new PepRequest($registry, $document);
-        $attributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $attributes = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
 
         $I->assertSame(5, count($attributes->getAttributes()));
     }

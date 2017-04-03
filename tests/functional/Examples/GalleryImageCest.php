@@ -9,7 +9,7 @@ use Cerberus\PEP\{
     Action\Action, ObjectMapper, PepRequest, Subject
 };
 use Cerberus\Core\Enums\{
-    AttributeCategoryIdentifier, ResourceIdentifier
+    AttributeIdentifier, ResourceIdentifier
 };
 
 class GalleryImageCest
@@ -132,7 +132,7 @@ class ImageMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
 
         $galleryIds = [];
         foreach ($object->getGalleries() as $gallery) {
