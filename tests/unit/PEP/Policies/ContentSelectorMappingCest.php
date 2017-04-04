@@ -22,7 +22,7 @@ class ContentSelectorMappingCest extends MatchBaseCest
     {
         parent::_before($I);
 
-        $properties = $this->getProperties();
+        $properties = $this->pepAgent->getPepConfig()->properties;
 
         $repositoryClass = $properties->get('contentSelector.classes.repository');
         $repoConfig = $properties->get('contentSelector.config.repository');

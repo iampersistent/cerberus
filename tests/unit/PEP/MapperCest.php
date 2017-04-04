@@ -29,8 +29,6 @@ class MapperCest extends MatchBaseCest
         parent::_before($I);
 
         $this->subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
-
-        $this->alternateDocument = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
     }
 
     public function testPermit(UnitTester $I)

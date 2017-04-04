@@ -2,10 +2,10 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    AttributeIdentifier, CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier
+    AttributeIdentifier, CombiningAlgorithmIdentifier, ContextSelectorIdentifier, DataTypeIdentifier, FunctionIdentifier
 };
 
-$policyId = 'subject-type-user';
+$policyId = 'document-id-equals-forty-two';
 
 return [
     'policy' => [
@@ -22,17 +22,17 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'                     => FunctionIdentifier::STRING_EQUAL,
+                                            'matchId'                     => FunctionIdentifier::INTEGER_EQUAL,
                                             AttributeIdentifier::VALUE    => [
-                                                'dataType' => DataTypeIdentifier::STRING,
-                                                'text'     => 'user',
+                                                'dataType' => DataTypeIdentifier::INTEGER,
+                                                'text'     => 42,
                                             ],
                                             AttributeIdentifier::SELECTOR => [
                                                 'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
-                                                'dataType'          => DataTypeIdentifier::STRING,
-                                                'contextSelectorId' => 'file',
+                                                'dataType'          => DataTypeIdentifier::INTEGER,
+                                                'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                                 'mustBePresent'     => false,
-                                                'path'              => '$.resource.galleryIds',
+                                                'path'              => '$.resource.id',
                                             ],
                                         ],
                                     ],

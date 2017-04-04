@@ -7,6 +7,7 @@ use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\{
     PepAgent, PepAgentFactory, Subject
 };
+use Cerberus\PIP\Permission\PermissionMemoryRepository;
 use TestData\Document;
 use UnitTester;
 
@@ -23,16 +24,29 @@ class MatchBaseCest
 
     /** @var PepAgent */
     protected $pepAgent;
-    /** @var Document */
-    protected $document;
+    /** @var PermissionMemoryRepository */
+    protected $repository;
+
     /** @var Subject */
     protected $subject;
 
+    /** @var Document */
+    protected $document;
+    /** @var Document */
+    protected $alternateDocument;
+
     public function _before(UnitTester $I)
     {
-        $this->pepAgent = (new PepAgentFactory($this->getProperties()))->getPepAgent();
+        $properties = $this->getProperties();
+
+        $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
+        $repositoryClass = $properties->get('contentSelector.classes.repository');
+        $repoConfig = $properties->get('contentSelector.config.repository');
+        $this->repository = new $repositoryClass($repoConfig);
+
         $this->subject = new Subject($this->userId);
         $this->document = new Document(1, "OnBoarding Document", "ABC Corporation", $this->userId);
+        $this->alternateDocument = new Document(42, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
     }
 
     protected function getProperties(): ArrayProperties
