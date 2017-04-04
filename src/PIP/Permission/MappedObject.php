@@ -51,7 +51,7 @@ class MappedObject
 
     public function getSubjectId(): string
     {
-        return $this->subjectId;
+        return (string)$this->subjectId;
     }
 
     public function getSubjectType(): string
