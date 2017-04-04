@@ -2,7 +2,7 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    AttributeIdentifier, CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier, SubjectIdentifier
+    AttributeIdentifier, CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier
 };
 
 $policyId = 'subject-type-user';
@@ -22,23 +22,18 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            AttributeIdentifier::VALUE      => [
+                                            'matchId'                     => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE    => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'user',
                                             ],
                                             AttributeIdentifier::SELECTOR => [
-                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
-                                                'attributeId'   => SubjectIdentifier::SUBJECT_TYPE,
-                                                'dataType'      => DataTypeIdentifier::STRING,
-                                                'mustBePresent' => true,
+                                                'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
+                                                'dataType'          => DataTypeIdentifier::STRING,
+                                                'contextSelectorId' => 'file',
+                                                'mustBePresent'     => false,
+                                                'path'              => '$.resource.galleryIds',
                                             ],
-                                            'category'          => 'attribute-category:resource',
-                                            'contextSelectorId' => 'image',
-                                            'dataType'          => 'string',
-                                            'mustBePresent'     => false,
-                                            'path'              => '$.resource.galleryIds',
-
                                         ],
                                     ],
                                 ],

@@ -3,11 +3,11 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Factory\PolicyElement;
 
+use Exception;
 use Cerberus\PDP\Contract\PolicyElement;
 use Cerberus\PDP\Exception\PolicyElementFactoryException;
 use Cerberus\PDP\Policy\Expressions\Apply;
 use Cerberus\PDP\Policy\Policy;
-use Exception;
 
 class ApplyFactory extends ExpressionParentFactory
 {
@@ -27,12 +27,12 @@ class ApplyFactory extends ExpressionParentFactory
 //                $apply->addArgument($applyArgument);
 //            }
 //        }
-//        if (isset($data['attributeDesignator'])) {
-//            $attributeDesignator = AttributeDesignatorFactory::create($policy, $data['attributeDesignator']);
+//        if (isset($data[AttributeIdentifier::DESIGNATOR])) {
+//            $attributeDesignator = AttributeDesignatorFactory::create($policy, $data[AttributeIdentifier::DESIGNATOR]);
 //            $apply->addArgument($attributeDesignator);
 //        }
-//        if (isset($data['attributeSelector'])) {
-//            $attributeDesignator = AttributeSelectorFactory::create($policy, $data['attributeSelector']);
+//        if (isset($data[AttributeIdentifier::SELECTOR])) {
+//            $attributeDesignator = AttributeSelectorFactory::create($policy, $data[AttributeIdentifier::SELECTOR]);
 //            $apply->addArgument($attributeDesignator);
 //        }
 //

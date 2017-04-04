@@ -27,12 +27,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Julius Hibbert',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => SubjectIdentifier::SUBJECT_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -46,12 +46,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -65,12 +65,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -80,12 +80,12 @@ return [
                                     ],
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,

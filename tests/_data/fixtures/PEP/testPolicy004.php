@@ -26,12 +26,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_WRITER',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => 'SubjectIdentifier::ROLE_ID',
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -45,12 +45,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'TestData\Document',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -64,12 +64,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -89,7 +89,7 @@ return [
                             'apply' => [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
-                                    'attributeDesignator' => [
+                                    AttributeIdentifier::DESIGNATOR => [
                                         'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                         'attributeId'   => 'document:document-owner',
                                         'dataType'      => DataTypeIdentifier::STRING,
@@ -102,7 +102,7 @@ return [
                             'apply' => [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
-                                    'attributeDesignator' => [
+                                    AttributeIdentifier::DESIGNATOR => [
                                         'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                         'attributeId'   => SubjectIdentifier::SUBJECT_ID,
                                         'dataType'      => DataTypeIdentifier::STRING,
@@ -124,12 +124,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'ROLE_DOCUMENT_READER',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => 'SubjectIdentifier::ROLE_ID',
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -143,12 +143,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'TestData\Document',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -162,12 +162,12 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
                                             ],
-                                            'attributeDesignator' => [
+                                            AttributeIdentifier::DESIGNATOR => [
                                                 'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -187,7 +187,7 @@ return [
                             'apply' => [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
-                                    'attributeDesignator' => [
+                                    AttributeIdentifier::DESIGNATOR => [
                                         'attributeId'   => 'client:country-of-domicile',
                                         'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                         'dataType'      => DataTypeIdentifier::STRING,
@@ -200,7 +200,7 @@ return [
                             'apply' => [
                                 'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
-                                    'attributeDesignator' => [
+                                    AttributeIdentifier::DESIGNATOR => [
                                         'attributeId'   => 'request-context:country',
                                         'category'      => 'attribute-category:environment',
                                         'dataType'      => DataTypeIdentifier::STRING,
