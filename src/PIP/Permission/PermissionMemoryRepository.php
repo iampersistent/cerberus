@@ -7,18 +7,26 @@ use Cerberus\PIP\Contract\PermissionRepository;
 
 class PermissionMemoryRepository implements PermissionRepository
 {
+    /** @var MappedObject[] */
     protected static $store = [];
 
-    public function __construct(array $config) {}
+    public function __construct(array $config)
+    {
+    }
 
-    public function find($inputs)
+    public function find($id)
+    {
+        return self::$store[$id] ?? null;
+    }
+
+    public function findByIdentifiers(array $inputs)
     {
         foreach (self::$store as $data) {
             if (
-                $data['subject']['id'] === $inputs['subjectId'] &&
-                $data['subject']['type'] === $inputs['subjectType'] &&
-                $data['resource']['id'] === $inputs['resourceId'] &&
-                $data['resource']['type'] === $inputs['resourceType']
+                $data->getSubjectId() === $inputs['subjectId'] &&
+                $data->getSubjectType() === $inputs['subjectType'] &&
+                $data->getResourceId() === $inputs['resourceId'] &&
+                $data->getResourceType() === $inputs['resourceType']
             ) {
                 return $data;
             }
@@ -27,12 +35,12 @@ class PermissionMemoryRepository implements PermissionRepository
         return null;
     }
 
-    public function save($record)
+    public function save(MappedObject $object)
     {
-        if (! isset($record['id'])) {
-            $record['id'] = uniqid('memoryRepo', true);
+        if (! $object->getId()) {
+            $object->setId(uniqid('memoryRepo', true));
         }
 
-        self::$store[$record['id']] = $record;
+        self::$store[$object->getId()] = $object;
     }
 }

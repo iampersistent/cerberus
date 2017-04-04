@@ -10,4 +10,7 @@ class SubjectIdentifier extends Enum
     const SUBJECT_ID = 'subject:subject-id';
     const SUBJECT_TYPE = 'subject:subject-type';
     const ROLE_ID = 'subject:role-id';
+
+    const ACCESS_SUBJECT_CATEGORY = 'subject-category:access-subject';
+
 }

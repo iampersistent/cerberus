@@ -85,7 +85,7 @@ return [
                     'apply'      => [
                         [
                             'functionId'          => FunctionDefinition::STRING_ONE_AND_ONLY,
-                            'attributeDesignator' => [
+                            AttributeIdentifier::DESIGNATOR => [
                                 'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
                                 'category'      => AttributeCategoryIdentifier::RESOURCE,
                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -94,7 +94,7 @@ return [
                         ],
                         [
                             'functionId'        => FunctionDefinition::STRING_ONE_AND_ONLY,
-                            'attributeSelector' => [
+                            AttributeIdentifier::SELECTOR => [
                                 'category'          => AttributeCategoryIdentifier::RESOURCE,
                                 'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                 'dataType'          => DataTypeIdentifier::STRING,
@@ -112,7 +112,7 @@ return [
                     'apply'      => [
                         [
                             'functionId'          => FunctionDefinition::STRING_ONE_AND_ONLY,
-                            'attributeDesignator' => [
+                            AttributeIdentifier::DESIGNATOR => [
                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                 'category'      => AttributeCategoryIdentifier::ACTION,
                                 'dataType'      => DataTypeIdentifier::STRING,
@@ -121,7 +121,7 @@ return [
                         ],
                         [
                             'functionId'        => FunctionDefinition::STRING_BAG,
-                            'attributeSelector' => [
+                            AttributeIdentifier::SELECTOR => [
                                 'category'          => AttributeCategoryIdentifier::ACTION,
                                 'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                 'dataType'          => DataTypeIdentifier::STRING,

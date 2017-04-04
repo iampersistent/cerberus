@@ -3,12 +3,11 @@
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
     ActionIdentifier,
-    AttributeCategoryIdentifier,
+    AttributeIdentifier,
     CombiningAlgorithmIdentifier,
     DataTypeIdentifier,
     FunctionIdentifier,
     ResourceIdentifier,
-    SubjectCategoryIdentifier,
     SubjectIdentifier
 };
 
@@ -28,13 +27,13 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'Julius Hibbert',
                                             ],
-                                            'attributeDesignator' => [
-                                                'category'      => SubjectCategoryIdentifier::ACCESS_SUBJECT,
+                                            AttributeIdentifier::DESIGNATOR => [
+                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
                                                 'attributeId'   => SubjectIdentifier::SUBJECT_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -47,13 +46,13 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'http://medico.com/record/patient/BartSimpson',
                                             ],
-                                            'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                            AttributeIdentifier::DESIGNATOR => [
+                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                                 'attributeId'   => ResourceIdentifier::RESOURCE_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -66,13 +65,13 @@ return [
                                 'allOf' => [
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'read',
                                             ],
-                                            'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                            AttributeIdentifier::DESIGNATOR => [
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,
@@ -81,13 +80,13 @@ return [
                                     ],
                                     [
                                         'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            'attributeValue'      => [
+                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
+                                            AttributeIdentifier::VALUE      => [
                                                 'dataType' => DataTypeIdentifier::STRING,
                                                 'text'     => 'write',
                                             ],
-                                            'attributeDesignator' => [
-                                                'category'      => AttributeCategoryIdentifier::ACTION,
+                                            AttributeIdentifier::DESIGNATOR => [
+                                                'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                                 'attributeId'   => ActionIdentifier::ACTION_ID,
                                                 'dataType'      => DataTypeIdentifier::STRING,
                                                 'mustBePresent' => false,

@@ -1,16 +1,18 @@
 <?php
 declare(strict_types = 1);
 
+namespace Test\Unit\PEP\Policies;
+
 use Cerberus\PEP\{
-    Action\Action, PepAgent, PepAgentFactory, ResourceObject, Subject
-};
-use Cerberus\PDP\{
-    Utility\ArrayProperties
+    Action\ReadAction, PepAgent, ResourceObject, Subject
 };
 use Cerberus\PIP\Contract\PermissionRepository;
+use Cerberus\PIP\Permission\MappedObject;
+use UnitTester;
 
-class ContentSelectorMappingCest
+class ContentSelectorMappingCest extends MatchBaseCest
 {
+    protected $policyPath = 'dynamic-policy';
     /** @var PepAgent */
     protected $pepAgent;
     /** @var PermissionRepository */
@@ -18,9 +20,10 @@ class ContentSelectorMappingCest
 
     public function _before(UnitTester $I)
     {
-        $properties = require __DIR__ . '/../../_data/fixtures/PEP/testContentSelectorMapperProperties.php';
-        $properties = new ArrayProperties($properties);
-        $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
+        parent::_before($I);
+
+        $properties = $this->pepAgent->getPepConfig()->properties;
+
         $repositoryClass = $properties->get('contentSelector.classes.repository');
         $repoConfig = $properties->get('contentSelector.config.repository');
         $this->repository = new $repositoryClass($repoConfig);
@@ -29,9 +32,8 @@ class ContentSelectorMappingCest
     public function testDeny(UnitTester $I)
     {
         $subject = new Subject('subjectIdJSmith');
-        $action = new Action('read');
         $resource = new ResourceObject('fileResolver', 'fileId12345');
-        $response = $this->pepAgent->decide($subject, $action, $resource);
+        $response = $this->pepAgent->decide($subject, new ReadAction(), $resource);
 
         $I->assertNotNull($response);
         $I->assertFalse($response->allowed());
@@ -40,26 +42,18 @@ class ContentSelectorMappingCest
     public function testPermit(UnitTester $I)
     {
         // grant permission
-        $record = [
-            'resource' => [
-                'type' => 'fileResolver',
-                'id'   => 'fileId12345',
-            ],
-            'subject'  => [
-                'type' => 'user',
-                'id'   => 'subjectIdJSmith',
-            ],
-            'actions'   => [
-                'read',
-                'write',
-            ],
-        ];
+        $record = new MappedObject([
+            'resourceId'   => 'fileId12345',
+            'resourceType' => 'fileResolver',
+            'subjectType'  => 'user',
+            'subjectId'    => 'subjectIdJSmith',
+            'actions'      => ['read', 'write'],
+        ]);
         $this->repository->save($record);
         $subject = new Subject('subjectIdJSmith');
-        $action = new Action('read');
         $resource = new ResourceObject('fileResolver', 'fileId12345');
 
-        $response = $this->pepAgent->decide($subject, $action, $resource);
+        $response = $this->pepAgent->decide($subject, new ReadAction(), $resource);
         $I->assertNotNull($response);
         $I->assertTrue($response->allowed());
     }

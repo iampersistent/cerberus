@@ -15,7 +15,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Cerberus\\": "src/"
+            "Cerberus\\": "src/",
+            "Test\\Unit\\": "tests/unit",
+            "Test\\Functional\\": "tests/functional",
+            "Test\\Acceptance\\": "tests/acceptance",
+            "TestData\\": "tests/_data/fixtures"
         }
     },
     "extra": {

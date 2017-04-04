@@ -13,7 +13,7 @@ abstract class Properties
 
         $value = $this->properties;
         foreach ($propertyPath as $element) {
-            if (!isset($value[$element])) {
+            if (! isset($value[$element])) {
                 return $default;
             }
             $value = $value[$element];

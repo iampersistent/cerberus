@@ -2,14 +2,14 @@
 declare(strict_types = 1);
 
 use Cerberus\CerberusService;
-use Cerberus\PDP\Policy\Content;
-use Cerberus\PDP\Utility\ArrayProperties;
-use Cerberus\PEP\Action\Action;
-use Cerberus\PEP\ObjectMapper;
-use Cerberus\PEP\PepRequest;
-use Cerberus\PEP\Subject;
+use Cerberus\PDP\{
+    Policy\Content, Utility\ArrayProperties
+};
+use Cerberus\PEP\{
+    Action\Action, ObjectMapper, PepRequest, Subject
+};
 use Cerberus\Core\Enums\{
-    AttributeCategoryIdentifier, ResourceIdentifier
+    AttributeIdentifier, ResourceIdentifier
 };
 
 class GalleryImageCest
@@ -25,8 +25,7 @@ class GalleryImageCest
 
     public function _before(FunctionalTester $I)
     {
-        $properties = require __DIR__ . '/../../_data/fixtures/Examples/GalleryImage/properties.php';
-        $this->service = new CerberusService(new ArrayProperties($properties));
+        $this->service = new CerberusService($this->getDefaultProperties());
         // create gallery
         $this->gallery1 = new Gallery(1);
         $this->gallery2 = new Gallery(2);
@@ -50,6 +49,27 @@ class GalleryImageCest
         $this->service->grant(new Subject('1'), new Action('view'), $this->gallery1);
 
         $I->assertTrue($this->service->can(new Subject('1'), new Action('view'), $this->image1));
+    }
+
+
+    protected function getDefaultProperties()
+    {
+        return new ArrayProperties([
+            'rootPolicies'    => [
+                __DIR__ . '/galleryPolicy.php',
+            ],
+            'pep'             => [
+                'issuer'  => 'test',
+                'mappers' => [
+                    'classes'        => [
+                        ImageMapper::class,
+                    ],
+                    'configurations' => [
+                        __DIR__ . '/galleryMapper.php',
+                    ],
+                ],
+            ],
+        ]);
     }
 }
 
@@ -112,7 +132,7 @@ class ImageMapper extends ObjectMapper
 
     public function map($object, PepRequest $pepRequest)
     {
-        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $pepRequestAttributes = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
 
         $galleryIds = [];
         foreach ($object->getGalleries() as $gallery) {

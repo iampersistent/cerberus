@@ -3,7 +3,7 @@
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
     ActionIdentifier,
-    AttributeCategoryIdentifier,
+    AttributeIdentifier,
     CombiningAlgorithmIdentifier,
     ContextSelectorIdentifier,
     DataTypeIdentifier,
@@ -24,9 +24,9 @@ return [
                         'apply' => [
                             'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
-                                'attributeDesignator' => [
+                                AttributeIdentifier::DESIGNATOR => [
                                     'attributeId'   => ResourceIdentifier::RESOURCE_TYPE,
-                                    'category'      => AttributeCategoryIdentifier::RESOURCE,
+                                    'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
                                     'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
@@ -37,8 +37,8 @@ return [
                         'apply' => [
                             'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
-                                'attributeSelector' => [
-                                    'category'          => AttributeCategoryIdentifier::RESOURCE,
+                                AttributeIdentifier::SELECTOR => [
+                                    'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
                                     'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                     'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,
@@ -57,9 +57,9 @@ return [
                         'apply' => [
                             'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                             [
-                                'attributeDesignator' => [
+                                AttributeIdentifier::DESIGNATOR => [
                                     'attributeId'   => ActionIdentifier::ACTION_ID,
-                                    'category'      => AttributeCategoryIdentifier::ACTION,
+                                    'category'      => AttributeIdentifier::ACTION_CATEGORY,
                                     'dataType'      => DataTypeIdentifier::STRING,
                                     'mustBePresent' => false,
                                 ],
@@ -70,8 +70,8 @@ return [
                         'apply' => [
                             'functionId' => FunctionIdentifier::STRING_BAG,
                             [
-                                'attributeSelector' => [
-                                    'category'          => AttributeCategoryIdentifier::ACTION,
+                                AttributeIdentifier::SELECTOR => [
+                                    'category'          => AttributeIdentifier::ACTION_CATEGORY,
                                     'contextSelectorId' => ContextSelectorIdentifier::CONTENT_SELECTOR,
                                     'dataType'          => DataTypeIdentifier::STRING,
                                     'mustBePresent'     => false,

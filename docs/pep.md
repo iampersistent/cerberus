@@ -38,9 +38,9 @@ The policy is also defined with a PHP array.
 [documentMapper.php]
 
 return [
-    'className'               => Test\Document::class,
+    'className'               => TestData\Document::class,
     'resource:resource-id'    => 'getDocumentId',
-    'resource:resource-type'  => Test\Document::class,
+    'resource:resource-type'  => TestData\Document::class,
     'document:document-name'  => 'getDocumentName',
     'document:client-name'    => 'getClientName',
     'document:document-owner' => 'getDocumentOwner',

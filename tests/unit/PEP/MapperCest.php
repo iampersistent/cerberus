@@ -1,51 +1,47 @@
 <?php
 declare(strict_types = 1);
 
+namespace Test\Unit\PEP;
+
+use UnitTester;
 use Cerberus\Core\Enums\{
-    AttributeCategoryIdentifier, ResourceIdentifier
-};
-use Cerberus\PDP\{
-    Utility\ArrayProperties
+    AttributeIdentifier, ResourceIdentifier
 };
 use Cerberus\PEP\{
-    Action\Action, ObjectMapper, PepAgent, PepAgentFactory, PepRequest, Subject
+    Action\Action, Action\WriteAction, ObjectMapper, PepRequest
 };
 use Ds\Set;
-use Test\Document;
+use Test\Unit\PEP\Policies\MatchBaseCest;
+use TestData\Document;
 
-class MapperCest
+class MapperCest extends MatchBaseCest
 {
-    /** @var PepAgent */
-    protected $pepAgent;
+    protected $userId = 'John Smith';
+    protected $policyPath = '../testPolicy004';
+    protected $configurationMappers = [
+        'documentMapper'
+    ];
+    /** @var Document */
+    protected $alternateDocument;
 
     public function _before(UnitTester $I)
     {
-        $properties = require __DIR__ . '/../../_data/fixtures/PEP/testMapperProperties.php';
-        $properties = new ArrayProperties($properties);
-        $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
+        parent::_before($I);
+
+        $this->subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
     }
 
     public function testPermit(UnitTester $I)
     {
-        $subject = new Subject("John Smith");
-        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
-
-        $action = new Action("write");
-
-        $doc = new Document(1, "OnBoarding Document", "ABC Corporation", "John Smith");
-        $response = $this->pepAgent->decide($subject, $action, $doc);
+        $response = $this->pepAgent->decide($this->subject, new WriteAction(), $this->document);
         $I->assertNotNull($response);
         $I->assertTrue($response->allowed());
     }
 
     public function testNotApplicable(UnitTester $I)
     {
-        $subject = new Subject("John Smith");
-        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
+        $response = $this->pepAgent->decide($this->subject, new WriteAction(), $this->alternateDocument);
 
-        $action = new Action("write");
-        $doc = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
-        $response = $this->pepAgent->decide($subject, $action, $doc);
         $I->assertNotNull($response);
         $I->assertFalse($response->allowed());
     }
@@ -57,18 +53,11 @@ class MapperCest
     {
 //        @Test(expected = PepException.class)
 
-        $subject = new Subject("John Smith");
-        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_WRITER");
-
-        $action = new Action("write");
-
-        $doc1 = new Document(1, "OnBoarding Document", "ABC Corporation", "John Smith");
-        $doc2 = new Document(2, "OnBoarding Document", "XYZ Corporation", "Jim Doe");
         $resourceList = new Set();
-        $resourceList->add($doc1);
-        $resourceList->add($doc2);
+        $resourceList->add($this->document);
+        $resourceList->add($this->alternateDocument);
 
-        $response = $this->pepAgent->decide($subject, $action, $resourceList);
+        $response = $this->pepAgent->decide($this->subject, new WriteAction(), $resourceList);
         $I->assertNotNull($response);
         $I->assertFalse($response->allowed());
         $response->allowed();
@@ -79,8 +68,7 @@ class MapperCest
      */
     public function testVarArgsPermit(UnitTester $I)
     {
-        $subject = new Subject("John Smith");
-        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
+        $this->subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("USA", "05:00 EST");
 
         $action = new Action("read");
@@ -88,7 +76,7 @@ class MapperCest
         $resources->add(new Document(1, "OnBoarding Document", "XYZ Corporation", "Jim Doe"));
         $resources->add(new Client("XYZ Corporation", "USA"));
 
-        $response = $this->pepAgent->decide($subject, $action, $resources, $businessContext);
+        $response = $this->pepAgent->decide($this->subject, $action, $resources, $businessContext);
         $I->assertNotNull($response);
         $I->assertEquals(true, $response->allowed());
     }
@@ -99,8 +87,7 @@ class MapperCest
      */
     public function testVarArgsDeny(UnitTester $I)
     {
-        $subject = new Subject("John Smith");
-        $subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
+        $this->subject->addAttribute("SubjectIdentifier::ROLE_ID", "ROLE_DOCUMENT_READER");
         $businessContext = new BusinessRequestContext("INDIA", "05:00 IST");
 
         $resources = new Set();
@@ -109,7 +96,7 @@ class MapperCest
 
         $action = new Action("write");
 
-        $response = $this->pepAgent->decide($subject, $action, $resources, $businessContext);
+        $response = $this->pepAgent->decide($this->subject, $action, $resources, $businessContext);
         $I->assertNotNull($response);
         $I->assertEquals(false, $response->allowed());
     }
@@ -123,7 +110,7 @@ class DocumentMapper extends ObjectMapper
      */
     public function map($document, PepRequest $pepRequest)
     {
-        $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeCategoryIdentifier::RESOURCE);
+        $resourceAttributes = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
         $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_ID, $document->getDocumentId());
         $resourceAttributes->addAttribute(ResourceIdentifier::RESOURCE_TYPE, Document::class);
         $resourceAttributes->addAttribute("jpmc:document:document-name", $document->getDocumentName());
