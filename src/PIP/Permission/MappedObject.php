@@ -61,7 +61,7 @@ class MappedObject
 
     public function getResourceId(): string
     {
-        return $this->resourceId;
+        return (string)$this->resourceId;
     }
 
     public function getResourceType(): string
