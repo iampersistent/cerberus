@@ -9,4 +9,6 @@ return [
     'document:document-name'          => 'getDocumentName',
     'document:client-name'            => 'getClientName',
     'document:document-owner'         => 'getDocumentOwner',
+    'document:document-size'          => 'getDocumentSize',
+    'document:is-public'              => 'getIsPublic',
 ];
