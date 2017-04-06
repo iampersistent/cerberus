@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace Test\Unit\PEP\Policies;
 
+use UnitTester;
 use Cerberus\PIP\Permission\MappedObject;
 use TestData\Document;
-use UnitTester;
 use Cerberus\PEP\Action\WriteAction;
 
 class DocumentIdEqualsFortyTwoCest extends MatchBaseCest

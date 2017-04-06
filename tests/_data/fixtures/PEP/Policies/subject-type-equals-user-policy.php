@@ -13,30 +13,30 @@ return [
         'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'rules'                    => [
             [
-                'ruleId' => "$policyId:rule1",
-                'effect' => Decision::PERMIT,
-                'target' => [
-                    [
-                        'anyOf' => [
-                            [
-                                'allOf' => [
-                                    [
-                                        'match' => [
-                                            'matchId'             => FunctionIdentifier::STRING_EQUAL,
-                                            AttributeIdentifier::VALUE      => [
-                                                'dataType' => DataTypeIdentifier::STRING,
-                                                'text'     => 'user',
-                                            ],
-                                            AttributeIdentifier::DESIGNATOR => [
-                                                'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
-                                                'attributeId'   => SubjectIdentifier::SUBJECT_TYPE,
-                                                'dataType'      => DataTypeIdentifier::STRING,
-                                                'mustBePresent' => true,
-                                            ],
-                                        ],
-                                    ],
-                                ],
+                'ruleId'    => "$policyId:rule1",
+                'effect'    => Decision::PERMIT,
+                'condition' => [
+                    'apply' => [
+                        'description' => 'subject type must equal "user',
+                        'functionId'  => FunctionIdentifier::STRING_EQUAL,
+                        [
+                            AttributeIdentifier::VALUE => [
+                                'dataType' => DataTypeIdentifier::STRING,
+                                'text'     => 'user',
                             ],
+                        ],
+                        [
+                            'apply' => [
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
+                                [
+                                    AttributeIdentifier::DESIGNATOR => [
+                                        'category'      => SubjectIdentifier::ACCESS_SUBJECT_CATEGORY,
+                                        'attributeId'   => SubjectIdentifier::SUBJECT_TYPE,
+                                        'dataType'      => DataTypeIdentifier::STRING,
+                                        'mustBePresent' => true,
+                                    ],
+                                ]
+                            ]
                         ],
                     ],
                 ],

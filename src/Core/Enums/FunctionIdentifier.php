@@ -12,8 +12,10 @@ class FunctionIdentifier extends Enum
     const ANY_OF_ANY = 'function:any-of-any';
     const BOOLEAN_ALL_OF = 'function:boolean-all-of';
     const BOOLEAN_EQUAL = 'function:boolean-equal';
+    const BOOLEAN_ONE_AND_ONLY = 'function:boolean-one-and-only';
     const INTEGER_BAG = 'function:integer-bag';
     const INTEGER_EQUAL = 'function:integer-equal';
+    const INTEGER_ONE_AND_ONLY = 'function:integer-one-and-only';
     const STRING_BAG = 'function:string-bag';
     const STRING_EQUAL = 'function:string-equal';
     const STRING_IS_IN = 'function:string-is-in';

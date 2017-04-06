@@ -3,12 +3,11 @@ declare(strict_types = 1);
 
 namespace Test\Unit\PEP\Policies;
 
+use UnitTester;
 use Cerberus\PEP\{
     Action\ReadAction, PepAgent, ResourceObject, Subject
 };
 use Cerberus\PIP\Contract\PermissionRepository;
-use Cerberus\PIP\Permission\MappedObject;
-use UnitTester;
 
 class ContentSelectorMappingCest extends MatchBaseCest
 {
@@ -41,17 +40,10 @@ class ContentSelectorMappingCest extends MatchBaseCest
 
     public function testPermit(UnitTester $I)
     {
-        // grant permission
-        $record = new MappedObject([
-            'resourceId'   => 'fileId12345',
-            'resourceType' => 'fileResolver',
-            'subjectType'  => 'user',
-            'subjectId'    => 'subjectIdJSmith',
-            'actions'      => ['read', 'write'],
-        ]);
-        $this->repository->save($record);
         $subject = new Subject('subjectIdJSmith');
         $resource = new ResourceObject('fileResolver', 'fileId12345');
+
+        $this->addRecord($resource, $subject, ['read', 'write']);
 
         $response = $this->pepAgent->decide($subject, new ReadAction(), $resource);
         $I->assertNotNull($response);

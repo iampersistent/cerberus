@@ -3,10 +3,13 @@ declare(strict_types = 1);
 
 namespace Test\Unit\PEP\Policies;
 
+use Cerberus\Core\Enums\ResourceIdentifier;
+use Cerberus\Core\Enums\SubjectIdentifier;
 use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\{
-    PepAgent, PepAgentFactory, Subject
+    PepAgent, PepAgentFactory, ResourceObject, Subject
 };
+use Cerberus\PIP\Permission\MappedObject;
 use Cerberus\PIP\Permission\PermissionMemoryRepository;
 use TestData\Document;
 use UnitTester;
@@ -67,5 +70,24 @@ class MatchBaseCest
         $defaults['rootPolicies'][] = codecept_data_dir('fixtures/PEP/Policies/' . $this->policyPath);
 
         return new ArrayProperties($defaults);
+    }
+
+    protected function addRecord(ResourceObject $resource, Subject $subject, $actions = 'write')
+    {
+        if (is_string($actions)) {
+            $actions = [$actions];
+        }
+
+        // grant permission
+        $record = new MappedObject([
+            'resourceId'   => $resource->getAttribute(ResourceIdentifier::RESOURCE_ID),
+            'resourceType' => $resource->getAttribute(ResourceIdentifier::RESOURCE_TYPE),
+            'subjectId'    => $subject->getAttribute(SubjectIdentifier::SUBJECT_ID),
+            'subjectType'  => $subject->getAttribute(SubjectIdentifier::SUBJECT_TYPE),
+            'actions'      => $actions,
+        ]);
+        $this->repository->save($record);
+
+        return $record;
     }
 }

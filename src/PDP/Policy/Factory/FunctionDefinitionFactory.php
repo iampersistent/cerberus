@@ -52,6 +52,11 @@ class FunctionDefinitionFactory
         return new FunctionDefinitionEquality($id, new DataTypeBoolean());
     }
 
+    protected function createBooleanOneAndOnly($id)
+    {
+        return new FunctionDefinitionBagOneAndOnly($id, new DataTypeBoolean());
+    }
+
     protected function createIntegerBag($id)
     {
         return new FunctionDefinitionBag($id, new DataTypeInteger());
@@ -60,6 +65,11 @@ class FunctionDefinitionFactory
     protected function createIntegerEqual($id)
     {
         return new FunctionDefinitionEquality($id, new DataTypeInteger());
+    }
+
+    protected function createIntegerOneAndOnly($id)
+    {
+        return new FunctionDefinitionBagOneAndOnly($id, new DataTypeInteger());
     }
 
     protected function createStringBag($id)
