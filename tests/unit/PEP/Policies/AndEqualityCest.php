@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\PEP\Policies;
 
-use FunctionalTester;
+use UnitTester;
 use Cerberus\PEP\Action\WriteAction;
 
 class AndEqualityCest extends MatchBaseCest
@@ -13,7 +13,7 @@ class AndEqualityCest extends MatchBaseCest
         'documentMapper',
     ];
 
-    public function tryToGetNonPublicDocument(FunctionalTester $I)
+    public function tryToGetNonPublicDocument(UnitTester $I)
     {
         $response = $this->pepAgent->decide($this->subject, new WriteAction(), $this->document);
 
@@ -21,7 +21,7 @@ class AndEqualityCest extends MatchBaseCest
         $I->assertFalse($response->allowed());
     }
 
-    public function tryToGetPublicDocumentWithInvalidDocumentSize(FunctionalTester $I)
+    public function tryToGetPublicDocumentWithInvalidDocumentSize(UnitTester $I)
     {
         $this->document->setIsPublic(true);
         $this->document->setDocumentSize(0);
@@ -32,7 +32,7 @@ class AndEqualityCest extends MatchBaseCest
         $I->assertFalse($response->allowed());
     }
 
-    public function tryToGetNonPublicDocumentWithValidDocumentSize(FunctionalTester $I)
+    public function tryToGetNonPublicDocumentWithValidDocumentSize(UnitTester $I)
     {
         $this->document->setIsPublic(false);
         $this->document->setDocumentSize(123456);
@@ -43,7 +43,7 @@ class AndEqualityCest extends MatchBaseCest
         $I->assertFalse($response->allowed());
     }
 
-    public function tryToGetPublicDocumentWithValidDocumentSize(FunctionalTester $I)
+    public function tryToGetPublicDocumentWithValidDocumentSize(UnitTester $I)
     {
         $this->document->setIsPublic(true);
         $this->document->setDocumentSize(123456);

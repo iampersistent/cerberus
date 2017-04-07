@@ -148,11 +148,11 @@ class Match implements Matchable, PolicyElement
 
     protected function validateComponent(): bool
     {
-//        if (! $this->attributeValue) {
-//            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing AttributeValue');
-//
-//            return false;
-//        }
+        if (! $this->attributeValue) {
+            $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing AttributeValue');
+
+            return false;
+        }
         if (! $this->matchId) {
             $this->setStatus(StatusCode::STATUS_CODE_SYNTAX_ERROR(), 'Missing MatchId');
 
