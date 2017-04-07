@@ -8,12 +8,14 @@ use Cerberus\Core\DataType\DataTypeInteger;
 use Cerberus\Core\DataType\DataTypeString;
 use Cerberus\PDP\Policy\FunctionDefinition;
 use Cerberus\PDP\Policy\FunctionDefinition\{
+    FunctionDefinitionAnd,
     FunctionDefinitionAllOf,
     FunctionDefinitionAnyOfAny,
     FunctionDefinitionBag,
     FunctionDefinitionBagIsIn,
     FunctionDefinitionBagOneAndOnly,
-    FunctionDefinitionEquality
+    FunctionDefinitionEquality,
+    FunctionDefinitionOr
 };
 
 class FunctionDefinitionFactory
@@ -35,6 +37,11 @@ class FunctionDefinitionFactory
         $method = 'create' . str_replace('-', '', ucwords($parts[1], '-'));
 
         return $this->$method($id);
+    }
+
+    protected function createAnd($id)
+    {
+        return new FunctionDefinitionAnd($id);
     }
 
     protected function createAnyOfAny($id)
@@ -70,6 +77,11 @@ class FunctionDefinitionFactory
     protected function createIntegerOneAndOnly($id)
     {
         return new FunctionDefinitionBagOneAndOnly($id, new DataTypeInteger());
+    }
+
+    protected function createOr($id)
+    {
+        return new FunctionDefinitionOr($id);
     }
 
     protected function createStringBag($id)
