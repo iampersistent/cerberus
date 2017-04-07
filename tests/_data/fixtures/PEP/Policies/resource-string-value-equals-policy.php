@@ -6,7 +6,6 @@ use Cerberus\Core\Enums\{
 };
 
 $policyName = 'resource-string-value-equals-policy';
-$ruleName = 'stringPropertyMatchRule';
 
 return [
     'policy' => [
@@ -14,32 +13,31 @@ return [
         'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'rules'                    => [
             [
-                'ruleId'      => "$policyName:$ruleName",
-                'effect'      => Decision::PERMIT,
-                'description' => 'Resource can be accessed if string matches',
-                'target'      => [
-                    [
-                        'anyOf' => [
-                            [
-                                'allOf' => [
-                                    [
-                                        'match' => [
-                                            'matchId'                       => FunctionIdentifier::STRING_EQUAL,
-                                            AttributeIdentifier::VALUE      => [
-                                                'dataType' => DataTypeIdentifier::STRING,
-                                                'text'     => 'John Smith',
-                                            ],
-                                            AttributeIdentifier::DESIGNATOR => [
-                                                'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
-                                                'attributeId'   => 'document:client-name',
-                                                'dataType'      => DataTypeIdentifier::STRING,
-                                                'mustBePresent' => false,
-                                            ],
-                                        ],
-                                    ],
-                                ],
+                'ruleId'    => "$policyName:rule1",
+                'effect'    => Decision::PERMIT,
+                'condition' => [
+                    'apply' => [
+                        'description'                   => 'Resource can be accessed if string value matches',
+                        'functionId'                    => FunctionIdentifier::STRING_EQUAL,
+                        [
+                            AttributeIdentifier::VALUE      => [
+                                'dataType' => DataTypeIdentifier::STRING,
+                                'text'     => 'John Smith',
                             ],
                         ],
+                        [
+                            'apply' => [
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
+                                [
+                                    AttributeIdentifier::DESIGNATOR => [
+                                        'category'      => AttributeIdentifier::RESOURCE_CATEGORY,
+                                        'attributeId'   => 'document:client-name',
+                                        'dataType'      => DataTypeIdentifier::STRING,
+                                        'mustBePresent' => false,
+                                    ],
+                                ]
+                            ]
+                        ]
                     ],
                 ],
             ],

@@ -9,4 +9,7 @@ class ActionIdentifier extends Enum
 {
     const ACTION_ID = 'action:action-id';
     const ACTION_TYPE = 'action:action-type';
+
+    const READ = 'read';
+    const WRITE = 'write';
 }

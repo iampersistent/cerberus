@@ -20,10 +20,7 @@ class FunctionDefinitionBag extends FunctionDefinition
         parent::__construct($identifier, $argsDataType, $argsDataType, true);
     }
 
-    public function evaluate(
-        EvaluationContext $evaluationContext,
-        Set $arguments
-    ): ExpressionResult
+    public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
         $bag = new Bag();
         if (! $arguments->isEmpty()) {
