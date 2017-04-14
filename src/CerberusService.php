@@ -92,4 +92,11 @@ class CerberusService
         $resourceObject = new ResourceObject(get_class($resource), (string)$resource->getId());
         $this->permissionManager->grant($subject, $action, $resourceObject);
     }
+
+    public function find(Subject $subject, $resource)
+    {
+        $resourceObject = new ResourceObject(get_class($resource), (string)$resource->getId());
+
+        return $this->permissionManager->find($subject, $resourceObject);
+    }
 }

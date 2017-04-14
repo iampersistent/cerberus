@@ -58,7 +58,14 @@ SQL;
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $data ? new MappedObject($data) : null;
+        return $data ? new MappedObject([
+            'id'           => $data['id'],
+            'subjectType'  => $data['subject_type'],
+            'subjectId'    => $data['subject_id'],
+            'resourceType' => $data['resource_type'],
+            'resourceId'   => $data['resource_id'],
+            'actions'      => $data['allowed_actions'],
+        ]) : null;
     }
 
     public function save(MappedObject $object)
