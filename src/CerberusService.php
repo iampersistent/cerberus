@@ -60,8 +60,8 @@ class CerberusService
 
     public function can(Subject $subject, Action $action, $resource, array $properties = []): bool
     {
-        $resource = $this->getResourceObject($resource);
         if (! empty($properties)) {
+            $resource = $this->getResourceObject($resource);
             $resource->addAttribute('resource-properties', $properties['properties']);
         }
         $response = $this->pepAgent->decide($subject, $action, $resource);
