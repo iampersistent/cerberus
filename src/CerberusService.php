@@ -3,20 +3,13 @@ declare(strict_types = 1);
 
 namespace Cerberus;
 
-use Cerberus\PDP\ArrayPolicyFinderFactory;
-use Cerberus\PDP\CerberusEngineFactory;
-use Cerberus\PDP\Policy\CombiningAlgorithmFactory;
-use Cerberus\PDP\Policy\Factory\FunctionDefinitionFactory;
+use Cerberus\PDP\{ArrayPolicyFinderFactory, CerberusEngineFactory};
+use Cerberus\PDP\Policy\{CombiningAlgorithmFactory, Factory\FunctionDefinitionFactory};
 use Cerberus\PDP\Utility\ArrayProperties;
 use Cerberus\PEP\Action\Action;
-use Cerberus\PEP\PepAgent;
-use Cerberus\PEP\PepAgentFactory;
-use Cerberus\PEP\PersistedResourceMapper;
-use Cerberus\PEP\ResourceObject;
-use Cerberus\PEP\Subject;
+use Cerberus\PEP\{PepAgent, PepAgentFactory, PersistedResourceMapper, ResourceObject, Subject};
 use Cerberus\PIP\Factory\PipFinderFactory;
-use Cerberus\PIP\Permission\PermissionManager;
-use Cerberus\PIP\Permission\PermissionMemoryRepository;
+use Cerberus\PIP\Permission\{PermissionManager, PermissionMemoryRepository};
 
 class CerberusService
 {
@@ -67,6 +60,7 @@ class CerberusService
 
     public function can(Subject $subject, Action $action, $resource, array $properties = []): bool
     {
+        $resource = $this->getResourceObject($resource);
         if (! empty($properties)) {
             $resource->addAttribute('resource-properties', $properties['properties']);
         }
@@ -77,20 +71,32 @@ class CerberusService
 
     public function deny(Subject $subject, Action $action, $resource, array $properties = [])
     {
+        $resource = $this->getResourceObject($resource);
         if (! empty($properties)) {
             $resource->addAttribute('resource-properties', $properties['properties']);
         }
-        $resourceObject = new ResourceObject(get_class($resource), (string)$resource->getId());
-        $this->permissionManager->deny($subject, $action, $resourceObject);
+        $this->permissionManager->deny($subject, $action, $resource);
     }
 
     public function grant(Subject $subject, Action $action, $resource, array $properties = [])
     {
+        $resource = $this->getResourceObject($resource);
         if (! empty($properties)) {
             $resource->addAttribute('resource-properties', $properties['properties']);
         }
-        $resourceObject = new ResourceObject(get_class($resource), (string)$resource->getId());
-        $this->permissionManager->grant($subject, $action, $resourceObject);
+        $this->permissionManager->grant($subject, $action, $resource);
+    }
+
+    public function find(Subject $subject, $resource)
+    {
+        return $this->permissionManager->find($subject, $this->getResourceObject($resource));
+    }
+
+    protected function getResourceObject($resource): ResourceObject
+    {
+        return $resource instanceof ResourceObject
+            ? $resource
+            : new ResourceObject(get_class($resource), (string)$resource->getId());
     }
 
     public function find(Subject $subject, $resource)
