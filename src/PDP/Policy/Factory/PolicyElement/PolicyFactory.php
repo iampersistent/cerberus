@@ -7,7 +7,6 @@ use Cerberus\PDP\Exception\PolicyFinderException;
 use Cerberus\PDP\Policy\Factory\CombinerFactory;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\Target;
-use Cerberus\PDP\Policy\Factory\TargetFactory;
 use Exception;
 
 class PolicyFactory
