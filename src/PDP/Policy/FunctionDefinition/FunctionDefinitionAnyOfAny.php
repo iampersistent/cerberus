@@ -46,7 +46,7 @@ class FunctionDefinitionAnyOfAny extends FunctionDefinition
 
         foreach ($bag0->getAttributeValues() as $bag0Value) {
             foreach ($bag1->getAttributeValues() as $bag1Value) {
-                if ($bag0Value->getValue()) {
+                if ($bag0Value->getValue() === $bag1Value->getValue()) {
                     return new ExpressionResult(
                         Status::createOk(),
                         new AttributeValue(DataTypeIdentifier::BOOLEAN, true)

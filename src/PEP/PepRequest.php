@@ -6,6 +6,7 @@ namespace Cerberus\PEP;
 use Cerberus\Core\Exception\IllegalArgumentException;
 use Cerberus\Core\Request;
 use Cerberus\PDP\Policy\Content;
+use Cerberus\PIP\Permission\MappedObject;
 use Ds\Map;
 
 class PepRequest extends Request
@@ -56,4 +57,16 @@ class PepRequest extends Request
             $mapper->map(new PersistedResource($this->requestObjects), $this);
         }
     }
+
+    /**
+     * @param PepRequestAttributes $subject
+     * @param PepRequestAttributes $resource
+     *
+     * @return null|MappedObject
+     */
+    public function findFromRepository(PepRequestAttributes $subject, PepRequestAttributes $resource)
+    {
+        return $this->mapperRegistry->getMapper(Content::class)->find($subject, $resource);
+    }
+
 }
