@@ -11,9 +11,13 @@ class DataTypeIdentifier extends Enum
 
     const BOOLEAN = 'boolean';
     const DOUBLE = 'double';
-    const DATETIME = 'dateTime';
-    const INDETERMINATE = 'indeterminate';
     const INTEGER = 'integer';
     const STRING = 'string';
     const XPATH_EXPRESSION = 'path';
+    const INDETERMINATE = 'indeterminate';
+    const TIME = 'time';
+    const DATE = 'date';
+    const DATETIME = 'dateTime';
+    const DATETIME_DURATION = 'dateTimeDuration';
+    const YEARMONTH_DURATION = 'yearMonthDuration';
 }
