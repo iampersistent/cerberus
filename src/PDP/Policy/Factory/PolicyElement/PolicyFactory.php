@@ -7,6 +7,7 @@ use Cerberus\PDP\Exception\PolicyFinderException;
 use Cerberus\PDP\Policy\Factory\CombinerFactory;
 use Cerberus\PDP\Policy\Policy;
 use Cerberus\PDP\Policy\Target;
+use Cerberus\PDP\Policy\Factory\TargetFactory;
 use Exception;
 
 class PolicyFactory
@@ -70,5 +71,11 @@ class PolicyFactory
 
             $policy->addVariableDefinition($variableDefinition);
         }
+    }
+
+    protected static function processTarget(Policy $policy, $data)
+    {
+        $targetDefinition = TargetFactory::create($policy, $data);
+        $policy->setTarget($targetDefinition);
     }
 }

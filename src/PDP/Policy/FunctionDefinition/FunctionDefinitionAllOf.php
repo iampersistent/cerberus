@@ -30,7 +30,6 @@ class FunctionDefinitionAllOf extends FunctionDefinition
 
     public function evaluate(EvaluationContext $evaluationContext, Set $arguments): ExpressionResult
     {
-        throw new PDPException('function:all-of needs to be implemented');
         $attributeValue = null;
         $bag = null;
         $function = null;

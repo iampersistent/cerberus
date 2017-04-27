@@ -38,9 +38,12 @@ class MatchBaseCest
     /** @var Document */
     protected $alternateDocument;
 
+    /** @var  ArrayProperties */
+    private $properties;
+
     public function _before(UnitTester $I)
     {
-        $properties = $this->getProperties();
+        $properties = $this->properties ?: $this->properties = $this->getProperties();
 
         $this->pepAgent = (new PepAgentFactory($properties))->getPepAgent();
         $repositoryClass = $properties->get('contentSelector.classes.repository');
@@ -58,10 +61,15 @@ class MatchBaseCest
         $defaults = require $defaultsPath;
 
         foreach($this->configurationMappers ?: [] as $mapper) {
-            if (! pathinfo($mapper, PATHINFO_EXTENSION)) {
-                $mapper .= '.php';
+            if (class_exists($mapper)) {
+                $defaults['pep']['mappers']['classes'][] = $mapper;
+            } else {
+                if (! pathinfo($mapper, PATHINFO_EXTENSION)) {
+                    $mapper .= '.php';
+                }
+
+                $defaults['pep']['mappers']['configurations'][] = codecept_data_dir('fixtures/PEP/Mappers/' . $mapper);
             }
-            $defaults['pep']['mappers']['configurations'][] = codecept_data_dir('fixtures/PEP/Mappers/' . $mapper);
         }
 
         if (! pathinfo($this->policyPath, PATHINFO_EXTENSION)) {
