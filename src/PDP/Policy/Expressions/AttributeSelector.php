@@ -90,8 +90,10 @@ class AttributeSelector extends AttributeRetrievalBase
         }
 
         foreach ($nodesToQuery as $nodeToQuery) {
+            $nodeQueryCount = count($nodeToQuery);
             foreach ($nodeToQuery as $key => $content) {
-                if ($this->contextSelectorId !== null && $key !== $this->contextSelectorId) {
+                // TODO: figure out this case!
+                if ($nodeQueryCount > 1 && $this->contextSelectorId !== null && $key !== $this->contextSelectorId) {
                     continue;
                 }
                 $data = $content->evaluate($this->getPath());

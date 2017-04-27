@@ -3,9 +3,7 @@ declare(strict_types = 1);
 
 namespace Cerberus\PDP\Policy\Factory;
 
-use Cerberus\Core\DataType\DataTypeBoolean;
-use Cerberus\Core\DataType\DataTypeInteger;
-use Cerberus\Core\DataType\DataTypeString;
+use Cerberus\Core\DataType\{DataTypeBoolean, DataTypeInteger, DataTypeString};
 use Cerberus\PDP\Policy\FunctionDefinition;
 use Cerberus\PDP\Policy\FunctionDefinition\{
     FunctionDefinitionAnd,
@@ -14,7 +12,9 @@ use Cerberus\PDP\Policy\FunctionDefinition\{
     FunctionDefinitionBag,
     FunctionDefinitionBagIsIn,
     FunctionDefinitionBagOneAndOnly,
+    FunctionDefinitionBagSize,
     FunctionDefinitionEquality,
+    FunctionDefinitionGreaterThan,
     FunctionDefinitionOr
 };
 
@@ -69,9 +69,19 @@ class FunctionDefinitionFactory
         return new FunctionDefinitionBag($id, new DataTypeInteger());
     }
 
+    protected function createIntegerBagSize($id)
+    {
+        return new FunctionDefinitionBagSize($id);
+    }
+
     protected function createIntegerEqual($id)
     {
         return new FunctionDefinitionEquality($id, new DataTypeInteger());
+    }
+
+    protected function createIntegerGreaterThan($id)
+    {
+        return new FunctionDefinitionGreaterThan($id, new DataTypeInteger());
     }
 
     protected function createIntegerOneAndOnly($id)
@@ -89,9 +99,19 @@ class FunctionDefinitionFactory
         return new FunctionDefinitionBag($id, new DataTypeString());
     }
 
+    protected function createStringBagSize($id)
+    {
+        return new FunctionDefinitionBagSize($id);
+    }
+
     protected function createStringEqual($id)
     {
         return new FunctionDefinitionEquality($id, new DataTypeString());
+    }
+
+    protected function createStringGreaterThan($id)
+    {
+        return new FunctionDefinitionGreaterThan($id, new DataTypeString());
     }
 
     protected function createStringIsIn($id)

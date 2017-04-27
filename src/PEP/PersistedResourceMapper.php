@@ -30,16 +30,9 @@ class PersistedResourceMapper extends ObjectMapper
     {
         $subject = $pepRequest->getPepRequestAttributes(SubjectIdentifier::ACCESS_SUBJECT_CATEGORY);
         $resource = $pepRequest->getPepRequestAttributes(AttributeIdentifier::RESOURCE_CATEGORY);
-        $getAttributeValue = function($attribute, $attributeId) {
-            return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
-        };
 
-        $retrievedData = $this->repository->findByIdentifiers([
-            'subjectId'    => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_ID),
-            'subjectType'  => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_TYPE),
-            'resourceId'   => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_ID),
-            'resourceType' => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_TYPE),
-        ]);
+        $retrievedData = $this->find($subject, $resource);
+
         foreach ($pepRequest->getRequestAttributes() as $requestAttribute) {
             if ($requestAttribute->getCategory() === ContextSelectorIdentifier::CONTENT_SELECTOR) {
                 continue;
@@ -47,5 +40,19 @@ class PersistedResourceMapper extends ObjectMapper
             $content = $retrievedData ? new Content($retrievedData->toPathArray()) : new Content([]);
             $requestAttribute->addContent(ContextSelectorIdentifier::CONTENT_SELECTOR, $content);
         }
+    }
+
+    public function find(PepRequestAttributes $subject, PepRequestAttributes $resource)
+    {
+        $getAttributeValue = function($attribute, $attributeId) {
+            return $attribute->getAttribute($attributeId)->getValues()->first()->getValue();
+        };
+
+        return $this->repository->findByIdentifiers([
+            'subjectId'    => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_ID),
+            'subjectType'  => $getAttributeValue($subject, SubjectIdentifier::SUBJECT_TYPE),
+            'resourceId'   => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_ID),
+            'resourceType' => $getAttributeValue($resource, ResourceIdentifier::RESOURCE_TYPE),
+        ]);
     }
 }

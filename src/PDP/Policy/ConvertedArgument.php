@@ -44,14 +44,14 @@ class ConvertedArgument
         }
 
         $attributeValue = $functionArgument->getValue();
-        if (! $attributeValue || ! $attributeValue->getValue()) {
+        if (! $attributeValue || $attributeValue->getValue() === null) {
             $this->status = Status::createProcessingError('Got null attribute');
 
             return;
         }
         if ($expectedDataType && $attributeValue->getDataTypeId() !== $expectedDataType->getType()->getValue()) {
             $this->status = Status::createProcessingError(
-                'Expected data type ' . $this->getShortDataTypeId($expectedDataType->getId()) .
+                'Expected data type ' . $this->getShortDataTypeId($expectedDataType->getType()) .
                 ' saw ' . $this->getShortDataTypeId($attributeValue->getDataTypeId()));
 
             return;
