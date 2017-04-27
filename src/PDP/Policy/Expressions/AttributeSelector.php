@@ -90,7 +90,10 @@ class AttributeSelector extends AttributeRetrievalBase
         }
 
         foreach ($nodesToQuery as $nodeToQuery) {
-            foreach ($nodeToQuery as $content) {
+            foreach ($nodeToQuery as $key => $content) {
+                if ($this->contextSelectorId !== null && $key !== $this->contextSelectorId) {
+                    continue;
+                }
                 $data = $content->evaluate($this->getPath());
                 if (is_array($data)) {
                     foreach ($data as $datum) {

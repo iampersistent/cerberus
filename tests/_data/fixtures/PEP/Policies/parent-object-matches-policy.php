@@ -2,7 +2,7 @@
 
 use Cerberus\Core\Decision;
 use Cerberus\Core\Enums\{
-    AttributeIdentifier, CombiningAlgorithmIdentifier, ContextSelectorIdentifier, DataTypeIdentifier, FunctionIdentifier, SubjectIdentifier
+    AttributeIdentifier, CombiningAlgorithmIdentifier, DataTypeIdentifier, FunctionIdentifier
 };
 
 $policyId = 'parent-object-matches';
@@ -16,38 +16,30 @@ return [
                 'ruleId'    => "$policyId:rule1",
                 'effect'    => Decision::PERMIT,
                 'condition' => [
-                    'apply'      => [
+                    'apply' => [
                         'description' => 'make sure all of the checks evaluate to true',
-                        'functionId'  => FunctionIdentifier::BOOLEAN_ALL_OF,
-                        [
-                            'function' => [
-                                'functionId' => FunctionIdentifier::BOOLEAN_EQUAL,
-                            ],
-                        ],
-                        [
-                            AttributeIdentifier::VALUE => [
-                                'dataType' => DataTypeIdentifier::BOOLEAN,
-                                'text'     => true,
-                            ],
-                        ],
+                        'functionId' => FunctionIdentifier::STRING_IS_IN,
                         [
                             'apply' => [
-                                'functionId' => FunctionIdentifier::STRING_IS_IN,
-                                [
-                                    AttributeIdentifier::VALUE => [
-                                        'dataType' => DataTypeIdentifier::STRING,
-                                        'text'     => 42,
-                                    ]
-                                ],
+                                'functionId' => FunctionIdentifier::STRING_ONE_AND_ONLY,
                                 [
                                     AttributeIdentifier::SELECTOR => [
                                         'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
                                         'contextSelectorId' => 'childObject',
                                         'dataType'          => DataTypeIdentifier::STRING,
                                         'mustBePresent'     => false,
-                                        'path'              => '$.resource.parentObjectIds',
+                                        'path'              => '$.resource.paths.publicId',
                                     ],
                                 ],
+                            ],
+                        ],
+                        [
+                            AttributeIdentifier::SELECTOR => [
+                                'category'          => AttributeIdentifier::RESOURCE_CATEGORY,
+                                'contextSelectorId' => 'childObject',
+                                'dataType'          => DataTypeIdentifier::STRING,
+                                'mustBePresent'     => false,
+                                'path'              => '$.resource.parentObjectIds',
                             ],
                         ],
                     ],

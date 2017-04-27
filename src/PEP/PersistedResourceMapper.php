@@ -44,9 +44,7 @@ class PersistedResourceMapper extends ObjectMapper
             if ($requestAttribute->getCategory() === ContextSelectorIdentifier::CONTENT_SELECTOR) {
                 continue;
             }
-
             $content = $retrievedData ? new Content($retrievedData->toPathArray()) : new Content([]);
-
             $requestAttribute->addContent(ContextSelectorIdentifier::CONTENT_SELECTOR, $content);
         }
     }

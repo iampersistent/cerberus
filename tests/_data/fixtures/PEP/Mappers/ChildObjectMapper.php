@@ -23,6 +23,11 @@ class ChildObjectMapper extends ObjectMapper
 
         $childData = [
             'resource' => [
+                // dynamically look up these values
+                'paths' => [
+                    'publicId' => '1',
+                    'trashId'  => '2',
+                ],
                 'parentObjectIds' => $parentIds,
             ],
         ];

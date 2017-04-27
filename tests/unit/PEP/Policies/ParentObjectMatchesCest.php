@@ -20,7 +20,7 @@ class ParentObjectMatchesCest extends MatchBaseCest
     public function testTestChildWithValidParent(UnitTester $I)
     {
         $child = new ChildObject(24);
-        $parent = new ParentObject(42);
+        $parent = new ParentObject(1);
         $child->setParent($parent);
 
         $response = $this->pepAgent->decide($this->subject, new ReadAction(), $child);
