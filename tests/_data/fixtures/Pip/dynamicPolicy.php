@@ -9,7 +9,7 @@ return [
     'policy' => [
         'ruleCombiningAlgorithmId' => CombiningAlgorithmIdentifier::DENY_OVERRIDES,
         'policyId'                 => 'dynamic:policy',
-        'variableDefinition'       => [
+        'variableDefinitions'       => [
             'variableId' => 'resourceMatch',
             'apply'      => [
                 'functionId' => FunctionIdentifier::STRING_EQUAL,
