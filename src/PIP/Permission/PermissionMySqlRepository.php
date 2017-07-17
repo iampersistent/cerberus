@@ -35,6 +35,7 @@ SQL;
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement = null;
 
         return $data ? new MappedObject($data) : null;
     }
@@ -57,6 +58,7 @@ SQL;
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement = null;
 
         return $data ? new MappedObject([
             'id'           => $data['id'],
@@ -97,5 +99,6 @@ SQL;
 
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
+        $statement = null;
     }
 }
