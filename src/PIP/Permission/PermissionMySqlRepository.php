@@ -17,7 +17,7 @@ class PermissionMySqlRepository implements PermissionRepository
 
         // don't rely on programmer to figure out dsn
         if (! isset($config['dsn']) && isset($config['host'], $config['database'])) {
-            $config['dsn'] = "mysql:dbname={$config['database']};host={$config['host']}";
+            $config['dsn'] = "mysql:dbname={$config['database']};host={$config['host']};port={$config['port']}";
         }
 
         $this->connection = new PDO($config['dsn'], $config['username'], $config['password'], $options);
@@ -35,6 +35,7 @@ SQL;
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement = null;
 
         return $data ? new MappedObject($data) : null;
     }
@@ -57,6 +58,7 @@ SQL;
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement = null;
 
         return $data ? new MappedObject([
             'id'           => $data['id'],
@@ -97,5 +99,6 @@ SQL;
 
         $statement = $this->connection->prepare($sql);
         $statement->execute($parameters);
+        $statement = null;
     }
 }
