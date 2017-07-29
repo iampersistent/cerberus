@@ -33,7 +33,7 @@ class MappedObject
         }
 
         if (! is_array($this->actions)) {
-            $this->actions = json_decode($this->actions);
+            $this->actions = json_decode($this->actions, true);
         }
     }
 
