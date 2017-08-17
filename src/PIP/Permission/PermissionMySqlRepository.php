@@ -17,6 +17,9 @@ class PermissionMySqlRepository implements PermissionRepository
 
         // don't rely on programmer to figure out dsn
         if (! isset($config['dsn']) && isset($config['host'], $config['database'])) {
+            if (! isset($config['port'])) {
+                $config['port'] = 3306;
+            }
             $config['dsn'] = "mysql:dbname={$config['database']};host={$config['host']};port={$config['port']}";
         }
 
